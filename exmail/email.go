@@ -3,8 +3,8 @@ package exmail
 import (
 	"context"
 	"crypto/tls"
-	"riskcontral/common"
 
+	"github.com/franklihub/mpcCommon/rand"
 	"github.com/gogf/gf/v2/os/gcfg"
 	"github.com/gogf/gf/v2/os/gctx"
 	"gopkg.in/gomail.v2"
@@ -24,7 +24,7 @@ type sMailCode struct {
 
 func (s *sMailCode) SendMailCode(ctx context.Context, to string) (string, error) {
 
-	code := common.RandomDigits(6)
+	code := rand.RandomDigits(6)
 	///
 	m := gomail.NewMessage()
 	m.SetHeader("From", s.From)

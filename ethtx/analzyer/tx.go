@@ -4,11 +4,11 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"math/big"
-	"riskcontral/internal/model"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/franklihub/mpcCommon/model"
 )
 
 // /input

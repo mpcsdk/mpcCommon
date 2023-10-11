@@ -4,16 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"math/big"
-	"riskcontral/internal/model"
-	"riskcontral/internal/model/entity"
+
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/franklihub/mpcCommon/model"
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *model.NftRule) (*entity.EthTx, error) {
+func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *model.NftRule) (*model.EthTx, error) {
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {
@@ -49,7 +49,7 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *model.
 
 		datastr := common.Bytes2Hex(log.Data)
 		topicstr, _ := json.Marshal(log.Topics)
-		entity := &entity.EthTx{
+		entity := &model.EthTx{
 			//todo: blocktime
 			Name:        nftrule.Name,
 			Kind:        "nft",
@@ -77,7 +77,7 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *model.
 		return entity, nil
 	}
 }
-func (s *Analzyer) AnalzyLogFT(contract string, log *types.Log, ftrule *model.FtRule) (*entity.EthTx, error) {
+func (s *Analzyer) AnalzyLogFT(contract string, log *types.Log, ftrule *model.FtRule) (*model.EthTx, error) {
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {
@@ -116,7 +116,7 @@ func (s *Analzyer) AnalzyLogFT(contract string, log *types.Log, ftrule *model.Ft
 
 		datastr := common.Bytes2Hex(log.Data)
 		topicstr, _ := json.Marshal(log.Topics)
-		entity := &entity.EthTx{
+		entity := &model.EthTx{
 			//todo: blocktime
 			Name:        ftrule.Name,
 			Kind:        "ft",

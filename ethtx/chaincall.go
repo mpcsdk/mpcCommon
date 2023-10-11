@@ -2,9 +2,9 @@ package ethtx
 
 import (
 	"encoding/json"
-	"riskcontral/common/http"
 
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/franklihub/mpcCommon/http"
 )
 
 type ChainNode struct {

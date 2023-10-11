@@ -2,11 +2,11 @@ package analzyer
 
 import (
 	"math/big"
-	"riskcontral/internal/model"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/franklihub/mpcCommon/model"
 )
 
 var signData string = `{

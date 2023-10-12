@@ -1,5 +1,5 @@
 // EthTx is the golang structure for table eth_tx.
-package model
+package mpcmodel
 
 type EthTx struct {
 	Address     string `json:"address"     ` //

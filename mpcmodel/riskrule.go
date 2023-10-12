@@ -1,4 +1,4 @@
-package model
+package mpcmodel
 
 import "math/big"
 

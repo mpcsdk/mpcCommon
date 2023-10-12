@@ -1,4 +1,4 @@
-package userToken
+package userInfoGeter
 
 import (
 	"context"

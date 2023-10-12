@@ -13,10 +13,70 @@ service User{
     rpc PerformRiskTxs (TxRiskReq) returns (TxRiskRes) {}
     rpc PerformRiskTFA (TFARiskReq) returns (TFARiskRes) {}
 
-
+    ///
+    rpc PerformAllAbi (AllAbiReq) returns (AllAbiRes) {}
+    rpc PerformAllNftRules(NftRulesReq) returns (NftRulesRes){}
+    rpc PerformAllFtRules(FtRulesReq) returns (FtRulesRes){}
+    ////
     rpc PerformSmsCode (SmsCodeReq) returns (SmsCodeRes) {}
     rpc PerformMailCode (MailCodekReq) returns (MailCodekRes) {}
     rpc PerformVerifyCode (VerifyCodekReq) returns (VerifyCodeRes) {}
+}
+///
+message FtRulesReq{}
+message Ftrules {
+    string contract = 1;
+    string name = 2;
+ 
+    string methodName = 3;
+    string methodSig = 4;
+    string methodFromField = 5;
+    string methodToField = 6;
+    string methodValueField = 7;
+ 
+    string eventName = 8;
+    string eventSig = 9;
+    string eventTopic = 10;
+    string eventFromField = 11;
+    string eventToField = 12;
+    string eventValueField = 13;
+ 
+    repeated string skipToAddr = 14;
+    bytes threshold_bigint_bytes = 15;
+}
+message FtRulesRes{
+    map<string, Ftrules> ftRules = 1;
+}
+///
+message NftRulesReq {}
+message NftRules{
+    string contract = 1;
+    string name = 2;
+  
+    string methodName = 3;
+    string methodSig = 4;
+    string methodFromField = 5;
+    string methodToField = 6;
+    string methodTokenIdField = 7;
+  
+    string eventName = 8;
+    string eventSig = 9;
+    string eventTopic = 10;
+    string eventFromField = 11;
+    string eventToField = 12;
+    string eventTokenIdField = 13;
+  
+    repeated string skipToAddr = 14;
+    int32 threshold = 15;
+}
+
+message NftRulesRes {
+    map<string, NftRules> nftRules = 1;
+}
+//
+message AllAbiReq {}
+message AllAbiRes {
+    map<string, string> Abis = 1;
 }
 ////
 message RiskTx {

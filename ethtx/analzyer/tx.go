@@ -137,10 +137,10 @@ func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpc
 		to := ""
 		val := big.NewInt(0)
 		if v, ok := args[nftrule.MethodFromField]; ok {
-			from = v.(string)
+			from = strings.ToLower(v.(common.Address).Hex())
 		}
 		if v, ok := args[nftrule.MethodToField]; ok {
-			to = v.(string)
+			to = strings.ToLower(v.(common.Address).Hex())
 		}
 		if v, ok := args[nftrule.MethodTokenIdField]; ok {
 			val = v.(*big.Int)

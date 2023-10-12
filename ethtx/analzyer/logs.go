@@ -9,11 +9,11 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/franklihub/mpcCommon/model"
+	"github.com/franklihub/mpcCommon/mpcmodel"
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *model.NftRule) (*model.EthTx, error) {
+func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmodel.NftRule) (*mpcmodel.EthTx, error) {
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {
@@ -49,7 +49,7 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *model.
 
 		datastr := common.Bytes2Hex(log.Data)
 		topicstr, _ := json.Marshal(log.Topics)
-		entity := &model.EthTx{
+		entity := &mpcmodel.EthTx{
 			//todo: blocktime
 			Name:        nftrule.Name,
 			Kind:        "nft",
@@ -77,7 +77,7 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *model.
 		return entity, nil
 	}
 }
-func (s *Analzyer) AnalzyLogFT(contract string, log *types.Log, ftrule *model.FtRule) (*model.EthTx, error) {
+func (s *Analzyer) AnalzyLogFT(contract string, log *types.Log, ftrule *mpcmodel.FtRule) (*mpcmodel.EthTx, error) {
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {
@@ -116,7 +116,7 @@ func (s *Analzyer) AnalzyLogFT(contract string, log *types.Log, ftrule *model.Ft
 
 		datastr := common.Bytes2Hex(log.Data)
 		topicstr, _ := json.Marshal(log.Topics)
-		entity := &model.EthTx{
+		entity := &mpcmodel.EthTx{
 			//todo: blocktime
 			Name:        ftrule.Name,
 			Kind:        "ft",

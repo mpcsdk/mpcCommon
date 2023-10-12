@@ -8,7 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/franklihub/mpcCommon/model"
+	"github.com/franklihub/mpcCommon/mpcmodel"
 )
 
 // /input
@@ -107,7 +107,7 @@ func (s *Analzyer) AnalzyTxData(tx *SignTxData) (*AnalzyedTxData, error) {
 }
 
 // /
-func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *model.NftRule) (*AnalzyedTxData, error) {
+func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpcmodel.NftRule) (*AnalzyedTxData, error) {
 	tx.Target = strings.ToLower(tx.Target)
 	if abistr, ok := s.abis[tx.Target]; !ok {
 		return nil, nil
@@ -163,7 +163,7 @@ func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mod
 	}
 }
 
-func (s *Analzyer) AnalzyTxDataFT(contract string, tx *SignTxData, ftrule *model.FtRule) (*AnalzyedTxData, error) {
+func (s *Analzyer) AnalzyTxDataFT(contract string, tx *SignTxData, ftrule *mpcmodel.FtRule) (*AnalzyedTxData, error) {
 	tx.Target = strings.ToLower(tx.Target)
 	if abistr, ok := s.abis[tx.Target]; !ok {
 		return nil, nil

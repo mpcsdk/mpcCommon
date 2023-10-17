@@ -1,0 +1,34 @@
+// protoc --go_out=plugins=grpc:. *.proto
+
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+package scrapelogs;
+
+
+option go_package = "/scrapelogs/v1";
+
+service ScrapeLogsAgg{
+    rpc PerformNftCnt(NftCntReq) returns (NftCntRes) {}
+    rpc PerformFtCnt(FtCntReq) returns (FtCntRes) {}
+    rpc PerformAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
+message NftCntReq {
+    string Address = 1; // v: required
+    string Contract = 2; // v: required
+    string Method= 3; // v: required
+}
+message NftCntRes{
+    int32 Cnt = 1;
+}
+
+////
+
+message FtCntReq {
+    string Address = 1; // v: required
+    string Contract = 2; // v: required
+    string Method= 3; // v: required
+}
+message FtCntRes{
+    bytes Cnt_BigInt_Bytes = 1;
+}

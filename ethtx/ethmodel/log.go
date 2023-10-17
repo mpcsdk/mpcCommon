@@ -2,20 +2,21 @@ package ethmodel
 
 import (
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/rpc"
 )
 
 type StringList []string
 type Log struct {
-	BlockNumber      int64      `bson:"blockNumber"`
-	BlockHash        string     `bson:"blockHash"`
-	TransactionHash  string     `bson:"transactionHash"`
-	TransactionIndex int        `bson:"transactionIndex"`
-	Address          string     `bson:"address"`
-	Topics           StringList `bson:"topics"`
-	Data             string     `bson:"data"`
-	LogIndex         int        `bson:"logIndex"`
-	Removed          bool       `bson:"removed"`
+	BlockNumber      rpc.BlockNumber `bson:"blockNumber"`
+	BlockHash        string          `bson:"blockHash"`
+	TransactionHash  string          `bson:"transactionHash"`
+	TransactionIndex hexutil.Uint    `bson:"transactionIndex"`
+	Address          string          `bson:"address"`
+	Topics           StringList      `bson:"topics"`
+	Data             string          `bson:"data"`
+	LogIndex         hexutil.Uint    `bson:"logIndex"`
+	Removed          bool            `bson:"removed"`
 }
 
 // type EthLog struct {

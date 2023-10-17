@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/franklihub/mpcCommon/http"
+	"github.com/mpcsdk/mpcCommon/http"
 )
 
 type ChainNode struct {

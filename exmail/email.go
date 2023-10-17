@@ -4,9 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 
-	"github.com/franklihub/mpcCommon/rand"
-	"github.com/gogf/gf/v2/os/gcfg"
-	"github.com/gogf/gf/v2/os/gctx"
+	"github.com/mpcsdk/mpcCommon/rand"
 	"gopkg.in/gomail.v2"
 )
 
@@ -36,16 +34,14 @@ func (s *sMailCode) SendMailCode(ctx context.Context, to string) (string, error)
 }
 
 func new() *sMailCode {
-	cfg := gcfg.Instance()
-	ctx := gctx.GetInitCtx()
 
 	s := &sMailCode{
-		From:    cfg.MustGet(ctx, "emailOTP.Mail").String(),
-		Passwd:  cfg.MustGet(ctx, "emailOTP.Password").String(),
-		Host:    cfg.MustGet(ctx, "emailOTP.Host").String(),
-		Port:    cfg.MustGet(ctx, "emailOTP.Port").Int(),
-		Subject: cfg.MustGet(ctx, "emailOTP.Subject").String(),
-		Body:    cfg.MustGet(ctx, "emailOTP.Body").String(),
+		From:    "xinwei.li@mixmarvel.com",
+		Passwd:  "Kkj7pJAdUpLpjgYE",
+		Host:    "smtp.exmail.qq.com",
+		Port:    465,
+		Subject: "Subject",
+		Body:    "Body",
 	}
 	d := gomail.NewDialer(s.Host, s.Port, s.From, s.Passwd)
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}

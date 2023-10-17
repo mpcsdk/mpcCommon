@@ -1,4 +1,4 @@
-module github.com/franklihub/mpcCommon
+module github.com/mpcsdk/mpcCommon
 
 go 1.20
 

@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/franklihub/mpcCommon/ethtx/ethmodel"
+	"github.com/mpcsdk/mpcCommon/ethtx/ethmodel"
 )
 
 func Test_chaincall(t *testing.T) {

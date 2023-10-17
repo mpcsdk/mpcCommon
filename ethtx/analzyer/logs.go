@@ -9,8 +9,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/franklihub/mpcCommon/mpcmodel"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/mpcsdk/mpcCommon/mpcmodel"
 )
 
 func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmodel.NftRule) (*mpcmodel.EthTx, error) {

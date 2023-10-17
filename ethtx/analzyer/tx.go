@@ -8,7 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/franklihub/mpcCommon/mpcmodel"
+	"github.com/mpcsdk/mpcCommon/mpcmodel"
 )
 
 // /input

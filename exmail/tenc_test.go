@@ -2,20 +2,17 @@ package exmail
 
 import (
 	"testing"
-
-	"github.com/gogf/gf/v2/os/gcfg"
-	"github.com/gogf/gf/v2/os/gctx"
 )
 
 func Test_Tenc_Mail(t *testing.T) {
-	cfg := gcfg.Instance()
-	ctx := gctx.GetInitCtx()
-	From := cfg.MustGet(ctx, "exemail.From").String()
-	SecretId := cfg.MustGet(ctx, "exemail.SecretId").String()
-	SecretKey := cfg.MustGet(ctx, "exemail.SecretKey").String()
-	VerificationTemplateID := cfg.MustGet(ctx, "exemail.VerificationTemplateID").Uint64()
-	BindingCompletionTemplateID := cfg.MustGet(ctx, "exemail.BindingCompletionTemplateID").Uint64()
-	Subject := cfg.MustGet(ctx, "exemail.Subject").String()
+
+	From := "mixmarvel-sdk@mixmarvel-sdk.com"
+	SecretId := "AKID51zveEaotSAnIez267vjsxrnfR1eCZwG"
+	SecretKey := "KXlv05GIC0lN2ccq1IYggZJv1CPOLKDt"
+	VerificationTemplateID := uint64(26732)
+	BindingCompletionTemplateID := uint64(26731)
+	Subject := "MixMarver"
+
 	m := NewTencMailClient(SecretId, SecretKey,
 		VerificationTemplateID, BindingCompletionTemplateID,
 		From, Subject)

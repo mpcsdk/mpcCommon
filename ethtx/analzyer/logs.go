@@ -17,13 +17,15 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmod
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {
+		g.Log().Debug(context.Background(), "AnalzyLogNFT:", "contract not found:", contract)
 		return nil, nil
 	} else {
 		if log.Topics[0].Hex() != nftrule.EventTopic {
-			g.Log().Debug(context.Background(), "AnalzyLogNFT:", abicontract.Events, abicontract.Methods, log)
+			g.Log().Debug(context.Background(), "AnalzyLogNFT:", "event not match:", "logTopic:", log.Topics[0].Hex(), "rule Sig:", nftrule.EventSig, "rule topic:", nftrule.EventTopic)
 			return nil, nil
 		}
 		event, err := abicontract.EventByID(log.Topics[0])
+		g.Log().Debug(context.Background(), "AnalzyLogNFT:", "event:", event, "method:", nftrule.MethodSig, "log:", log)
 		if err != nil {
 			return nil, err
 		}

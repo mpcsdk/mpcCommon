@@ -3,7 +3,6 @@ package userInfoGeter
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/gogf/gf/v2/frame/g"
@@ -38,7 +37,6 @@ func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*Us
 		}).
 		// EnableTrace().
 		Get(s.url)
-	fmt.Println(resp)
 	if err != nil {
 		return nil, err
 	}

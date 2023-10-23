@@ -3,9 +3,9 @@ package userInfoGeter
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/go-resty/resty/v2"
-	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcache"
 )
 
@@ -43,7 +43,7 @@ func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*Us
 	userInfo := respUserInfo{}
 	err = json.Unmarshal(resp.Body(), &userInfo)
 	if err != nil {
-		g.Log().Error(ctx, "getUserInfo:", err, token, userInfo)
+		err = fmt.Errorf("%+v, resp:%s", err, resp.String())
 		return nil, err
 	}
 	return userInfo.Data, nil

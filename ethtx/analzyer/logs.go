@@ -1,7 +1,6 @@
 package analzyer
 
 import (
-	"context"
 	"encoding/json"
 	"math/big"
 
@@ -9,7 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/gogf/gf/v2/frame/g"
+	"github.com/mpcsdk/mpcCommon/mpccode"
 	"github.com/mpcsdk/mpcCommon/mpcmodel"
 )
 
@@ -17,15 +16,12 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmod
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {
-		g.Log().Debug(context.Background(), "AnalzyLogNFT:", "contract not found:", contract)
-		return nil, nil
+		return nil, mpccode.ErrEmpty
 	} else {
 		if log.Topics[0].Hex() != nftrule.EventTopic {
-			g.Log().Debug(context.Background(), "AnalzyLogNFT:", "event not match:", "logTopic:", log.Topics[0].Hex(), "rule Sig:", nftrule.EventSig, "rule topic:", nftrule.EventTopic)
-			return nil, nil
+			return nil, mpccode.ErrEmpty
 		}
 		event, err := abicontract.EventByID(log.Topics[0])
-		g.Log().Debug(context.Background(), "AnalzyLogNFT:", "event:", event, "method:", nftrule.MethodSig, "log:", log)
 		if err != nil {
 			return nil, err
 		}

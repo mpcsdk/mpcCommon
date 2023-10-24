@@ -57,8 +57,9 @@ var (
 	ErrArg   = errors.New("invalid argument")
 )
 var (
-	CodeNil = &errCode{-1, "nil", nil} // No error code specified.
-	CodeOK  = &errCode{0, "ok", nil}   // It is OK.
+	CodeNil            = &errCode{-1, "nil", nil}            // No error code specified.
+	CodeOK             = &errCode{0, "ok", nil}              // It is OK.
+	CodeSessionInvalid = &errCode{1, "Session Invalid", nil} // The token is invalid.
 	///
 	CodeTokenInvalid      = &errCode{11, "Token Invalid", nil}        // The token is invalid.
 	CodeTokenNotExist     = &errCode{12, "Token NotExist", nil}       // The token does not exist.

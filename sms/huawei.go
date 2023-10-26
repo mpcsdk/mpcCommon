@@ -45,12 +45,12 @@ const WSSE_HEADER_FORMAT = "UsernameToken Username=\"%s\",PasswordDigest=\"%s\",
 // 无需修改,用于格式化鉴权头域,给"Authorization"参数赋值
 const AUTH_HEADER_VALUE = "WSSE realm=\"SDP\",profile=\"UsernameToken\",type=\"Appkey\""
 
-func (s *Huawei) SendSms(receiver, code string) (bool, string, error) {
+func (s *Huawei) SendSms(receiver, templateID, code string) (bool, string, error) {
 	apiAddress := s.APIAddress
 	appKey := s.ApplicationKey
 	appSecret := s.ApplicationSecret
 	sender := s.Sender
-	templateId := s.TemplateID
+	templateId := templateID
 	signature := s.Signature
 
 	//选填,短信状态报告接收地址,推荐使用域名,为空或者不填表示不接收状态报告

@@ -14,7 +14,7 @@ func Test_domestic(t *testing.T) {
 		TemplateID:        "000ab97205d34659a78b47c9e1a805fb",
 		Signature:         "幂玛",
 	}
-	resp, stat, err := domestic.SendSms("+8615111226175", "4567")
+	resp, stat, err := domestic.SendSms("+8615111226175", "000ab97205d34659a78b47c9e1a805fb", "4567")
 	if err != nil {
 		t.Error(err)
 	}

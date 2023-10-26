@@ -17,7 +17,7 @@ func Test_Tenc_foreign(t *testing.T) {
 		"1933346",
 		"1941647",
 	)
-	resp, stat, err := domestic.SendSms("+447862429616", "456712")
+	resp, stat, err := domestic.SendSms("+447862429616", "1933346", "456712")
 	if err != nil {
 		t.Error(err)
 	}
@@ -44,7 +44,7 @@ func Test_Tenc_foreign_binding(t *testing.T) {
 	)
 
 	///
-	resp, stat, err := domestic.SendBinding("+447862429616")
+	resp, stat, err := domestic.SendSms("+447862429616", "1941647", "456712")
 	if err != nil {
 		t.Error(err)
 	}
@@ -68,7 +68,7 @@ func Test_Tenc_domestic_incorrect(t *testing.T) {
 		"1933346",
 		"1941647",
 	)
-	resp, stat, err := domestic.SendSms("+4478624296161", "4567")
+	resp, stat, err := domestic.SendSms("+4478624296161", "1941647", "4567")
 	if err != nil {
 		t.Error(err)
 	}
@@ -93,7 +93,7 @@ func Test_Tenc_domestic_xinjiapo(t *testing.T) {
 		"1941647",
 	)
 
-	resp, stat, err := domestic.SendSms("+659035559", "4567")
+	resp, stat, err := domestic.SendSms("+659035559", "1933346", "4567")
 	if err != nil {
 		t.Error(err)
 	}
@@ -116,7 +116,7 @@ func Test_Tenc_foreign_xinjiapo2(t *testing.T) {
 		"1933346",
 		"1941647",
 	)
-	resp, stat, err := domestic.SendSms("+6588606326", "4567")
+	resp, stat, err := domestic.SendSms("+6588606326", "1933346", "4567")
 	if err != nil {
 		t.Error(err)
 	}

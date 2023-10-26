@@ -10,14 +10,18 @@ import (
 )
 
 type TencMailClient struct {
-	client                      *ses.Client
-	verificationTemplateID      uint64
-	bindingCompletionTemplateID uint64
-	from                        string
-	subject                     string
+	client *ses.Client
+	// verificationTemplateId        uint64
+	// bindingVerificationTemplateId uint64
+	// bindingCompletionTemplateId   uint64
+	// upVerificationTemplateId      uint64
+	// upCompletionTemplateId        uint64
+	from    string
+	subject string
 }
 
-func NewTencMailClient(SecretId, SecretKey string, VerificationTemplateID, BindingCompletionTemplateID uint64, From string, Subject string) *TencMailClient {
+func NewTencMailClient(SecretId, SecretKey string,
+	From string, Subject string) *TencMailClient {
 	// 实例化一个认证对象，入参需要传入腾讯云账户 SecretId 和 SecretKey，此处还需注意密钥对的保密
 	// 代码泄露可能会导致 SecretId 和 SecretKey 泄露，并威胁账号下所有资源的安全性。以下代码示例仅供参考，建议采用更安全的方式来使用密钥，请参见：https://cloud.tencent.com/document/product/1278/85305
 	// 密钥可前往官网控制台 https://console.cloud.tencent.com/cam/capi 进行获取
@@ -32,15 +36,14 @@ func NewTencMailClient(SecretId, SecretKey string, VerificationTemplateID, Bindi
 
 	///
 	return &TencMailClient{client: client,
-		verificationTemplateID:      VerificationTemplateID,
-		bindingCompletionTemplateID: BindingCompletionTemplateID,
-		from:                        From, subject: Subject}
+
+		from: From, subject: Subject}
 }
-func (t *TencMailClient) SendBindingMail(destination string) (string, error) {
-	return t.sendMail(destination, t.bindingCompletionTemplateID, "")
+func (t *TencMailClient) SendCompletion(destination string, templateId uint64) (string, error) {
+	return t.sendMail(destination, templateId, "")
 }
-func (t *TencMailClient) SendMail(destination string, code string) (string, error) {
-	return t.sendMail(destination, t.verificationTemplateID, code)
+func (t *TencMailClient) SendVerificationCode(destination string, templateId uint64, code string) (string, error) {
+	return t.sendMail(destination, templateId, code)
 }
 
 func (t *TencMailClient) sendMail(destination string, templateId uint64, code string) (string, error) {

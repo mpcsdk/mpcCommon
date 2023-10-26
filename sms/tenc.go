@@ -162,7 +162,7 @@ func (t *TencSms) SendBinding(destination string) (bool, string, error) {
 	return *response.Response.SendStatusSet[0].Code == "Ok", response.ToJsonString(), nil
 
 }
-func (t *TencSms) SendSms(destination, code string) (bool, string, error) {
+func (t *TencSms) SendSms(destination, templateId, code string) (bool, string, error) {
 
 	/* 实例化一个请求对象，根据调用的接口和实际情况，可以进一步设置请求参数
 	 * 您可以直接查询SDK源码确定接口有哪些属性可以设置
@@ -188,7 +188,7 @@ func (t *TencSms) SendSms(destination, code string) (bool, string, error) {
 
 	/* 模板 ID: 必须填写已审核通过的模板 ID */
 	// 模板 ID 可前往 [国内短信](https://console.cloud.tencent.com/smsv2/csms-template) 或 [国际/港澳台短信](https://console.cloud.tencent.com/smsv2/isms-template) 的正文模板管理查看
-	request.TemplateId = common.StringPtr(t.templateId)
+	request.TemplateId = common.StringPtr(templateId)
 
 	/* 模板参数: 模板参数的个数需要与 TemplateId 对应模板的变量个数保持一致，若无模板参数，则设置为空*/
 	request.TemplateParamSet = common.StringPtrs([]string{code})

@@ -76,7 +76,6 @@ func (s *Huawei) SendSms(receiver, templateID, code string) (bool, string, error
 	}
 	resp := &HuaweiResp{}
 	err = json.Unmarshal([]byte(respStr), resp)
-
 	return resp.Code == "000000", respStr, err
 }
 

@@ -12,6 +12,9 @@ type errCode struct {
 	detail  interface{}
 }
 
+func (e *errCode) Error() error {
+	return errors.New(e.message)
+}
 func (e *errCode) Message() string {
 	return e.message
 }
@@ -60,6 +63,7 @@ var (
 	CodeNil            = &errCode{-1, "nil", nil}            // No error code specified.
 	CodeOK             = &errCode{0, "ok", nil}              // It is OK.
 	CodeSessionInvalid = &errCode{1, "Session Invalid", nil} // The token is invalid.
+	CodeParamInvalid   = &errCode{2, "invalid argument", nil}
 	///
 	CodeTokenInvalid      = &errCode{11, "Token Invalid", nil}        // The token is invalid.
 	CodeTokenNotExist     = &errCode{12, "Token NotExist", nil}       // The token does not exist.

@@ -1,11 +1,11 @@
-// protoc --go_out=plugins=grpc:. *.proto
 
 syntax = "proto3";
 import "google/protobuf/empty.proto";
+import "nrpc.proto";
+
 package risk;
 
-
-option go_package = "/risk/v1";
+option go_package = "/risk/nrpc/v1";
 
 service User{
     rpc PerformAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}

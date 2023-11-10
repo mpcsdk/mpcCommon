@@ -10,11 +10,22 @@ service TFA{
     rpc RpcAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
     rpc RpcTfaInfo(TFAReq) returns (TFARes) {}
 
+    rpc RpcTfaTx(TfaTxReq) returns (TfaTxRes){}
+
     rpc RpcSendSmsCode (SmsCodeReq) returns (SmsCodeRes) {}
     rpc RpcSendMailCode (MailCodekReq) returns (MailCodekRes) {}
     rpc RpcSendVerifyCode (VerifyCodekReq) returns (VerifyCodeRes) {}
 }
+///
+message TfaTxReq {
+    string UserId = 1; // v: required
+    string RiskSerial = 2; // v: required
+}
+message TfaTxRes{
+    repeated string Kinds = 1;
+}
 
+////
 message TFAReq {
     string UserId = 1; // v: required
     string Token = 2; // v: required

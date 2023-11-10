@@ -56,8 +56,9 @@ func ErrDetails(kvs ...*errDetail) string {
 }
 
 var (
-	ErrEmpty = errors.New("empty data")
-	ErrArg   = errors.New("invalid argument")
+	ErrEmpty       = errors.New("empty data")
+	ErrArg         = errors.New("invalid argument")
+	ErrNrpcTimeOut = errors.New("nats: timeout")
 )
 var (
 	CodeNil            = &errCode{-1, "nil", nil}            // No error code specified.

@@ -7,20 +7,17 @@ package risk;
 
 option go_package = "/risk/nrpc/v1";
 
-service User{
-    rpc PerformAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+service Risk{
+    rpc RpcAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
 
-    rpc PerformRiskTxs (TxRiskReq) returns (TxRiskRes) {}
-    rpc PerformRiskTFA (TFARiskReq) returns (TFARiskRes) {}
+    rpc RpcRiskTxs (TxRiskReq) returns (TxRiskRes) {}
+    rpc RpcRiskTFA (TFARiskReq) returns (TFARiskRes) {}
 
     ///
-    rpc PerformAllAbi (AllAbiReq) returns (AllAbiRes) {}
-    rpc PerformAllNftRules(NftRulesReq) returns (NftRulesRes){}
-    rpc PerformAllFtRules(FtRulesReq) returns (FtRulesRes){}
+    rpc RpcAllAbi (AllAbiReq) returns (AllAbiRes) {}
+    rpc RpcAllNftRules(NftRulesReq) returns (NftRulesRes){}
+    rpc RpcAllFtRules(FtRulesReq) returns (FtRulesRes){}
     ////
-    rpc PerformSmsCode (SmsCodeReq) returns (SmsCodeRes) {}
-    rpc PerformMailCode (MailCodekReq) returns (MailCodekRes) {}
-    rpc PerformVerifyCode (VerifyCodekReq) returns (VerifyCodeRes) {}
 }
 ///
 message FtRulesReq{}
@@ -100,7 +97,9 @@ message TxRiskRes {
 ////
 message TFARiskReq {
     string UserId = 1; // v: required
-    string Operations = 2; // v: required
+	string Type = 2; // v: required
+	string Mail = 3;
+	string Phone = 4;
 }
 message TFARiskRes {
     int32 Ok = 1;
@@ -108,36 +107,3 @@ message TFARiskRes {
     string RiskSerial = 3; 
 }
 ///
-
-message SmsCodeReq {
-    string RiskSerial = 1; // v: required
-    string Token = 2; // v: required
-}
-message SmsCodeRes {
-    int32 Ok = 1;
-    string Msg = 2;
-}
-
-///
-
-message MailCodekReq {
-    string RiskSerial = 1; // v: required
-    string Token= 2; // v: required
-}
-message MailCodekRes {
-    int32 Ok = 1;
-    string Msg = 2;
-}
-
-/////
-message VerifyCodekReq {
-    string RiskSerial = 1; // v: required
-    string Token = 2; // v: required
-    string PhoneCode = 3; // v: required
-    string MailCode = 4; // v: required
-}
-
-message VerifyCodeRes {
-    int32 Ok = 1;
-    string Msg = 2;
-}

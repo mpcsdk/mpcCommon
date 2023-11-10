@@ -1,14 +1,16 @@
-// protoc --go_out=plugins=grpc:. *.proto
-
 syntax = "proto3";
+import "nrpc.proto";
 
 package tfa;
 
-
-option go_package = "/tfa/v1";
+option go_package = "/tfa/nrpc/v1";
 
 service TFA{
-    rpc CallTFAInfo(TFAReq) returns (TFARes) {}
+    rpc RpcTfaInfo(TFAReq) returns (TFARes) {}
+
+    rpc RpcSendSmsCode (SmsCodeReq) returns (SmsCodeRes) {}
+    rpc RpcSendMailCode (MailCodekReq) returns (MailCodekRes) {}
+    rpc RpcSendVerifyCode (VerifyCodekReq) returns (VerifyCodeRes) {}
 }
 
 message TFAReq {
@@ -19,4 +21,38 @@ message TFARes{
     string UpPhoneTime = 2;
     string Mail = 3;
     string UpMailTime = 4;
+    string UserId = 5;
+}
+
+message SmsCodeReq {
+    string RiskSerial = 1; // v: required
+    string Token = 2; // v: required
+}
+message SmsCodeRes {
+    int32 Ok = 1;
+    string Msg = 2;
+}
+
+///
+
+message MailCodekReq {
+    string RiskSerial = 1; // v: required
+    string Token= 2; // v: required
+}
+message MailCodekRes {
+    int32 Ok = 1;
+    string Msg = 2;
+}
+
+/////
+message VerifyCodekReq {
+    string RiskSerial = 1; // v: required
+    string Token = 2; // v: required
+    string PhoneCode = 3; // v: required
+    string MailCode = 4; // v: required
+}
+
+message VerifyCodeRes {
+    int32 Ok = 1;
+    string Msg = 2;
 }

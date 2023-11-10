@@ -16,7 +16,8 @@ service TFA{
 }
 
 message TFAReq {
-    string Token = 1; // v: required
+    string UserId = 1; // v: required
+    string Token = 2; // v: required
 }
 message TFARes{
     string Phone = 1;

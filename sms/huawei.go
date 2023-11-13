@@ -35,6 +35,7 @@ type Huawei struct {
 	ApplicationKey    string
 	ApplicationSecret string
 	Sender            string
+	SenderCompletion  string
 	TemplateID        string
 	Signature         string
 }
@@ -49,7 +50,6 @@ func (s *Huawei) SendSms(receiver, templateID, code string) (bool, string, error
 	apiAddress := s.APIAddress
 	appKey := s.ApplicationKey
 	appSecret := s.ApplicationSecret
-	sender := s.Sender
 	templateId := templateID
 	signature := s.Signature
 
@@ -65,7 +65,9 @@ func (s *Huawei) SendSms(receiver, templateID, code string) (bool, string, error
 	 */
 
 	templateParas := ""
+	sender := s.SenderCompletion
 	if code != "" {
+		sender = s.Sender
 		templateParas = "[\"" + code + "\"]" //模板变量，此处以单变量验证码短信为例，请客户自行生成6位验证码，并定义为字符串类型，以杜绝首位0丢失的问题（例如：002569变成了2569）。
 	}
 

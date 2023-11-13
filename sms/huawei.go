@@ -63,7 +63,11 @@ func (s *Huawei) SendSms(receiver, templateID, code string) (bool, string, error
 	 * 模板中的每个变量都必须赋值，且取值不能为空
 	 * 查看更多模板和变量规范:产品介绍>模板和变量规范
 	 */
-	templateParas := "[\"" + code + "\"]" //模板变量，此处以单变量验证码短信为例，请客户自行生成6位验证码，并定义为字符串类型，以杜绝首位0丢失的问题（例如：002569变成了2569）。
+
+	templateParas := ""
+	if code != "" {
+		templateParas = "[\"" + code + "\"]" //模板变量，此处以单变量验证码短信为例，请客户自行生成6位验证码，并定义为字符串类型，以杜绝首位0丢失的问题（例如：002569变成了2569）。
+	}
 
 	body := buildRequestBody(sender, receiver, templateId, templateParas, statusCallBack, signature)
 	headers := make(map[string]string)

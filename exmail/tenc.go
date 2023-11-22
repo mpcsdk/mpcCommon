@@ -3,6 +3,7 @@ package exmail
 import (
 	"bytes"
 
+	"github.com/mpcsdk/mpcCommon/mpccode"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
@@ -40,10 +41,31 @@ func NewTencMailClient(SecretId, SecretKey string,
 		from: From, subject: Subject}
 }
 func (t *TencMailClient) SendCompletion(destination string, templateId uint64) (string, error) {
-	return t.sendMail(destination, templateId, "")
+	if code, err := t.sendMail(destination, templateId, ""); err != nil {
+		if terr, ok := err.(*errors.TencentCloudSDKError); ok {
+			if terr.Code == "FailedOperation.FrequencyLimit" {
+				return code, mpccode.CodeLimitSendMailCode.Error()
+			}
+			return "", err
+		}
+		return code, err
+	} else {
+		return code, nil
+	}
+
 }
 func (t *TencMailClient) SendVerificationCode(destination string, templateId uint64, code string) (string, error) {
-	return t.sendMail(destination, templateId, code)
+	if code, err := t.sendMail(destination, templateId, code); err != nil {
+		if terr, ok := err.(*errors.TencentCloudSDKError); ok {
+			if terr.Code == "FailedOperation.FrequencyLimit" {
+				return code, mpccode.CodeLimitSendMailCode.Error()
+			}
+			return "", err
+		}
+		return code, err
+	} else {
+		return code, nil
+	}
 }
 
 func (t *TencMailClient) sendMail(destination string, templateId uint64, code string) (string, error) {

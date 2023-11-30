@@ -12,7 +12,7 @@ import (
 	"github.com/mpcsdk/mpcCommon/mpcmodel"
 )
 
-func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmodel.NftRule) (*mpcmodel.EthTx, error) {
+func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmodel.ContractRule) (*mpcmodel.EthTx, error) {
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {
@@ -39,7 +39,7 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmod
 					from = common.HexToAddress(log.Topics[i+1].Hex()).String()
 				} else if arg.Name == nftrule.EventToField {
 					to = common.HexToAddress(log.Topics[i+1].Hex()).String()
-				} else if arg.Name == nftrule.EventTokenIdField {
+				} else if arg.Name == nftrule.EventValueField {
 					val = log.Topics[i+1].String()
 				}
 			}
@@ -75,7 +75,7 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmod
 		return entity, nil
 	}
 }
-func (s *Analzyer) AnalzyLogFT(contract string, log *types.Log, ftrule *mpcmodel.FtRule) (*mpcmodel.EthTx, error) {
+func (s *Analzyer) AnalzyLogFT(contract string, log *types.Log, ftrule *mpcmodel.ContractRule) (*mpcmodel.EthTx, error) {
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {

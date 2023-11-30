@@ -107,7 +107,7 @@ func (s *Analzyer) AnalzyTxData(tx *SignTxData) (*AnalzyedTxData, error) {
 }
 
 // /
-func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpcmodel.NftRule) (*AnalzyedTxData, error) {
+func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpcmodel.ContractRule) (*AnalzyedTxData, error) {
 	tx.Target = strings.ToLower(tx.Target)
 	if abistr, ok := s.abis[tx.Target]; !ok {
 		return nil, nil
@@ -142,7 +142,7 @@ func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpc
 		if v, ok := args[nftrule.MethodToField]; ok {
 			to = strings.ToLower(v.(common.Address).Hex())
 		}
-		if v, ok := args[nftrule.MethodTokenIdField]; ok {
+		if v, ok := args[nftrule.MethodValueField]; ok {
 			val = v.(*big.Int)
 		}
 
@@ -163,7 +163,7 @@ func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpc
 	}
 }
 
-func (s *Analzyer) AnalzyTxDataFT(contract string, tx *SignTxData, ftrule *mpcmodel.FtRule) (*AnalzyedTxData, error) {
+func (s *Analzyer) AnalzyTxDataFT(contract string, tx *SignTxData, ftrule *mpcmodel.ContractRule) (*AnalzyedTxData, error) {
 	tx.Target = strings.ToLower(tx.Target)
 	if abistr, ok := s.abis[tx.Target]; !ok {
 		return nil, nil

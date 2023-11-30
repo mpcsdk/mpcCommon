@@ -14,68 +14,83 @@ service Risk{
     rpc RpcRiskTFA (TFARiskReq) returns (TFARiskRes) {}
 
     ///
-    rpc RpcAllAbi (AllAbiReq) returns (AllAbiRes) {}
-    rpc RpcAllNftRules(NftRulesReq) returns (NftRulesRes){}
-    rpc RpcAllFtRules(FtRulesReq) returns (FtRulesRes){}
+    rpc RpcContractAbiBriefs (ContractAbiBriefsReq) returns (ContractAbiBriefsRes) {}
+    rpc RpcContractAbi(ContractAbiReq) returns (ContractAbiRes) {}
+
+    rpc RpcContractRuleBriefs(ContractRuleBriefsReq) returns (ContractRuleBriefsRes){}
+    rpc RpcContractRule(ContractRuleReq) returns (ContractRuleRes){}
     ////
 }
 ///
-message FtRulesReq{}
-message Ftrules {
+message ContractRuleBriefsReq {
+    string SeceneNo = 1;
+    string Kind = 2;
+    string Address = 3;
+}
+message ContractRuleBriefsRes {
+    string SeceneNo = 1;
+    string Address = 2;
+    string Name = 3;
+    string Kind = 4;
+}
+message ContractRuleReq{
+    string SeceneNo = 1;
+    string Kind = 2;
+    string Address = 3;
+}
+message ContractRule {
     string contract = 1;
     string name = 2;
+    string kind = 3;
  
-    string methodName = 3;
-    string methodSig = 4;
-    string methodFromField = 5;
-    string methodToField = 6;
-    string methodValueField = 7;
+    string methodName = 4;
+    string methodSig = 5;
+    string methodFromField = 6;
+    string methodToField = 7;
+    string methodValueField = 8;
  
-    string eventName = 8;
-    string eventSig = 9;
-    string eventTopic = 10;
-    string eventFromField = 11;
-    string eventToField = 12;
-    string eventValueField = 13;
+    string eventName = 9;
+    string eventSig = 10;
+    string eventTopic =11;
+    string eventFromField = 12;
+    string eventToField = 13;
+    string eventValueField = 14;
  
-    repeated string skipToAddr = 14;
-    bytes threshold_bigint_bytes = 15;
-}
-message FtRulesRes{
-    map<string, Ftrules> ftRules = 1;
-}
-///
-message NftRulesReq {}
-message NftRules{
-    string contract = 1;
-    string name = 2;
-  
-    string methodName = 3;
-    string methodSig = 4;
-    string methodFromField = 5;
-    string methodToField = 6;
-    string methodTokenIdField = 7;
-  
-    string eventName = 8;
-    string eventSig = 9;
-    string eventTopic = 10;
-    string eventFromField = 11;
-    string eventToField = 12;
-    string eventTokenIdField = 13;
-  
-    repeated string skipToAddr = 14;
-    int32 threshold = 15;
-}
+    repeated string skipToAddr = 15;
+    bytes threshold_bigint_bytes = 16;
 
-message NftRulesRes {
-    map<string, NftRules> nftRules = 1;
+}
+message ContractRuleRes{
+    map<string, ContractRule> Rules = 1;
 }
 //
-message AllAbiReq {}
-message AllAbiRes {
-    map<string, string> Abis = 1;
+///
+//
+message ContractAbiBriefsReq{
+    string SceneNo = 1;
+    string Kind = 2;
+    string Address = 3;
+}
+message ContractAbiBrief {
+    string SceneNo = 1;
+    string Address = 2;
+    string Name = 3;
+    string Kind = 4;
+}
+message ContractAbiBriefsRes{
+    map<string, ContractAbiBrief> Briefs = 1;
+}
+message ContractAbiReq{
+    string SceneNo = 1;
+    string Kind = 2;
+    string Address = 3;
+}
+
+message ContractAbiRes{
+
 }
 ////
+///
 message RiskTx {
     string Contract =1; // v: required
     string TxData = 2;  // v: required

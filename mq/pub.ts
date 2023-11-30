@@ -12,15 +12,16 @@ type ContractNotice = {
     sceneNo: string,
 }
 
-export function buildContractRuleMQ(kind : string, type: string, id: number, contractAddress: string, sceneNo: string):RiskCtrlMQ {
+export function buildRiskCtrlMQ(kind : string, type: string, id: number, contractAddress: string, sceneNo: string):RiskCtrlMQ {
+    let data : ContractNotice = {
+        type: type,
+        id: id,
+        contractAddress: contractAddress,
+        sceneNo: sceneNo,
+    }
     return {
-        kind: "kind",
-        data : {
-            type: type,
-            id: id,
-            contractAddress: contractAddress,
-            sceneNo: sceneNo,
-        }
+        kind: kind,
+        data: data,
     }
 }
 export { RiskCtrlMQ }

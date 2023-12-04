@@ -1,3 +1,4 @@
+export const RiskCtrlSubsject = 'RiskCtrlMQ'
 
 type RiskCtrlMQ = {
     //ContractRule/ContractAbi

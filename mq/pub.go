@@ -1,5 +1,7 @@
 package mq
 
+const RiskCtrlSubsject = "RiskCtrlMQ"
+
 type RiskCtrlKind string
 
 const (

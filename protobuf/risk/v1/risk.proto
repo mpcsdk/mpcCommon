@@ -23,22 +23,25 @@ service Risk{
 }
 ///
 message ContractRuleBriefsReq {
-    string SeceneNo = 1;
+    string SceneNo = 1;
     string Kind = 2;
     string Address = 3;
 }
 message ContractRuleBriefsRes {
-    string SeceneNo = 1;
+    map<string, ContractRuleBriefs> Briefs = 1;
+}
+message ContractRuleBriefs {
+    string SceneNo  = 1;
     string Address = 2;
     string Name = 3;
     string Kind = 4;
 }
 message ContractRuleReq{
-    string SeceneNo = 1;
+    string SceneNo = 1;
     string Kind = 2;
     string Address = 3;
 }
-message ContractRule {
+message ContractRuleRes {
     string contract = 1;
     string name = 2;
     string kind = 3;
@@ -56,13 +59,10 @@ message ContractRule {
     string eventToField = 13;
     string eventValueField = 14;
  
-    repeated string skipToAddr = 15;
+    repeated string WhiteAddrList = 15;
     bytes threshold_bigint_bytes = 16;
+}
 
-}
-message ContractRuleRes{
-    map<string, ContractRule> Rules = 1;
-}
 //
 ///
 //
@@ -87,7 +87,12 @@ message ContractAbiReq{
 }
 
 message ContractAbiRes{
-
+    int64 Id   = 1;
+	string ContractName  = 2;
+	string ContractAddress  =3;
+	string SceneNo      = 4; 
+	string AbiContent     = 5;
+	string ContractKind    = 6; 
 }
 ////
 ///

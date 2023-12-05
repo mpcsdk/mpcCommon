@@ -1,6 +1,8 @@
 package mpcmodel
 
-import "math/big"
+import (
+	"math/big"
+)
 
 // type NftRule struct {
 // 	Contract string `json:"contract"`

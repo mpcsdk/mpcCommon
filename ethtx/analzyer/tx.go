@@ -13,15 +13,15 @@ import (
 
 // /input
 type SignTx struct {
-	ChainId uint64        `json:"chainId,omitempty"`
-	Address string        `json:"address,omitempty"`
-	Number  uint64        `json:"number,omitempty"`
-	Txs     []*SignTxData `json:"txs,omitempty"`
-	TxHash  string        `json:"txHash,omitempty"`
+	ChainId uint64         `json:"chainId,omitempty"`
+	Address common.Address `json:"address,omitempty"`
+	Number  uint64         `json:"number,omitempty"`
+	Txs     []*SignTxData  `json:"txs,omitempty"`
+	TxHash  string         `json:"txHash,omitempty"`
 }
 type SignTxData struct {
-	Target string `json:"target,omitempty"`
-	Data   string `json:"data,omitempty"`
+	Target common.Address `json:"target,omitempty"`
+	Data   string         `json:"data,omitempty"`
 }
 
 // //output
@@ -67,8 +67,8 @@ func (s *Analzyer) SignTx(signData string) (*SignTx, error) {
 }
 
 func (s *Analzyer) AnalzyTxData(tx *SignTxData) (*AnalzyedTxData, error) {
-	tx.Target = strings.ToLower(tx.Target)
-	if abistr, ok := s.abis[tx.Target]; !ok {
+	// tx.Target = strings.ToLower(tx.Target)
+	if abistr, ok := s.abis[tx.Target.String()]; !ok {
 		return nil, nil
 		// return nil, errors.New("abi not found:" + tx.Target)
 	} else {
@@ -95,7 +95,7 @@ func (s *Analzyer) AnalzyTxData(tx *SignTxData) (*AnalzyedTxData, error) {
 		}
 		///
 		atx := &AnalzyedTxData{
-			Contract:   tx.Target,
+			Contract:   tx.Target.String(),
 			MethodId:   hex.EncodeToString(method.ID),
 			MethodName: method.RawName,
 			MethodSig:  method.Sig,
@@ -108,8 +108,8 @@ func (s *Analzyer) AnalzyTxData(tx *SignTxData) (*AnalzyedTxData, error) {
 
 // /
 func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpcmodel.ContractRule) (*AnalzyedTxData, error) {
-	tx.Target = strings.ToLower(tx.Target)
-	if abistr, ok := s.abis[tx.Target]; !ok {
+	// tx.Target = strings.ToLower(tx.Target)
+	if abistr, ok := s.abis[tx.Target.String()]; !ok {
 		return nil, nil
 	} else {
 		///
@@ -148,7 +148,7 @@ func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpc
 
 		//
 		atx := &AnalzyedTxData{
-			Contract:   tx.Target,
+			Contract:   tx.Target.String(),
 			MethodId:   hex.EncodeToString(method.ID),
 			MethodName: method.RawName,
 			MethodSig:  method.Sig,
@@ -164,8 +164,8 @@ func (s *Analzyer) AnalzyTxDataNFT(contract string, tx *SignTxData, nftrule *mpc
 }
 
 func (s *Analzyer) AnalzyTxDataFT(contract string, tx *SignTxData, ftrule *mpcmodel.ContractRule) (*AnalzyedTxData, error) {
-	tx.Target = strings.ToLower(tx.Target)
-	if abistr, ok := s.abis[tx.Target]; !ok {
+	// tx.Target = strings.ToLower(tx.Target)
+	if abistr, ok := s.abis[tx.Target.String()]; !ok {
 		return nil, nil
 	} else {
 
@@ -203,7 +203,7 @@ func (s *Analzyer) AnalzyTxDataFT(contract string, tx *SignTxData, ftrule *mpcmo
 			val = v.(*big.Int)
 		}
 		atx := &AnalzyedTxData{
-			Contract:   tx.Target,
+			Contract:   tx.Target.String(),
 			MethodId:   hex.EncodeToString(method.ID),
 			MethodName: method.RawName,
 			MethodSig:  method.Sig,

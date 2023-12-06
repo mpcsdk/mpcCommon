@@ -19,7 +19,7 @@ func NewAnalzer() *Analzyer {
 }
 
 func (s *Analzyer) AddAbi(contract string, abistr string) error {
-	contract = strings.ToLower(contract)
+	// contract = strings.ToLower(contract)
 	s.abis[contract] = abistr
 
 	abiabi, err := abi.JSON(strings.NewReader(abistr))

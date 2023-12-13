@@ -14,17 +14,16 @@ func Test_Tenc_Mail(t *testing.T) {
 	Subject := "MixMarver"
 
 	m := NewTencMailClient(SecretId, SecretKey,
-		VerificationTemplateID, BindingCompletionTemplateID,
 		From, Subject)
 	///
-	stat, err := m.SendMail("xinwei.li@mixmarvel.com", "123456")
+	stat, err := m.sendMail("xinwei.li@mixmarvel.com", VerificationTemplateID, "123456")
 	if err != nil {
 		t.Error(err)
 	}
 
 	t.Log(stat)
 	////
-	stat, err = m.SendBindingMail("xinwei.li@mixmarvel.com")
+	stat, err = m.SendCompletion("xinwei.li@mixmarvel.com", BindingCompletionTemplateID)
 	if err != nil {
 		t.Error(err)
 	}

@@ -16,10 +16,10 @@ func (s *Analzyer) AnalzyLogNFT(contract string, log *types.Log, nftrule *mpcmod
 	contract = strings.ToLower(contract)
 	///
 	if abicontract, ok := s.abiStructs[contract]; !ok {
-		return nil, mpccode.ErrEmpty
+		return nil, mpccode.CodeParamInvalid()
 	} else {
 		if log.Topics[0].Hex() != nftrule.EventTopic {
-			return nil, mpccode.ErrEmpty
+			return nil, mpccode.CodeParamInvalid()
 		}
 		event, err := abicontract.EventByID(log.Topics[0])
 		if err != nil {

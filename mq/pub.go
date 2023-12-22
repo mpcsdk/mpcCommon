@@ -1,25 +1,22 @@
 package mq
 
-const RiskCtrlSubsject = "RiskCtrlMQ"
+const RiskServerMQ = "RiskServerMQ"
+const RiskEngineMQ = "RiskEngineMQ"
 
-type RiskCtrlKind string
+type RiskCtrlMsg struct {
+	Subject string      `json:"subject"`
+	Data    interface{} `json:"data"`
+}
 
 const (
-	RiskCtrlKind_ContractRule = "ContractRule"
-	RiskCtrlKind_ContractAbi  = "ContractAbi"
+	RiskServerMQ_Subj_ContractRule = "ContractRule"
+	RiskServerMQ_Subj_ContractAbi  = "ContractAbi"
+
+	RiskEngineMQ_Subj_RiskCtrlRule = "RiskCtrlRule"
 )
 
-type RiskCtrlMQ struct {
-	//ContractRule
-	Kind string      `json:"kind"`
-	Data interface{} `json:"data"`
-}
-
-func (s *RiskCtrlMQ) GetKind() RiskCtrlKind {
-	return RiskCtrlKind(s.Kind)
-}
-
-type NoticeKind string
+// //
+// //RiskServerMQ
 
 const (
 	NoticeAdd    = "add"
@@ -27,6 +24,8 @@ const (
 	NoticeDelete = "delete"
 )
 
+// /
+// //
 type ContractNotice struct {
 	// 'add' | 'update' | 'delete'
 	Type            string `json:"type"`
@@ -41,6 +40,25 @@ func (s *ContractNotice) IsValid() bool {
 	}
 	return true
 }
-func (s *ContractNotice) GetType() NoticeKind {
-	return NoticeKind(s.Type)
+
+// //RiskEngineMQ
+const (
+	//notice 验证
+	NoticeVerify = "verify"
+)
+
+type RiskEngineRuleStrNotice struct {
+	//up/del/verify
+	Type     string `json:"type"`
+	RuleName string `json:"ruleName"`
+	RuleStr  string `json:"ruleStr"`
+	SceneNo  string `json:"sceneNo"`
+	Id       int64  `json:"id"`
+}
+
+func (s *RiskEngineRuleStrNotice) IsValid() bool {
+	if s.Type == "" || s.RuleStr == "" || s.SceneNo == "" {
+		return false
+	}
+	return true
 }

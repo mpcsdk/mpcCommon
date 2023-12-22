@@ -70,8 +70,8 @@ func Test_AnalzyTx(t *testing.T) {
 		t.Error(err)
 	}
 
-	ethtx, err := analzer.AnalzyTxDataFT(
-		"0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db",
+	ethtx, err := analzer.AnalzyTxData(
+		// "0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db",
 		signTx.Txs[0],
 		ftRules["0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db"])
 	if err != nil {

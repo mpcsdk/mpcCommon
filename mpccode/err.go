@@ -49,9 +49,7 @@ func (e *errCode) Equal(err error) bool {
 // }
 
 func (e *errCode) instance() error {
-
-	return gerror.WrapCode(gcode.New(e.code, e.message, e.detail), e)
-
+	return gerror.NewCode(gcode.New(e.code, e.message, e.detail))
 }
 func (e *errCode) Error() string {
 	// return errors.New(e.message)

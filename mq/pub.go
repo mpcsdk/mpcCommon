@@ -7,6 +7,10 @@ type RiskCtrlMsg struct {
 	Subject string      `json:"subject"`
 	Data    interface{} `json:"data"`
 }
+type RiskCtrMsqRsp struct {
+	Code int    `json:"code"`
+	Msg  string `json:"message"`
+}
 
 const (
 	RiskServerMQ_Subj_ContractRule = "ContractRule"

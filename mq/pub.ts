@@ -1,25 +1,29 @@
 
-export const RiskServerMQ = "RiskServerMQ";
-export const RiskEngineMQ = "RiskEngineMQ";
+var RiskServerMQ = "RiskServerMQ";
+var RiskEngineMQ = "RiskEngineMQ";
 
-export interface RiskCtrlMsg {
+interface RiskCtrlMsg {
  subject: string;
  data: any;
 }
+interface RiskCtrMsqRsp{
+    code: number;
+    message: string;
+}
 
-export const RiskServerMQ_Subj_ContractRule = "ContractRule";
-export const RiskServerMQ_Subj_ContractAbi = "ContractAbi";
+ var RiskServerMQ_Subj_ContractRule = "ContractRule";
+ var RiskServerMQ_Subj_ContractAbi = "ContractAbi";
 
-export const RiskEngineMQ_Subj_RiskCtrlRule = "RiskCtrlRule";
+ var RiskEngineMQ_Subj_RiskCtrlRule = "RiskCtrlRule";
 
 // //
 // //RiskServerMQ
 
-export const NoticeAdd = "add";
-export const NoticeUpdate = "update";
-export const NoticeDelete = "delete";
+ var NoticeAdd = "add";
+ var NoticeUpdate = "update";
+ var NoticeDelete = "delete";
 
-export interface ContractNotice {
+ interface ContractNotice {
  type: string;
  id: number;
  contractAddress: string;
@@ -38,16 +42,15 @@ function isValidContractNotice(s: ContractNotice): boolean {
 // //
 // //RiskEngineMQ
 
-export const NoticeVerify = "verify";
+ var NoticeVerify = "verify";
 
-export interface RiskEngineRuleStrNotice {
+ interface RiskEngineRuleStrNotice {
  type: string;
  ruleName: string;
  ruleStr: string;
  sceneNo: string;
  id: number;
 }
-
 function isValidRiskEngineRuleStrNotice(s: RiskEngineRuleStrNotice): boolean {
  return (
    s.type !== "" &&
@@ -57,7 +60,7 @@ function isValidRiskEngineRuleStrNotice(s: RiskEngineRuleStrNotice): boolean {
 }
 ///
 ///
-export function buildRiskCtrlMQContract(subject : string, type: string, id: number, contractAddress: string, sceneNo: string):RiskCtrlMsg {
+ function buildRiskCtrlMQContract(subject : string, type: string, id: number, contractAddress: string, sceneNo: string):RiskCtrlMsg {
     let data : ContractNotice = {
         type: type,
         id: id,
@@ -69,7 +72,7 @@ export function buildRiskCtrlMQContract(subject : string, type: string, id: numb
         data: data,
     }
 }
-export function buildRiskCtrlMQRiskRule(subject: string, type: string,id:number, ruleName : string,  sceneNo: string, ruleStr: string):RiskCtrlMsg {
+ function buildRiskCtrlMQRiskRule(subject: string, type: string,id:number, sceneNo:string, ruleName : string, ruleStr: string):RiskCtrlMsg {
     let data : RiskEngineRuleStrNotice = {
         type: type,
         sceneNo: sceneNo,
@@ -81,4 +84,27 @@ export function buildRiskCtrlMQRiskRule(subject: string, type: string,id:number,
         subject: subject,
         data: data,
     }
+}
+////
+export {
+    RiskCtrMsqRsp,
+    RiskCtrlMsg,
+    ///
+    RiskServerMQ,
+    RiskEngineMQ,
+    ///
+    RiskServerMQ_Subj_ContractRule,
+    RiskServerMQ_Subj_ContractAbi,
+    //
+    RiskEngineMQ_Subj_RiskCtrlRule,
+    //
+    buildRiskCtrlMQContract,
+    buildRiskCtrlMQRiskRule,
+
+
+    NoticeAdd,
+    NoticeDelete,
+    NoticeUpdate,
+    NoticeVerify,
+
 }

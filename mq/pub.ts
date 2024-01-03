@@ -95,6 +95,8 @@ function isValidRiskCtrlRulesNotice(s: RiskCtrlRulesNotice): boolean {
 }
 ////
 export {
+    RiskCtrlMsg,
+    RiskCtrMsqRsp,
     ///
     RiskEngineQueueMQ,
     RiskEngineMQ,

@@ -1,7 +1,6 @@
 
-var RiskServerMQ = "RiskServerMQ";
-var RiskEngineMQ = "RiskEngineMQ";
-
+var RiskEngineMQ = "RiskEngineMQ"
+var RiskEngineQueueMQ = "RiskEngineQueueMQ"
 interface RiskCtrlMsg {
  subject: string;
  data: any;
@@ -11,10 +10,10 @@ interface RiskCtrMsqRsp{
     message: string;
 }
 
- var RiskServerMQ_Subj_ContractRule = "ContractRule";
- var RiskServerMQ_Subj_ContractAbi = "ContractAbi";
-
- var RiskEngineMQ_Subj_RiskCtrlRule = "RiskCtrlRule";
+var RiskEngineMQ_Subj_ContractRule = "ContractRule"
+var RiskEngineMQ_Subj_ContractAbi  = "ContractAbi"
+var RiskEngineMQ_Subj_RiskRule     = "RiskRule"
+var RiskEngineQueueMQ_Subj_RiskRule = "RiskRule"
 
 // //
 // //RiskServerMQ
@@ -23,11 +22,11 @@ interface RiskCtrMsqRsp{
  var NoticeUpdate = "update";
  var NoticeDelete = "delete";
 
- interface ContractNotice {
- type: string;
- id: number;
- contractAddress: string;
- sceneNo: string;
+interface ContractNotice {
+    type: string;
+    id: number;
+    contractAddress: string;
+    sceneNo: string;
 }
 
 function isValidContractNotice(s: ContractNotice): boolean {
@@ -44,14 +43,15 @@ function isValidContractNotice(s: ContractNotice): boolean {
 
  var NoticeVerify = "verify";
 
- interface RiskEngineRuleStrNotice {
+ interface RiskCtrlRulesNotice {
  type: string;
+ salience: number;
  ruleName: string;
  ruleStr: string;
  sceneNo: string;
  id: number;
 }
-function isValidRiskEngineRuleStrNotice(s: RiskEngineRuleStrNotice): boolean {
+function isValidRiskCtrlRulesNotice(s: RiskCtrlRulesNotice): boolean {
  return (
    s.type !== "" &&
    s.ruleStr !== "" &&
@@ -72,9 +72,17 @@ function isValidRiskEngineRuleStrNotice(s: RiskEngineRuleStrNotice): boolean {
         data: data,
     }
 }
- function buildRiskCtrlMQRiskRule(subject: string, type: string,id:number, sceneNo:string, ruleName : string, ruleStr: string):RiskCtrlMsg {
-    let data : RiskEngineRuleStrNotice = {
+ function buildRiskCtrlMQRiskRule(
+    subject: string, 
+    type: string,
+    id:number, 
+    sceneNo:string, 
+    ruleName : string, 
+    ruleStr: string,
+    salience: number):RiskCtrlMsg {
+    let data : RiskCtrlRulesNotice = {
         type: type,
+        salience:salience,
         sceneNo: sceneNo,
         ruleStr: ruleStr,
         ruleName: ruleName,
@@ -87,16 +95,15 @@ function isValidRiskEngineRuleStrNotice(s: RiskEngineRuleStrNotice): boolean {
 }
 ////
 export {
-    RiskCtrMsqRsp,
-    RiskCtrlMsg,
     ///
-    RiskServerMQ,
+    RiskEngineQueueMQ,
     RiskEngineMQ,
     ///
-    RiskServerMQ_Subj_ContractRule,
-    RiskServerMQ_Subj_ContractAbi,
+    RiskEngineMQ_Subj_ContractRule,
+    RiskEngineMQ_Subj_ContractAbi,
+    RiskEngineMQ_Subj_RiskRule,
     //
-    RiskEngineMQ_Subj_RiskCtrlRule,
+    RiskEngineQueueMQ_Subj_RiskRule,
     //
     buildRiskCtrlMQContract,
     buildRiskCtrlMQRiskRule,

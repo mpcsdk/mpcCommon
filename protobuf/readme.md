@@ -11,3 +11,7 @@ protoc  -I ./mpcCommon/protobuf --go_out=./api --nrpc_out=./api ./mpcCommon/prot
 ```
 protoc  -I ./mpcCommon/protobuf --go_out=./api --nrpc_out=./api ./mpcCommon/protobuf/risk/v1/risk.proto
 ```
+
+```
+protoc  -I ./mpcCommon/protobuf --go_out=./api --nrpc_out=./api ./mpcCommon/protobuf/riskctrl/riskctrl.proto
+```

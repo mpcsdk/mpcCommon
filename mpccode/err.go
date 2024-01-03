@@ -23,23 +23,22 @@ func (e *errCode) Equal(err error) bool {
 	return e.code == target.code
 }
 
-//	func Equal(err error) gcode.Code {
-//		if err == nil {
-//			return CodeOK.Instance()
-//		}
-//		e := &errCode{}
-//		// var ee error = e
-//		if !errors.As(err, &e) {
-//			return CodeInternalError.Instance().SetDetail(
-//				ErrDetails(
-//					ErrDetail("InternalErr", err),
-//				),
-//			)
-//		} else {
-//			code := err.(*errCode)
-//			return code
-//		}
-//	}
+func Equal(err error, target error) bool {
+	c := gerror.Code(err)
+	if c == gcode.CodeNil {
+		return false
+	}
+	tc := gerror.Code(target)
+	if tc == gcode.CodeNil {
+		return false
+	}
+	///
+	if tc.Code() == c.Code() {
+		return true
+	}
+	return false
+}
+
 //
 //	func (e *errCode) errCode() gcode.Code {
 //		return gcode.New(e.code, e.message, e.detail)
@@ -49,7 +48,7 @@ func (e *errCode) Equal(err error) bool {
 // }
 
 func (e *errCode) instance() error {
-	return gerror.NewCode(gcode.New(e.code, e.message, e.detail))
+	return gerror.NewCode(gcode.New(e.code, e.message, e.detail), e.message)
 }
 func (e *errCode) Error() string {
 	// return errors.New(e.message)

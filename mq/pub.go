@@ -1,9 +1,9 @@
 package mq
 
-const RiskServerMQ = "RiskServerMQ"
 const RiskEngineMQ = "RiskEngineMQ"
+const RiskEngineQueueMQ = "RiskEngineQueueMQ"
 
-type RiskCtrlMsg struct {
+type RiskCtrlMsgReq struct {
 	Subject string      `json:"subject"`
 	Data    interface{} `json:"data"`
 }
@@ -13,10 +13,11 @@ type RiskCtrMsqRsp struct {
 }
 
 const (
-	RiskServerMQ_Subj_ContractRule = "ContractRule"
-	RiskServerMQ_Subj_ContractAbi  = "ContractAbi"
+	RiskEngineMQ_Subj_ContractRule = "ContractRule"
+	RiskEngineMQ_Subj_ContractAbi  = "ContractAbi"
+	RiskEngineMQ_Subj_RiskRule     = "RiskRule"
 
-	RiskEngineMQ_Subj_RiskCtrlRule = "RiskCtrlRule"
+	RiskEngineQueueMQ_Subj_RiskRule = "RiskRule"
 )
 
 // //
@@ -48,19 +49,20 @@ func (s *ContractNotice) IsValid() bool {
 // //RiskEngineMQ
 const (
 	//notice 验证
-	NoticeVerify = "verify"
+	NoticeCheck = "check"
 )
 
-type RiskEngineRuleStrNotice struct {
+type RiskCtrlRulesNotice struct {
 	//up/del/verify
 	Type     string `json:"type"`
+	Salience int    `json:"salience"`
 	RuleName string `json:"ruleName"`
 	RuleStr  string `json:"ruleStr"`
 	SceneNo  string `json:"sceneNo"`
 	Id       int64  `json:"id"`
 }
 
-func (s *RiskEngineRuleStrNotice) IsValid() bool {
+func (s *RiskCtrlRulesNotice) IsValid() bool {
 	if s.Type == "" || s.RuleStr == "" || s.SceneNo == "" {
 		return false
 	}

@@ -6,5 +6,5 @@ const (
 	RiskCodeForbidden
 	RiskCodeError
 	///
-	RiskCodeNoRiskControl
+	// RiskCodeNoRiskControl
 )

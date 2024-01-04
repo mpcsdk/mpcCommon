@@ -3,11 +3,11 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "nrpc.proto";
 
-package risk;
+package riskserver;
 
-option go_package = "/risk/nrpc";
+option go_package = "/riskserver";
 
-service Risk{
+service RiskServer{
     rpc RpcAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
 
     rpc RpcRiskTxs (TxRiskReq) returns (TxRiskRes) {}

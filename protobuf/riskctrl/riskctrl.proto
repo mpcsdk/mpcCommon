@@ -5,7 +5,7 @@ import "nrpc.proto";
 
 package riskctrl;
 
-option go_package = "/riskctrl/nrpc";
+option go_package = "/riskctrl";
 
 service RiskCtrl{
     rpc RpcAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}

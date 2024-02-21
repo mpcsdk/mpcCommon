@@ -1,119 +1,204 @@
+const Sub_ChainCfg = 'ChainCgf';
+const Sub_ContractAbi = 'ContractCfg';
+const Sub_ContractRule = 'ContractRule';
+const Sub_RiskRule = 'RiskRule';
 
-var RiskEngineMQ = "RiskEngineMQ"
-var RiskEngineQueueMQ = "RiskEngineQueueMQ"
-interface RiskCtrlMsg {
- subject: string;
- data: any;
-}
-interface RiskCtrMsqRsp{
-    code: number;
-    message: string;
-}
-
-var RiskEngineMQ_Subj_ContractRule = "ContractRule"
-var RiskEngineMQ_Subj_ContractAbi  = "ContractAbi"
-var RiskEngineMQ_Subj_RiskRule     = "RiskRule"
-var RiskEngineQueueMQ_Subj_RiskRule = "RiskRule"
-
-// //
-// //RiskServerMQ
-
- var NoticeAdd = "add";
- var NoticeUpdate = "update";
- var NoticeDelete = "delete";
-
-interface ContractNotice {
-    type: string;
-    id: number;
-    contractAddress: string;
-    sceneNo: string;
-}
-
-function isValidContractNotice(s: ContractNotice): boolean {
- return (
-   s.type !== "" &&
-   s.id > 0 &&
-   s.contractAddress !== "" &&
-   s.sceneNo !== ""
- );
-}
-
-// //
-// //RiskEngineMQ
-
- var NoticeVerify = "verify";
-
- interface RiskCtrlRulesNotice {
- type: string;
- salience: number;
- ruleName: string;
- ruleStr: string;
- sceneNo: string;
- id: number;
-}
-function isValidRiskCtrlRulesNotice(s: RiskCtrlRulesNotice): boolean {
- return (
-   s.type !== "" &&
-   s.ruleStr !== "" &&
-   s.sceneNo !== "" 
- );
-}
+const Sub_RiskRuleReply = 'RiskRuleReply';
 ///
-///
- function buildRiskCtrlMQContract(subject : string, type: string, id: number, contractAddress: string, sceneNo: string):RiskCtrlMsg {
-    let data : ContractNotice = {
-        type: type,
-        id: id,
-        contractAddress: contractAddress,
-        sceneNo: sceneNo,
-    }
-    return {
-        subject: subject,
-        data: data,
-    }
-}
- function buildRiskCtrlMQRiskRule(
-    subject: string, 
-    type: string,
-    id:number, 
-    sceneNo:string, 
-    ruleName : string, 
-    ruleStr: string,
-    salience: number):RiskCtrlMsg {
-    let data : RiskCtrlRulesNotice = {
-        type: type,
-        salience:salience,
-        sceneNo: sceneNo,
-        ruleStr: ruleStr,
-        ruleName: ruleName,
-        id: id,
-    }
-    return {
-        subject: subject,
-        data: data,
-    }
-}
-////
+var OptAdd = 'add';
+var OptUpdate = 'update';
+var OptDelete = 'delete';
+var OptCheck = 'check';
 export {
-    RiskCtrlMsg,
-    RiskCtrMsqRsp,
-    ///
-    RiskEngineQueueMQ,
-    RiskEngineMQ,
-    ///
-    RiskEngineMQ_Subj_ContractRule,
-    RiskEngineMQ_Subj_ContractAbi,
-    RiskEngineMQ_Subj_RiskRule,
-    //
-    RiskEngineQueueMQ_Subj_RiskRule,
-    //
-    buildRiskCtrlMQContract,
-    buildRiskCtrlMQRiskRule,
+  Sub_ChainCfg,
+  Sub_ContractAbi,
+  Sub_ContractRule,
+  Sub_RiskRule,
+  Sub_RiskRuleReply,
+  OptAdd,
+  OptUpdate,
+  OptDelete,
+  OptCheck,
+};
 
+///
+// /Sub_ChainCfg
+export class ChainCfgReq {
+  sub: string;
+  opt: string;
+  id: number;
+  chainId: number;
+  coin: string;
+  rpc: string;
 
-    NoticeAdd,
-    NoticeDelete,
-    NoticeUpdate,
-    NoticeVerify,
-
+  constructor(
+    opt: string,
+    id: number,
+    chainId: number,
+    coin: string,
+    rpc: string
+  ) {
+    this.opt = opt;
+    this.id = id;
+    this.chainId = chainId;
+    this.coin = coin;
+    this.rpc = rpc;
+  }
 }
+export function buildChainCfg(
+  type: string,
+  id: number,
+  chainId: number,
+  coin: string,
+  rpc: string
+): ChainCfgReq {
+  let data: ChainCfgReq = {
+    sub: Sub_ChainCfg,
+    opt: type,
+    id: id,
+    chainId: chainId,
+    coin: coin,
+    rpc: rpc,
+  };
+  return data;
+}
+// ContractAbi
+export interface ContractAbiReq {
+  sub: string;
+  opt: string;
+  id: number;
+  contractAddress: string;
+  sceneNo: string;
+}
+export function buildContractAbi(
+  type: string,
+  id: number,
+  contractAddress: string,
+  sceneNo: string
+): ContractAbiReq {
+  let data: ContractAbiReq = {
+    sub: Sub_ContractAbi,
+    opt: type,
+    id: id,
+    contractAddress: contractAddress,
+    sceneNo: sceneNo,
+  };
+  return data;
+}
+export function isValidContractAbiReq(s: ContractAbiReq): boolean {
+  if (
+    s.opt === '' ||
+    s.id <= 0 ||
+    s.contractAddress === '' ||
+    s.sceneNo === ''
+  ) {
+    return false;
+  }
+  return true;
+}
+
+// /ContractRule
+export interface ContractRuleReq {
+  sub: string;
+  // 'add' | 'update' | 'delete'
+  opt: string;
+  id: number;
+  contractAddress: string;
+  sceneNo: string;
+}
+
+export function buildContractRule(
+  type: string,
+  id: number,
+  sceneNo: string,
+  contractAddress: string
+): ContractRuleReq {
+  let data: ContractRuleReq = {
+    sub: Sub_ContractRule,
+    opt: type,
+    sceneNo: sceneNo,
+    contractAddress: contractAddress,
+    id: id,
+  };
+  return data;
+}
+export function isValidContractRuleReq(s: ContractRuleReq): boolean {
+  if (
+    s.opt === '' ||
+    s.id <= 0 ||
+    s.contractAddress === '' ||
+    s.sceneNo === ''
+  ) {
+    return false;
+  }
+  return true;
+}
+
+// /RiskRule
+export interface RiskCtrlRuleReq {
+  sub: string;
+  //up/del/verify
+  opt: string;
+  salience: number;
+  ruleName: string;
+  ruleStr: string;
+  sceneNo: string;
+  id: number;
+}
+export function buildRiskCtrlRule(
+  type: string,
+  id: number,
+  sceneNo: string,
+  ruleName: string,
+  ruleStr: string,
+  salience: number
+): RiskCtrlRuleReq {
+  let data: RiskCtrlRuleReq = {
+    sub: Sub_RiskRule,
+    opt: type,
+    salience: salience,
+    sceneNo: sceneNo,
+    ruleStr: ruleStr,
+    ruleName: ruleName,
+    id: id,
+  };
+  return data;
+}
+export function isValidRiskCtrlRuleReq(s: RiskCtrlRuleReq): boolean {
+  if (s.opt === '' || s.ruleStr === '' || s.sceneNo === '' || s.id <= 0) {
+    return false;
+  }
+  return true;
+}
+
+// /RiskRuleReply
+export interface RiskRuleReplyReq {
+  sub: string;
+  opt: string;
+  sceneNo: string;
+  ruleName: string;
+  ruleStr: string;
+}
+export function buildRiskRuleReply(
+  sceneNo: string,
+  ruleStr: string,
+  ruleName: string
+): RiskRuleReplyReq {
+  let data: RiskRuleReplyReq = {
+    sub: Sub_RiskRuleReply,
+    opt: OptCheck,
+    sceneNo: sceneNo,
+    ruleStr: ruleStr,
+    ruleName: ruleName,
+  };
+  return data;
+}
+export interface RiskRuleReplyRes {
+  Code: number;
+  Msg: string;
+}
+///
+///
+///
+
+////

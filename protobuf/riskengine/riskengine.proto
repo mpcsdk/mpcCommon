@@ -1,0 +1,36 @@
+
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "nrpc.proto";
+
+package riskengine;
+
+option go_package = "/riskengine";
+
+service RiskEngine{
+    rpc RpcAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+
+    rpc RpcRiskTxs (TxRiskReq) returns (TxRiskRes) {}
+    rpc RpcRiskTfa  (TfaRiskReq) returns (TfaRiskRes) {}
+}
+
+message TxRiskReq {
+    string UserId = 1;// v: required
+    string SignTx = 2; // v: required
+}
+
+
+message TxRiskRes {
+    int32 Ok = 1;
+    string Msg = 2;
+}
+////
+message TfaRiskReq {
+	//  "in:bindPhone,bindMail,updatePhone,updateMail"
+    string Token = 1; // v: required
+    string CodeType = 2; // v: required
+}
+message TfaRiskRes {
+    int32 Ok = 1;
+    string Msg = 2;
+}

@@ -1,60 +1,62 @@
 package mq
 
-const RiskEngineMQ = "RiskEngineMQ"
-const RiskEngineQueueMQ = "RiskEngineQueueMQ"
+const Sub_ChainCfg = "ChainCgf"
+const Sub_ContractAbi = "ContractCfg"
+const Sub_ContractRule = "ContractRule"
+const Sub_RiskRule = "RiskRule"
 
-type RiskCtrlMsgReq struct {
-	Subject string      `json:"subject"`
-	Data    interface{} `json:"data"`
-}
-type RiskCtrMsqRsp struct {
-	Code int    `json:"code"`
-	Msg  string `json:"message"`
-}
-
+const Sub_RiskRuleReply = "RiskRuleReply"
 const (
-	RiskEngineMQ_Subj_ContractRule = "ContractRule"
-	RiskEngineMQ_Subj_ContractAbi  = "ContractAbi"
-	RiskEngineMQ_Subj_RiskRule     = "RiskRule"
-
-	RiskEngineQueueMQ_Subj_RiskRule = "RiskRule"
+	OptAdd    = "add"
+	OptUpdate = "update"
+	OptDelete = "delete"
+	OptCheck  = "check"
 )
 
-// //
-// //RiskServerMQ
+// /Sub_ChainCfg
+type ChainCfgReq struct {
+	Opt     string `json:"opt"`
+	Id      int64  `json:"id"`
+	ChainId uint64 `json:"chainId"`
+	Coin    string `json:"coin"`
+	Rpc     string `json:"rpc"`
+}
 
-const (
-	NoticeAdd    = "add"
-	NoticeUpdate = "update"
-	NoticeDelete = "delete"
-)
-
-// /
-// //
-type ContractNotice struct {
-	// 'add' | 'update' | 'delete'
-	Type            string `json:"type"`
+// ContractAbi
+type ContractAbiReq struct {
+	Opt             string `json:"opt"`
 	Id              int64  `json:"id"`
 	ContractAddress string `json:"contractAddress"`
 	SceneNo         string `json:"sceneNo"`
 }
 
-func (s *ContractNotice) IsValid() bool {
-	if s.Type == "" || s.Id <= 0 || s.ContractAddress == "" || s.SceneNo == "" {
+func (s *ContractAbiReq) IsValid() bool {
+	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.SceneNo == "" {
 		return false
 	}
 	return true
 }
 
-// //RiskEngineMQ
-const (
-	//notice 验证
-	NoticeCheck = "check"
-)
+// /ContractRule
+type ContractRuleReq struct {
+	// 'add' | 'update' | 'delete'
+	Opt             string `json:"opt"`
+	Id              int64  `json:"id"`
+	ContractAddress string `json:"contractAddress"`
+	SceneNo         string `json:"sceneNo"`
+}
 
-type RiskCtrlRulesNotice struct {
+func (s *ContractRuleReq) IsValid() bool {
+	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.SceneNo == "" {
+		return false
+	}
+	return true
+}
+
+// /RiskRule
+type RiskCtrlRuleReq struct {
 	//up/del/verify
-	Type     string `json:"type"`
+	Opt      string `json:"opt"`
 	Salience int    `json:"salience"`
 	RuleName string `json:"ruleName"`
 	RuleStr  string `json:"ruleStr"`
@@ -62,9 +64,20 @@ type RiskCtrlRulesNotice struct {
 	Id       int64  `json:"id"`
 }
 
-func (s *RiskCtrlRulesNotice) IsValid() bool {
-	if s.Type == "" || s.RuleStr == "" || s.SceneNo == "" {
+func (s *RiskCtrlRuleReq) IsValid() bool {
+	if s.Opt == "" || s.RuleStr == "" || s.SceneNo == "" {
 		return false
 	}
 	return true
+}
+
+// /RiskRuleReply
+type RiskRuleReplyReq struct {
+	Opt      string `json:"opt"`
+	RuleName string `json:"ruleName"`
+	RuleStr  string `json:"ruleStr"`
+}
+type RiskRuleReplyRsp struct {
+	Code int    `json:"code"`
+	Msg  string `json:"message"`
 }

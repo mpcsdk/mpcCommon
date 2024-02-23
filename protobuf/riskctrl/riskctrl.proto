@@ -10,15 +10,11 @@ option go_package = "/riskctrl";
 service RiskCtrl{
     rpc RpcAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
 
-    rpc RpcRiskTxs (TxRiskReq) returns (TxRiskRes) {}
-    ///
-    rpc RpcContractAbiBriefs (ContractAbiBriefsReq) returns (ContractAbiBriefsRes) {}
-    rpc RpcContractAbi(ContractAbiReq) returns (ContractAbiRes) {}
-
-    rpc RpcContractRuleBriefs(ContractRuleBriefsReq) returns (ContractRuleBriefsRes){}
-    rpc RpcContractRule(ContractRuleReq) returns (ContractRuleRes){}
-    ////
+    //
+    rpc RpcTxsRequest (TxRequestReq) returns (TxRequestRes) {}
     rpc RpcTfaRequest(TfaRequestReq) returns (TfaRequestRes) {}
+    ///
+    ////
     rpc RpcTfaInfo(TfaInfoReq) returns (TfaInfoRes) {}
     rpc RpcSendPhoneCode (SendPhoneCodeReq) returns (SendPhoneCodeRes) {}
     rpc RpcSendMailCode (SendMailCodeReq) returns (SendMailCodeRes) {}
@@ -162,15 +158,13 @@ message RiskTx {
     string Contract =1; // v: required
     string TxData = 2;  // v: required
 }
-message TxRiskReq {
+message TxRequestReq {
     string UserId = 1;// v: required
     string Address = 2; // v: required
     ////
     string SignTxData = 3; // v: required
 }
-
-
-message TxRiskRes {
+message TxRequestRes {
     int32 Ok = 1;
     string Msg = 2;
     string RiskSerial = 3; 

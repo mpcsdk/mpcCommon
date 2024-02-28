@@ -61,6 +61,7 @@ type RiskCtrlRuleReq struct {
 	RuleName string `json:"ruleName"`
 	RuleStr  string `json:"ruleStr"`
 	SceneNo  string `json:"sceneNo"`
+	Desc     string `json:"desc"`
 	Id       int64  `json:"id"`
 }
 

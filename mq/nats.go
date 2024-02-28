@@ -53,47 +53,17 @@ func (s *NatsServer) subscribe(sub *nats.Subscription, ch chan *nats.Msg, fn fun
 		select {
 		case natsmsg := <-ch:
 			switch natsmsg.Subject {
-			case Sub_ChainCfg:
+			case Sub_ChainCfg,
+				Sub_ContractAbi,
+				Sub_ContractRule,
+				Sub_RiskRule:
 				err := fn(natsmsg.Data)
-
-				// msg := &RiskCtrlMsgReq{}
-				// err := json.Unmarshal(natsmsg.Data, msg)
 				if err != nil {
 					g.Log().Error(s.ctx, err)
 					continue
 				}
-			///
-			case Sub_ContractAbi:
-			case Sub_ContractRule:
-			case Sub_RiskRule:
 			}
-
-			// switch msg.Subject {
-			// case RiskEngineMQ_Subj_ContractRule:
-			// 	notice := &ContractNotice{}
-			// 	err = gconv.Struct(msg.Data, &notice)
-			// 	if err != nil {
-			// 		g.Log().Error(s.ctx, err)
-			// 		continue
-			// 	} ///
-			// 	service.RiskCtrl().NotityContractRule(s.ctx, notice)
-			// case RiskEngineMQ_Subj_ContractAbi:
-			// 	notice := &ContractNotice{}
-			// 	err = gconv.Struct(msg.Data, &notice)
-			// 	if err != nil {
-			// 		g.Log().Error(s.ctx, err)
-			// 		continue
-			// 	} ///
-			// 	service.RiskCtrl().NotityContractAbi(s.ctx, notice)
-			// case RiskEngineMQ_Subj_RiskRule:
-			// 	notice := &RiskCtrlRulesNotice{}
-			// 	err = gconv.Struct(msg.Data, &notice)
-			// 	if err != nil {
-			// 		g.Log().Error(s.ctx, err)
-			// 		continue
-			// 	} ///
-			// 	service.RiskCtrl().NotityRiskRule(s.ctx, notice)
-			// }
+			//
 		case <-s.ctx.Done():
 			sub.Unsubscribe()
 			close(ch)

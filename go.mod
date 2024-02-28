@@ -3,9 +3,6 @@ module github.com/mpcsdk/mpcCommon
 go 1.20
 
 require (
-	github.com/dchest/captcha v1.0.0
-	github.com/ethereum/go-ethereum v1.13.2
-	github.com/go-resty/resty/v2 v2.9.1
 	github.com/gogf/gf/v2 v2.5.4
 	github.com/satori/go.uuid v1.2.0
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.763

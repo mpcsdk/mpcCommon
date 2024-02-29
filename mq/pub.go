@@ -56,19 +56,20 @@ func (s *ContractRuleReq) IsValid() bool {
 // /RiskRule
 type RiskCtrlRuleReq struct {
 	//up/del/verify
-	Opt      string `json:"opt"`
-	Salience int    `json:"salience"`
-	RuleName string `json:"ruleName"`
-	RuleStr  string `json:"ruleStr"`
-	SceneNo  string `json:"sceneNo"`
-	Desc     string `json:"desc"`
-	Id       int64  `json:"id"`
+	Opt string `json:"opt"`
+	// Salience int    `json:"salience"`
+	// RuleName string `json:"ruleName"`
+	// RuleStr  string `json:"ruleStr"`
+	// SceneNo  string `json:"sceneNo"`
+	// Desc     string `json:"desc"`
+	Id       int  `json:"id"`
+	IsEnable bool `json:"isEnable"`
 }
 
 func (s *RiskCtrlRuleReq) IsValid() bool {
-	if s.Opt == "" || s.RuleStr == "" || s.SceneNo == "" {
-		return false
-	}
+	// if s.Opt == "" || s.RuleStr == "" || s.SceneNo == "" {
+	// 	return false
+	// }
 	return true
 }
 

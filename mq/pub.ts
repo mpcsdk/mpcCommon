@@ -1,14 +1,14 @@
-const Sub_ChainCfg = "ChainCgf";
-const Sub_ContractAbi = "ContractCfg";
-const Sub_ContractRule = "ContractRule";
-const Sub_RiskRule = "RiskRule";
+const Sub_ChainCfg = 'ChainCgf';
+const Sub_ContractAbi = 'ContractCfg';
+const Sub_ContractRule = 'ContractRule';
+const Sub_RiskRule = 'RiskRule';
 
-const Sub_RiskRuleReply = "RiskRuleReply";
+const Sub_RiskRuleReply = 'RiskRuleReply';
 ///
-var OptAdd = "add";
-var OptUpdate = "update";
-var OptDelete = "delete";
-var OptCheck = "check";
+var OptAdd = 'add';
+var OptUpdate = 'update';
+var OptDelete = 'delete';
+var OptCheck = 'check';
 export {
   Sub_ChainCfg,
   Sub_ContractAbi,
@@ -87,10 +87,10 @@ export function buildContractAbi(
 }
 export function isValidContractAbiReq(s: ContractAbiReq): boolean {
   if (
-    s.opt === "" ||
+    s.opt === '' ||
     s.id <= 0 ||
-    s.contractAddress === "" ||
-    s.sceneNo === ""
+    s.contractAddress === '' ||
+    s.sceneNo === ''
   ) {
     return false;
   }
@@ -124,10 +124,10 @@ export function buildContractRule(
 }
 export function isValidContractRuleReq(s: ContractRuleReq): boolean {
   if (
-    s.opt === "" ||
+    s.opt === '' ||
     s.id <= 0 ||
-    s.contractAddress === "" ||
-    s.sceneNo === ""
+    s.contractAddress === '' ||
+    s.sceneNo === ''
   ) {
     return false;
   }
@@ -139,35 +139,38 @@ export interface RiskCtrlRuleReq {
   sub: string;
   //up/del/verify
   opt: string;
-  salience: number;
-  ruleName: string;
-  ruleStr: string;
-  sceneNo: string;
+  // salience: number;
+  // ruleName: string;
+  // ruleStr: string;
+  // sceneNo: string;
   id: number;
+  isEnable: boolean;
 }
 export function buildRiskCtrlRule(
   type: string,
   id: number,
-  sceneNo: string,
-  ruleName: string,
-  ruleStr: string,
-  salience: number
+  // sceneNo: string,
+  // ruleName: string,
+  // ruleStr: string,
+  // salience: number,
+  isEnable: boolean
 ): RiskCtrlRuleReq {
   let data: RiskCtrlRuleReq = {
     sub: Sub_RiskRule,
     opt: type,
-    salience: salience,
-    sceneNo: sceneNo,
-    ruleStr: ruleStr,
-    ruleName: ruleName,
+    // salience: salience,
+    // sceneNo: sceneNo,
+    // ruleStr: ruleStr,
+    // ruleName: ruleName,
     id: id,
+    isEnable: isEnable,
   };
   return data;
 }
 export function isValidRiskCtrlRuleReq(s: RiskCtrlRuleReq): boolean {
-  if (s.opt === "" || s.ruleStr === "" || s.sceneNo === "" || s.id <= 0) {
-    return false;
-  }
+  // if (s.opt === '' || s.ruleStr === '' || s.sceneNo === '' || s.id <= 0) {
+  //   return false;
+  // }
   return true;
 }
 

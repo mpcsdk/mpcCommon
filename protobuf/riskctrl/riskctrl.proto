@@ -163,8 +163,7 @@ message TxRequestReq {
     string Address = 2; // v: required
     ////
     string SignTxData = 3; // v: required
-    string ChainId = 4; // v: required
-    string SceneNo = 5; // v: required
+    string SceneNo = 4; // v: required
 }
 message TxRequestRes {
     int32 Ok = 1;

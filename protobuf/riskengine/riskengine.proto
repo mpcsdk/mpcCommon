@@ -18,7 +18,6 @@ message TxRiskReq {
     string UserId = 1;// v: required
     string SignTx = 2; // v: required
     string SceneNo = 3;// v: required
-    string ChainId = 4; // v: required
 }
 
 

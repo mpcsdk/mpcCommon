@@ -4,14 +4,28 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/gogf/gf/v2/os/gcache"
+	"github.com/mpcsdk/mpcCommon/mpccode"
 )
 
+var once sync.Once
+
+var instance *UserTokenInfoGeter = nil
+
+func Geter(url string) *UserTokenInfoGeter {
+	once.Do(func() {
+		instance = NewUserInfoGeter(url)
+	})
+	return instance
+}
+
+// /
 type UserTokenInfoGeter struct {
 	url   string
-	c     *resty.Client
+	cli   *resty.Client
 	cache *gcache.Cache
 }
 type respUserInfo struct {
@@ -30,8 +44,32 @@ type UserInfo struct {
 	CreateTime int64  `json:"create_time"`
 }
 
+func (s *UserTokenInfoGeter) getUserInfoCache(ctx context.Context, userToken string) (*UserInfo, error) {
+	if userToken == "" {
+		return nil, mpccode.CodeParamInvalid()
+	}
+	///
+	if v, err := s.cache.Get(ctx, userToken); err == nil && !v.IsEmpty() {
+		info := &UserInfo{}
+		err = v.Struct(info)
+		if err != nil {
+			return nil, mpccode.CodeInternalError()
+		}
+		return info, nil
+	}
+	return nil, nil
+}
+func (s *UserTokenInfoGeter) setCache(ctx context.Context, userToken string, info *UserInfo) {
+	s.cache.Set(ctx, userToken, info, 0)
+}
 func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*UserInfo, error) {
-	resp, err := s.c.R().
+	////
+	info, err := s.getUserInfoCache(ctx, token)
+	if info != nil {
+		return info, nil
+	}
+	////
+	resp, err := s.cli.R().
 		SetQueryParams(map[string]string{
 			"token": token,
 		}).
@@ -46,14 +84,18 @@ func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*Us
 		err = fmt.Errorf("%+v, resp:%s", err, resp.String())
 		return nil, err
 	}
+	///
+	s.setCache(ctx, token, userInfo.Data)
+	///
 	return userInfo.Data, nil
 }
 
 func NewUserInfoGeter(url string) *UserTokenInfoGeter {
 	c := resty.New()
 	s := &UserTokenInfoGeter{
-		c:   c,
-		url: url,
+		cli:   c,
+		url:   url,
+		cache: gcache.New(),
 	}
 	return s
 }

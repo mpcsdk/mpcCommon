@@ -1,14 +1,14 @@
-const Sub_ChainCfg = 'ChainCgf';
-const Sub_ContractAbi = 'ContractCfg';
-const Sub_ContractRule = 'ContractRule';
-const Sub_RiskRule = 'RiskRule';
+const Sub_ChainCfg = "ChainCgf";
+const Sub_ContractAbi = "ContractCfg";
+const Sub_ContractRule = "ContractRule";
+const Sub_RiskRule = "RiskRule";
 
-const Sub_RiskRuleReply = 'RiskRuleReply';
+const Sub_RiskRuleReply = "RiskRuleReply";
 ///
-var OptAdd = 'add';
-var OptUpdate = 'update';
-var OptDelete = 'delete';
-var OptCheck = 'check';
+var OptAdd = "add";
+var OptUpdate = "update";
+var OptDelete = "delete";
+var OptCheck = "check";
 export {
   Sub_ChainCfg,
   Sub_ContractAbi,
@@ -68,29 +68,29 @@ export interface ContractAbiReq {
   opt: string;
   id: number;
   contractAddress: string;
-  sceneNo: string;
+  chainId: string;
 }
 export function buildContractAbi(
   type: string,
   id: number,
   contractAddress: string,
-  sceneNo: string
+  chainId: string
 ): ContractAbiReq {
   let data: ContractAbiReq = {
     sub: Sub_ContractAbi,
     opt: type,
     id: id,
     contractAddress: contractAddress,
-    sceneNo: sceneNo,
+    chainId: chainId,
   };
   return data;
 }
 export function isValidContractAbiReq(s: ContractAbiReq): boolean {
   if (
-    s.opt === '' ||
+    s.opt === "" ||
     s.id <= 0 ||
-    s.contractAddress === '' ||
-    s.sceneNo === ''
+    s.contractAddress === "" ||
+    s.chainId === ""
   ) {
     return false;
   }
@@ -104,19 +104,19 @@ export interface ContractRuleReq {
   opt: string;
   id: number;
   contractAddress: string;
-  sceneNo: string;
+  chainId: string;
 }
 
 export function buildContractRule(
   type: string,
   id: number,
-  sceneNo: string,
+  chainId: string,
   contractAddress: string
 ): ContractRuleReq {
   let data: ContractRuleReq = {
     sub: Sub_ContractRule,
     opt: type,
-    sceneNo: sceneNo,
+    chainId: chainId,
     contractAddress: contractAddress,
     id: id,
   };
@@ -124,10 +124,10 @@ export function buildContractRule(
 }
 export function isValidContractRuleReq(s: ContractRuleReq): boolean {
   if (
-    s.opt === '' ||
+    s.opt === "" ||
     s.id <= 0 ||
-    s.contractAddress === '' ||
-    s.sceneNo === ''
+    s.contractAddress === "" ||
+    s.chainId === ""
   ) {
     return false;
   }
@@ -178,19 +178,19 @@ export function isValidRiskCtrlRuleReq(s: RiskCtrlRuleReq): boolean {
 export interface RiskRuleReplyReq {
   sub: string;
   opt: string;
-  sceneNo: string;
+  chainId: string;
   ruleName: string;
   ruleStr: string;
 }
 export function buildRiskRuleReply(
-  sceneNo: string,
+  chainId: string,
   ruleStr: string,
   ruleName: string
 ): RiskRuleReplyReq {
   let data: RiskRuleReplyReq = {
     sub: Sub_RiskRuleReply,
     opt: OptCheck,
-    sceneNo: sceneNo,
+    chainId: chainId,
     ruleStr: ruleStr,
     ruleName: ruleName,
   };

@@ -27,11 +27,11 @@ type ContractAbiReq struct {
 	Opt             string `json:"opt"`
 	Id              int64  `json:"id"`
 	ContractAddress string `json:"contractAddress"`
-	SceneNo         string `json:"sceneNo"`
+	ChainId         string `json:"chainId"`
 }
 
 func (s *ContractAbiReq) IsValid() bool {
-	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.SceneNo == "" {
+	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.ChainId == "" {
 		return false
 	}
 	return true
@@ -43,11 +43,11 @@ type ContractRuleReq struct {
 	Opt             string `json:"opt"`
 	Id              int64  `json:"id"`
 	ContractAddress string `json:"contractAddress"`
-	SceneNo         string `json:"sceneNo"`
+	ChainId         string `json:"chainId"`
 }
 
 func (s *ContractRuleReq) IsValid() bool {
-	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.SceneNo == "" {
+	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.ChainId == "" {
 		return false
 	}
 	return true
@@ -60,14 +60,13 @@ type RiskCtrlRuleReq struct {
 	// Salience int    `json:"salience"`
 	// RuleName string `json:"ruleName"`
 	// RuleStr  string `json:"ruleStr"`
-	// SceneNo  string `json:"sceneNo"`
 	// Desc     string `json:"desc"`
 	Id       int  `json:"id"`
 	IsEnable bool `json:"isEnable"`
 }
 
 func (s *RiskCtrlRuleReq) IsValid() bool {
-	// if s.Opt == "" || s.RuleStr == "" || s.SceneNo == "" {
+	// if s.Opt == "" || s.RuleStr == "" || s.ChainId == "" {
 	// 	return false
 	// }
 	return true

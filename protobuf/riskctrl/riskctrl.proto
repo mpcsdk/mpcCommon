@@ -125,12 +125,12 @@ message ContractRuleRes {
 ///
 //
 message ContractAbiBriefsReq{
-    string SceneNo = 1;
+    string ChainId = 1;
     string Kind = 2;
     string Address = 3;
 }
 message ContractAbiBrief {
-    string SceneNo = 1;
+    string ChainId = 1;
     string Address = 2;
     string Name = 3;
     string Kind = 4;
@@ -139,7 +139,7 @@ message ContractAbiBriefsRes{
     map<string, ContractAbiBrief> Briefs = 1;
 }
 message ContractAbiReq{
-    string SceneNo = 1;
+    string ChainId = 1;
     string Kind = 2;
     string Address = 3;
 }
@@ -148,7 +148,7 @@ message ContractAbiRes{
     int64 Id   = 1;
 	string ContractName  = 2;
 	string ContractAddress  =3;
-	string SceneNo      = 4; 
+	string ChainId      = 4; 
 	string AbiContent     = 5;
 	string ContractKind    = 6; 
 }
@@ -163,7 +163,7 @@ message TxRequestReq {
     string Address = 2; // v: required
     ////
     string SignTxData = 3; // v: required
-    string SceneNo = 4; // v: required
+    string ChainId = 4; // v: required
 }
 message TxRequestRes {
     int32 Ok = 1;

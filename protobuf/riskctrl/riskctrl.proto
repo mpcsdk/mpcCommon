@@ -81,7 +81,7 @@ message VerifyCodeRes {
 /////
 ///
 message ContractRuleBriefsReq {
-    string SceneNo = 1;
+    string ChainId = 1;
     string Kind = 2;
     string Address = 3;
 }
@@ -89,13 +89,13 @@ message ContractRuleBriefsRes {
     map<string, ContractRuleBriefs> Briefs = 1;
 }
 message ContractRuleBriefs {
-    string SceneNo  = 1;
+    string ChainId  = 1;
     string Address = 2;
     string Name = 3;
     string Kind = 4;
 }
 message ContractRuleReq{
-    string SceneNo = 1;
+    string ChainId = 1;
     string Kind = 2;
     string Address = 3;
 }

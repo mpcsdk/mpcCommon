@@ -44,6 +44,12 @@ type UserInfo struct {
 	CreateTime int64  `json:"create_time"`
 }
 
+func (s *UserInfo) String() string {
+	d, _ := json.Marshal(s)
+	return string(d)
+}
+
+// /
 func (s *UserTokenInfoGeter) getUserInfoCache(ctx context.Context, userToken string) (*UserInfo, error) {
 	if userToken == "" {
 		return nil, mpccode.CodeParamInvalid()

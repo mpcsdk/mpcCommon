@@ -80,6 +80,9 @@ func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*Us
 		err = fmt.Errorf("%+v, resp:%s", err, resp.String())
 		return nil, err
 	}
+	if userInfo.Status != 1 {
+		return nil, mpccode.CodeTokenInvalid()
+	}
 	///
 	s.setCache(ctx, token, userInfo.Data)
 	///

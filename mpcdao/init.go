@@ -1,0 +1,5 @@
+package mpcdao
+
+func SetCahce() {
+
+}

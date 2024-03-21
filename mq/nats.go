@@ -2,6 +2,7 @@ package mq
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -11,10 +12,14 @@ import (
 
 type NatsServer struct {
 	ctx context.Context
-	sub *nats.Subscription
 	nc  *nats.Conn
 }
 
+// /
+var once sync.Once
+var instance *NatsServer = nil
+
+// /
 func New(urls string) *NatsServer {
 	//
 	nc, err := nats.Connect(urls, nats.Timeout(5*time.Second))
@@ -24,7 +29,6 @@ func New(urls string) *NatsServer {
 	s := &NatsServer{}
 	s.nc = nc
 	s.ctx = gctx.GetInitCtx()
-
 	///
 	return s
 }
@@ -52,16 +56,10 @@ func (s *NatsServer) subscribe(sub *nats.Subscription, ch chan *nats.Msg, fn fun
 	for {
 		select {
 		case natsmsg := <-ch:
-			switch natsmsg.Subject {
-			case Sub_ChainCfg,
-				Sub_ContractAbi,
-				Sub_ContractRule,
-				Sub_RiskRule:
-				err := fn(natsmsg.Data)
-				if err != nil {
-					g.Log().Error(s.ctx, err)
-					continue
-				}
+			err := fn(natsmsg.Data)
+			if err != nil {
+				g.Log().Error(s.ctx, err)
+				continue
 			}
 			//
 		case <-s.ctx.Done():

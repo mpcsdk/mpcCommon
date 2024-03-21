@@ -4,6 +4,7 @@ const Sub_ChainCfg = "ChainCgf"
 const Sub_ContractAbi = "ContractCfg"
 const Sub_ContractRule = "ContractRule"
 const Sub_RiskRule = "RiskRule"
+const Sub_ChainTx = "ChainTx"
 
 const Sub_RiskRuleReply = "RiskRuleReply"
 const (
@@ -12,6 +13,21 @@ const (
 	OptDelete = "delete"
 	OptCheck  = "check"
 )
+
+// Sub_ChainTx
+type ChainTxMsg struct {
+	ChainId     int64  `json:"chainId"`
+	TxHash      string `json:"txHash"`
+	TxIdx       int    `json:"txIdx"`
+	BlockNumber int    `json:"blockNumber"`
+	BlockHash   string `json:"blockHash"`
+	LogIdx      int    `json:"logIdx"`
+
+	From     string `json:"from"`
+	To       string `json:"to"`
+	Contract string `json:"contract"`
+	Value    string `json:"value"`
+}
 
 // /Sub_ChainCfg
 type ChainCfgReq struct {

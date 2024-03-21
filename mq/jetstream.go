@@ -5,6 +5,7 @@ import (
 )
 
 const SubJet_ChainTx = "chainTx"
+const JetStream_ChainTx = "chainTx"
 
 func (s *NatsServer) JetStream() (jetstream.JetStream, error) {
 	jets, err := jetstream.New(s.nc)
@@ -22,8 +23,8 @@ func (s *NatsServer) GetChainTxStream() (jetstream.Stream, error) {
 	}
 	//
 	stream, err := jets.CreateOrUpdateStream(s.ctx, jetstream.StreamConfig{
-		Name:        "chainTxStream",
-		Description: "chainTxStream",
+		Name:        JetStream_ChainTx,
+		Description: JetStream_ChainTx,
 		Subjects:    []string{"chainTx", "chainTx.>"},
 		Retention:   jetstream.LimitsPolicy,
 		Compression: jetstream.S2Compression,

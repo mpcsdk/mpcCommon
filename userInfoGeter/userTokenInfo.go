@@ -4,29 +4,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"sync"
+	"time"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/mpcsdk/mpcCommon/mpccode"
 )
 
-var once sync.Once
-
-var instance *UserTokenInfoGeter = nil
-
-func Geter(url string) *UserTokenInfoGeter {
-	once.Do(func() {
-		instance = NewUserInfoGeter(url)
-	})
-	return instance
-}
-
 // /
 type UserTokenInfoGeter struct {
 	url   string
 	cli   *resty.Client
 	cache *gcache.Cache
+	dur   time.Duration
 }
 type respUserInfo struct {
 	Status  int       `json:"status"`
@@ -44,6 +34,12 @@ type UserInfo struct {
 	CreateTime int64  `json:"create_time"`
 }
 
+func (s *UserInfo) String() string {
+	d, _ := json.Marshal(s)
+	return string(d)
+}
+
+// /
 func (s *UserTokenInfoGeter) getUserInfoCache(ctx context.Context, userToken string) (*UserInfo, error) {
 	if userToken == "" {
 		return nil, mpccode.CodeParamInvalid()
@@ -84,18 +80,22 @@ func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*Us
 		err = fmt.Errorf("%+v, resp:%s", err, resp.String())
 		return nil, err
 	}
+	if userInfo.Status != 1 {
+		return nil, mpccode.CodeTokenInvalid()
+	}
 	///
 	s.setCache(ctx, token, userInfo.Data)
 	///
 	return userInfo.Data, nil
 }
 
-func NewUserInfoGeter(url string) *UserTokenInfoGeter {
+func NewUserInfoGeter(url string, cache *gcache.Cache, dur time.Duration) *UserTokenInfoGeter {
 	c := resty.New()
 	s := &UserTokenInfoGeter{
 		cli:   c,
 		url:   url,
-		cache: gcache.New(),
+		cache: cache,
+		dur:   dur,
 	}
 	return s
 }

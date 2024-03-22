@@ -33,24 +33,6 @@ func New(urls string) *NatsServer {
 	return s
 }
 
-func (s *NatsServer) NatsSubscribe(subj string, fn func(data []byte) error) {
-	ch := make(chan *nats.Msg, 64)
-	sub, err := s.nc.ChanSubscribe(subj, ch)
-	if err != nil {
-		panic(err)
-	}
-	go s.subscribe(sub, ch, fn)
-}
-func (s *NatsServer) NatsSubscribeReply(subj string, fn func(data []byte) ([]byte, error)) {
-	////
-	ch := make(chan *nats.Msg, 64)
-	sub, err := s.nc.ChanQueueSubscribe(subj, subj, ch)
-	if err != nil {
-		panic(err)
-	}
-	go s.queueSubscribe(sub, ch, fn)
-}
-
 // /
 func (s *NatsServer) subscribe(sub *nats.Subscription, ch chan *nats.Msg, fn func(data []byte) error) {
 	for {

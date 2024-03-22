@@ -4,8 +4,8 @@ import (
 	"github.com/nats-io/nats.go/jetstream"
 )
 
-const SubJet_ChainTx = "chainTx"
-const JetStream_ChainTx = "chainTx"
+const JetSub_ChainTx = "chainData.tx"
+const JetStream_ChainTx = "chainData_stream"
 
 func (s *NatsServer) JetStream() (jetstream.JetStream, error) {
 	jets, err := jetstream.New(s.nc)
@@ -25,7 +25,7 @@ func (s *NatsServer) GetChainTxStream() (jetstream.Stream, error) {
 	stream, err := jets.CreateOrUpdateStream(s.ctx, jetstream.StreamConfig{
 		Name:        JetStream_ChainTx,
 		Description: JetStream_ChainTx,
-		Subjects:    []string{"chainTx", "chainTx.>"},
+		Subjects:    []string{"chainData", JetSub_ChainTx},
 		Retention:   jetstream.LimitsPolicy,
 		Compression: jetstream.S2Compression,
 		MaxMsgs:     10000,

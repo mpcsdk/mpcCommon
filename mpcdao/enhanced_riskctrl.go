@@ -35,31 +35,33 @@ func GetAggNft(ctx context.Context, query *QueryAggNft) (*entity.AggNft, error) 
 
 	return nil, nil
 }
-func UpSertAggNft(ctx context.Context, tx *entity.AggNft) error {
-	_, err := dao.AggNft.Ctx(ctx).
-		Data(tx).
-		OnConflict(
-			dao.AggNft.Columns().ChainId,
-			dao.AggNft.Columns().FromAddr,
-			dao.AggNft.Columns().Contract,
-		).Save()
-	return err
-}
+
+// func UpSertAggNft(ctx context.Context, tx *entity.AggNft) error {
+// 	_, err := dao.AggNft.Ctx(ctx).
+// 		Data(tx).
+// 		OnConflict(
+// 			dao.AggNft.Columns().ChainId,
+// 			dao.AggNft.Columns().FromAddr,
+// 			dao.AggNft.Columns().Contract,
+// 		).Save()
+// 	return err
+// }
 
 // /
 func GetAggFt(ctx context.Context) (*entity.AggNft, error) {
 
 	return nil, nil
 }
-func UpSertAggFt(ctx context.Context, tx *entity.AggNft) error {
-	_, err := dao.AggFt.Ctx(ctx).
-		Data(tx).
-		OnConflict(
-			dao.AggFt.Columns().ChainId,
-			dao.AggFt.Columns().FromAddr,
-			dao.AggFt.Columns().Contract,
-		).Save()
-	return err
-}
 
-///
+// func UpSertAggFt(ctx context.Context, tx *entity.AggNft) error {
+// 	_, err := dao.AggFt.Ctx(ctx).
+// 		Data(tx).
+// 		OnConflict(
+// 			dao.AggFt.Columns().ChainId,
+// 			dao.AggFt.Columns().FromAddr,
+// 			dao.AggFt.Columns().Contract,
+// 		).Save()
+// 	return err
+// }
+
+// ///

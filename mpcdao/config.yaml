@@ -4,6 +4,6 @@ gfcli:
     - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/syncChain"
       tables:   "chain_data"
       jsonCase: "CamelLower"
-    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced-riskctrl"
+    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
       tables:   "chain_data, aggNft, aggFt"
       jsonCase: "CamelLower"

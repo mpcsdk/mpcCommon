@@ -43,7 +43,7 @@ func (s *NatsServer) GetConsumer(name, sub string) (jetstream.Consumer, error) {
 	cons, err := stream.CreateOrUpdateConsumer(s.ctx, jetstream.ConsumerConfig{
 		Durable:       name,
 		FilterSubject: sub,
-		DeliverPolicy: jetstream.DeliverLastPolicy,
+		DeliverPolicy: jetstream.DeliverAllPolicy,
 		AckPolicy:     jetstream.AckExplicitPolicy,
 	})
 	if err != nil {

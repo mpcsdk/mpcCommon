@@ -1,0 +1,24 @@
+
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "nrpc.proto";
+
+package dataRiskCtrl;
+
+option go_package = "/dataRiskCtrl";
+
+service DataRiskCtrl{
+    rpc RpcAlive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    //
+    rpc QueryCnt (QueryReq) returns (QueryRes) {}
+}
+///
+message QueryReq {
+	//  "in:bindPhone,bindMail,updatePhone,updateMail"
+    string Token = 1; // v: required
+    string CodeType = 2; // v: required
+}
+message QueryRes {
+    string RiskSerial = 1;
+    repeated string VList = 2;
+}

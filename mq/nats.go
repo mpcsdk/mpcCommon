@@ -32,7 +32,12 @@ func New(urls string) *NatsServer {
 	s.nc = nc
 	s.ctx = gctx.GetInitCtx()
 	///
+	s.ctx = gctx.GetInitCtx()
+	///
 	return s
+}
+func (s *NatsServer) Conn() *nats.Conn {
+	return s.nc
 }
 
 // /

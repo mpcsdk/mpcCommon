@@ -7,34 +7,40 @@ import (
 const JetSub_ChainTx = "chainData.tx"
 const JetStream_ChainTx = "chainData_stream"
 
-func (s *NatsServer) JetStream(msgSize int64) (jetstream.JetStream, error) {
+func (s *NatsServer) JetStream() (jetstream.JetStream, error) {
+
 	jets, err := jetstream.New(s.nc)
 	if err != nil {
 		return nil, err
 	}
+	//
 	return jets, nil
 }
 
-func (s *NatsServer) GetChainTxStream() (jetstream.Stream, error) {
+func (s *NatsServer) GetChainTxStream(args ...int64) (jetstream.Stream, error) {
 	///
 	jets, err := jetstream.New(s.nc)
 	if err != nil {
 		return nil, err
 	}
 	//
+	msgSize := int64(0)
+	if len(args) > 0 {
+		msgSize = args[0]
+	}
 	stream, err := jets.CreateOrUpdateStream(s.ctx, jetstream.StreamConfig{
 		Name:        JetStream_ChainTx,
 		Description: JetStream_ChainTx,
 		Subjects:    []string{"chainData", JetSub_ChainTx},
 		Retention:   jetstream.LimitsPolicy,
 		Compression: jetstream.S2Compression,
-		MaxMsgs:     s.msgSize,
+		MaxMsgs:     msgSize,
 	})
 	////
 	return stream, err
 }
 
-func (s *NatsServer) GetConsumer(name, sub string) (jetstream.Consumer, error) {
+func (s *NatsServer) GetChainTxConsumer(name, sub string) (jetstream.Consumer, error) {
 	stream, err := s.GetChainTxStream()
 	if err != nil {
 		return nil, err

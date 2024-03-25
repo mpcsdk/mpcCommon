@@ -7,7 +7,7 @@ import (
 const JetSub_ChainTx = "chainData.tx"
 const JetStream_ChainTx = "chainData_stream"
 
-func (s *NatsServer) JetStream() (jetstream.JetStream, error) {
+func (s *NatsServer) JetStream(msgSize int64) (jetstream.JetStream, error) {
 	jets, err := jetstream.New(s.nc)
 	if err != nil {
 		return nil, err
@@ -28,7 +28,7 @@ func (s *NatsServer) GetChainTxStream() (jetstream.Stream, error) {
 		Subjects:    []string{"chainData", JetSub_ChainTx},
 		Retention:   jetstream.LimitsPolicy,
 		Compression: jetstream.S2Compression,
-		MaxMsgs:     10000,
+		MaxMsgs:     s.msgSize,
 	})
 	////
 	return stream, err

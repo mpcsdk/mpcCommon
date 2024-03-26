@@ -14,7 +14,6 @@ type NatsServer struct {
 	ctx context.Context
 	nc  *nats.Conn
 	///
-	msgSize int64
 }
 
 // /

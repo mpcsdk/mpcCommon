@@ -27,8 +27,8 @@ type ChainDataColumns struct {
 	TxHash    string //
 	TxIdx     string //
 	LogIdx    string //
-	FromAddr  string //
-	ToAddr    string //
+	From      string //
+	To        string //
 	Contract  string //
 	Value     string //
 	Gas       string //
@@ -45,8 +45,8 @@ var chainDataColumns = ChainDataColumns{
 	TxHash:    "tx_hash",
 	TxIdx:     "tx_idx",
 	LogIdx:    "log_idx",
-	FromAddr:  "from_addr",
-	ToAddr:    "to_addr",
+	From:      "from",
+	To:        "to",
 	Contract:  "contract",
 	Value:     "value",
 	Gas:       "gas",
@@ -57,7 +57,7 @@ var chainDataColumns = ChainDataColumns{
 // NewChainDataDao creates and returns a new DAO object for table data access.
 func NewChainDataDao() *ChainDataDao {
 	return &ChainDataDao{
-		group:   "default",
+		group:   "syncChain",
 		table:   "chain_data",
 		columns: chainDataColumns,
 	}

@@ -13,8 +13,8 @@ type ChainData struct {
 	TxHash    string `json:"txHash"    ` //
 	TxIdx     int    `json:"txIdx"     ` //
 	LogIdx    int    `json:"logIdx"    ` //
-	FromAddr  string `json:"fromAddr"  ` //
-	ToAddr    string `json:"toAddr"    ` //
+	From      string `json:"from"      ` //
+	To        string `json:"to"        ` //
 	Contract  string `json:"contract"  ` //
 	Value     string `json:"value"     ` //
 	Gas       string `json:"gas"       ` //

@@ -2,8 +2,10 @@ gfcli:
   gen:
     dao:
     - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/syncChain"
+      group: syncChain
       tables:   "chain_data"
       jsonCase: "CamelLower"
-    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced-riskctrl"
-      tables:   "chain_data, aggNft, aggFt"
+    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
+      group: "enhanced_riskctrl"
+      tables:   "chain_tx"
       jsonCase: "CamelLower"

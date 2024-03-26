@@ -18,8 +18,8 @@ type ChainData struct {
 	TxHash    interface{} //
 	TxIdx     interface{} //
 	LogIdx    interface{} //
-	FromAddr  interface{} //
-	ToAddr    interface{} //
+	From      interface{} //
+	To        interface{} //
 	Contract  interface{} //
 	Value     interface{} //
 	Gas       interface{} //

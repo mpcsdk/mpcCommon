@@ -8,19 +8,19 @@ import (
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao/internal"
 )
 
-// internalAggNftDao is internal type for wrapping internal DAO implements.
-type internalAggNftDao = *internal.AggNftDao
+// internalChainTxDao is internal type for wrapping internal DAO implements.
+type internalChainTxDao = *internal.ChainTxDao
 
-// aggNftDao is the data access object for table aggNft.
+// chainTxDao is the data access object for table chain_tx.
 // You can define custom methods on it to extend its functionality as you wish.
-type aggNftDao struct {
-	internalAggNftDao
+type chainTxDao struct {
+	internalChainTxDao
 }
 
 var (
-	// AggNft is globally public accessible object for table aggNft operations.
-	AggNft = aggNftDao{
-		internal.NewAggNftDao(),
+	// ChainTx is globally public accessible object for table chain_tx operations.
+	ChainTx = chainTxDao{
+		internal.NewChainTxDao(),
 	}
 )
 

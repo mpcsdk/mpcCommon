@@ -56,7 +56,7 @@ func (s *UserTokenInfoGeter) getUserInfoCache(ctx context.Context, userToken str
 	return nil, nil
 }
 func (s *UserTokenInfoGeter) setCache(ctx context.Context, userToken string, info *UserInfo) {
-	s.cache.Set(ctx, userToken, info, 0)
+	s.cache.Set(ctx, userToken, info, s.dur)
 }
 func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*UserInfo, error) {
 	////

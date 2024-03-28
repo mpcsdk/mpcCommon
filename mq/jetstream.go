@@ -16,14 +16,12 @@ func (s *NatsServer) JetStream() (jetstream.JetStream, error) {
 	//
 	return jets, nil
 }
-
-func (s *NatsServer) GetChainTxStream(args ...int64) (jetstream.Stream, error) {
-	///
+func (s *NatsServer) GetUpChainTxStream(args ...int64) (jetstream.Stream, error) {
 	jets, err := jetstream.New(s.nc)
 	if err != nil {
 		return nil, err
 	}
-	//
+	///
 	msgSize := int64(0)
 	if len(args) > 0 {
 		msgSize = args[0]
@@ -36,6 +34,18 @@ func (s *NatsServer) GetChainTxStream(args ...int64) (jetstream.Stream, error) {
 		Compression: jetstream.S2Compression,
 		MaxMsgs:     msgSize,
 	})
+	////
+	return stream, err
+}
+
+func (s *NatsServer) GetChainTxStream() (jetstream.Stream, error) {
+	///
+	jets, err := jetstream.New(s.nc)
+	if err != nil {
+		return nil, err
+	}
+	//
+	stream, err := jets.Stream(s.ctx, JetStream_ChainTx)
 	////
 	return stream, err
 }

@@ -5,14 +5,18 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"time"
 
 	"github.com/gogf/gf/v2/database/gredis"
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao"
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
 
 type EnhancedRiskCtrl struct {
 	redis *gredis.Redis
+	dur   time.Duration
 }
 type QueryEnhancedRiskCtrlRes struct {
 	ChainId  int64
@@ -22,7 +26,7 @@ type QueryEnhancedRiskCtrlRes struct {
 	EndTs    int64
 }
 
-func (s *EnhancedRiskCtrl) AggSum(ctx context.Context, res QueryEnhancedRiskCtrlRes) (*big.Int, error) {
+func (s *EnhancedRiskCtrl) GetAggSum(ctx context.Context, res QueryEnhancedRiskCtrlRes) (*big.Int, error) {
 	if res.EndTs == 0 {
 		res.EndTs = math.MaxInt64
 	}
@@ -65,14 +69,21 @@ func (s *EnhancedRiskCtrl) AggTx(ctx context.Context, tx *entity.ChainTx) error 
 	}
 	return nil
 }
-func InsertTx(ctx context.Context, tx *entity.ChainTx) error {
+
+// //
+// /
+func (s *EnhancedRiskCtrl) InsertTx(ctx context.Context, tx *entity.ChainTx) error {
 	_, err := dao.ChainTx.Ctx(ctx).Insert(tx)
 	return err
 }
 
-func NewEnhancedRiskCtrl(redis *gredis.Redis) *EnhancedRiskCtrl {
+// //
+// /
+func NewEnhancedRiskCtrl(redis *gredis.Redis, dur time.Duration) *EnhancedRiskCtrl {
+	g.DB(dao.ChainTx.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
 
 	return &EnhancedRiskCtrl{
 		redis: redis,
+		dur:   dur * time.Second,
 	}
 }

@@ -9,3 +9,7 @@ gfcli:
       group: "enhanced_riskctrl"
       tables:   "chain_tx"
       jsonCase: "CamelLower"
+    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/mpc"
+      group: "mpc"
+      tables:   "mpc_context"
+      jsonCase: "CamelLower"

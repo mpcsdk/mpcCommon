@@ -1,8 +1,8 @@
 gfcli:
   gen:
     dao:
-    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/syncChain"
-      group: syncChain
+    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/sync_chain"
+      group: sync_chain
       tables:   "chain_data"
       jsonCase: "CamelLower"
     - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"

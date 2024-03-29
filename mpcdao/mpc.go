@@ -18,7 +18,7 @@ type MpcContext struct {
 }
 
 func (s *MpcContext) ExistsMpcAddr(ctx context.Context, addr string) (bool, error) {
-	cnt, err := g.Model(dao.MpcContext.Table()).Ctx(ctx).Cache(gdb.CacheOption{
+	cnt, err := dao.MpcContext.DB().Model(dao.MpcContext.Table()).Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
 		Name:     dao.MpcContext.Table() + addr,
 		Force:    true,
@@ -34,6 +34,8 @@ func (s *MpcContext) ExistsMpcAddr(ctx context.Context, addr string) (bool, erro
 }
 
 func NewMcpContet(redis *gredis.Redis, dur time.Duration) *MpcContext {
+	// dao.MpcContext.DB().GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
+
 	g.DB(dao.MpcContext.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
 	return &MpcContext{
 		redis: redis,

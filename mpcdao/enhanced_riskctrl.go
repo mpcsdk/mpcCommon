@@ -31,12 +31,12 @@ func (s *EnhancedRiskCtrl) GetAggSum(ctx context.Context, res QueryEnhancedRiskC
 		res.EndTs = math.MaxInt64
 	}
 	key := aggKey(res.ChainId, res.From, res.Contract)
-	v, err := s.redis.Do(ctx, "ZRANGE", key, res.StartTs, res.EndTs)
+	v, err := s.redis.Do(ctx, "ZRANGEBYSCORE", key, res.StartTs, res.EndTs)
 	if err != nil {
 		return nil, err
 	}
 	//
-	data := []*entity.ChainData{}
+	data := []*entity.ChainTx{}
 	v.Struct(&data)
 	///
 	sum := big.NewInt(0)
@@ -53,7 +53,7 @@ func (s *EnhancedRiskCtrl) GetAggCnt(ctx context.Context, res QueryEnhancedRiskC
 		res.EndTs = math.MaxInt64
 	}
 	key := aggKey(res.ChainId, res.From, res.Contract)
-	v, err := s.redis.Do(ctx, "ZCARD", key, res.StartTs, res.EndTs)
+	v, err := s.redis.Do(ctx, "Zcount", key, res.StartTs, res.EndTs)
 	if err != nil {
 		return 0, err
 	}
@@ -67,6 +67,11 @@ func (s *EnhancedRiskCtrl) AggTx(ctx context.Context, tx *entity.ChainTx) error 
 	if err != nil {
 		return err
 	}
+	///
+	_, err = s.redis.Do(ctx, "Zadd", aggKey(0, tx.From, tx.Contract), tx.Ts, tx)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -75,6 +80,56 @@ func (s *EnhancedRiskCtrl) AggTx(ctx context.Context, tx *entity.ChainTx) error 
 func (s *EnhancedRiskCtrl) InsertTx(ctx context.Context, tx *entity.ChainTx) error {
 	_, err := dao.ChainTx.Ctx(ctx).Insert(tx)
 	return err
+}
+
+// //
+type QueryTx struct {
+	From     string `json:"from"`
+	To       string `json:"to"`
+	Contract string `json:"contract"`
+	///
+	StartTime int64 `json:"startTime"`
+	EndTime   int64 `json:"endTime"`
+	///
+	Page     int `json:"page"`
+	PageSize int `json:"pageSize"`
+}
+
+func (s *EnhancedRiskCtrl) Query(ctx context.Context, query *QueryTx) ([]*entity.ChainTx, error) {
+	if query.PageSize < 1 || query.Page < 0 {
+		return nil, nil
+	}
+	//
+	where := dao.ChainTx.Ctx(ctx)
+	if query.From != "" {
+		where = where.Where(dao.ChainTx.Columns().From, query.From)
+	}
+	if query.To != "" {
+		where = where.Where(dao.ChainTx.Columns().To, query.To)
+	}
+	if query.Contract != "" {
+		where = where.Where(dao.ChainTx.Columns().Contract, query.Contract)
+	}
+	///time
+	if query.StartTime != 0 {
+		where = where.WhereGTE(dao.ChainTx.Columns().Ts, query.StartTime)
+	}
+	if query.EndTime != 0 {
+		where = where.WhereLTE(dao.ChainTx.Columns().Ts, query.EndTime)
+	}
+	///
+	if query.PageSize != 0 {
+		where = where.Limit(query.Page*query.PageSize, query.PageSize)
+	}
+	///
+	result, err := where.All()
+	if err != nil {
+		return nil, err
+	}
+	data := []*entity.ChainTx{}
+	err = result.Structs(&data)
+	///
+	return data, err
 }
 
 // //

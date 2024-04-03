@@ -134,11 +134,11 @@ func (s *EnhancedRiskCtrl) Query(ctx context.Context, query *QueryTx) ([]*entity
 
 // //
 // /
-func NewEnhancedRiskCtrl(redis *gredis.Redis, dur time.Duration) *EnhancedRiskCtrl {
+func NewEnhancedRiskCtrl(redis *gredis.Redis, dur int) *EnhancedRiskCtrl {
 	g.DB(dao.ChainTx.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
 
 	return &EnhancedRiskCtrl{
 		redis: redis,
-		dur:   dur * time.Second,
+		dur:   time.Duration(dur) * time.Second,
 	}
 }

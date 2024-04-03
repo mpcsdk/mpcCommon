@@ -36,6 +36,10 @@ var (
 	////
 	CodeDataNotExists = (&errCode{201, "Data Not Exists", nil}).instance
 	CodeDataExists    = (&errCode{202, "Data Exists", nil}).instance
+	//tx
+	CodeTxsInvalid           = (&errCode{302, "Txs Invalid", nil}).instance
+	CodeTxContractAbiInvalid = (&errCode{302, "Tx Contract Abi Invalid", nil}).instance
 
+	///
 	CodeErr = (&errCode{65535, "CodeErr", nil}).instance
 )

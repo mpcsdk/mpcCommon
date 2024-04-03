@@ -33,12 +33,12 @@ func (s *MpcContext) ExistsMpcAddr(ctx context.Context, addr string) (bool, erro
 	return false, nil
 }
 
-func NewMcpContet(redis *gredis.Redis, dur time.Duration) *MpcContext {
+func NewMcpContet(redis *gredis.Redis, dur int) *MpcContext {
 	// dao.MpcContext.DB().GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
 
 	g.DB(dao.MpcContext.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
 	return &MpcContext{
 		redis: redis,
-		dur:   dur * time.Second,
+		dur:   time.Duration(dur) * time.Second,
 	}
 }

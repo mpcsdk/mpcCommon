@@ -13,3 +13,18 @@ gfcli:
       group: "mpc"
       tables:   "mpc_context"
       jsonCase: "CamelLower"
+    - link:     "mysql:ssh:123456@tcp(127.0.0.1:3305)/riskcontrol"
+      group: "riskcontrol"
+      tables:   "contractrule,contractabi,riskcontrol_rule"
+      jsonCase: "CamelLower"
+      typeMapping:
+        decimal:
+          type:   decimal.Decimal
+          import: github.com/shopspring/decimal
+        numeric:
+          type:   decimal.Decimal
+          import: github.com/shopspring/decimal
+    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/tfa"
+      group: "tfa"
+      tables:   "tfa"
+      jsonCase: "CamelLower"

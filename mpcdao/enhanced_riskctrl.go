@@ -26,6 +26,15 @@ type QueryEnhancedRiskCtrlRes struct {
 	EndTs    int64
 }
 
+func (s *EnhancedRiskCtrl) Clear(ctx context.Context, res QueryEnhancedRiskCtrlRes) error {
+	if res.EndTs <= 0 {
+		return nil
+	}
+	key := aggKey(res.ChainId, res.From, res.Contract)
+	_, err := s.redis.Do(ctx, "ZREMRANGEBYSCORE", key, 0, res.EndTs)
+	return err
+}
+
 func (s *EnhancedRiskCtrl) GetAggSum(ctx context.Context, res QueryEnhancedRiskCtrlRes) (*big.Int, error) {
 	if res.EndTs == 0 {
 		res.EndTs = math.MaxInt64

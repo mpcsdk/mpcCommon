@@ -47,6 +47,7 @@ func (s *RiskTfa) FetchTfaInfo(ctx context.Context, userId string) (*entity.Tfa,
 	}
 	err = rst.Struct(&data)
 	if err != nil {
+		g.Log().Error(ctx, "ExistsTfaInfo:", "userId", userId, "agg:", aggdo, "err", err)
 		return nil, mpccode.CodeInternalError()
 	}
 

@@ -24,6 +24,7 @@ func (s *MpcContext) ExistsMpcAddr(ctx context.Context, addr string) (bool, erro
 		Force:    true,
 	}).Where(dao.MpcContext.Columns().PubKey, addr).Count()
 	if err != nil {
+		g.Log().Error(ctx, "ExistsMpcAddr:", "addr", addr, "err", err)
 		return false, mpccode.CodeInternalError()
 	}
 

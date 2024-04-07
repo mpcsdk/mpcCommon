@@ -1,5 +1,18 @@
 package mpccode
 
+import (
+	"context"
+
+	"go.opentelemetry.io/otel/trace"
+)
+
+func TraceId(ctx context.Context) string {
+	spanCtx := trace.SpanContextFromContext(ctx)
+	traceId := spanCtx.TraceID()
+	return traceId.String()
+
+}
+
 var (
 	CodeNil            = (&errCode{-1, "nil", nil}).instance            // No error code specified.
 	CodeOK             = (&errCode{0, "ok", nil}).instance              // It is OK.

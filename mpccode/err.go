@@ -1,7 +1,6 @@
 package mpccode
 
 import (
-	"encoding/json"
 	"errors"
 
 	"github.com/gogf/gf/v2/encoding/gjson"
@@ -49,18 +48,18 @@ func Equal(err error, target error) bool {
 // }
 
 func (e *errCode) instance(detail ...interface{}) error {
-	return gerror.NewCode(&errCode{e.code, e.message, detail})
+	if len(detail) == 0 {
+		return gerror.NewCode(&errCode{e.code, e.message, nil})
+	} else {
+		return gerror.NewCode(&errCode{e.code, e.message, detail})
+	}
 }
 func (e *errCode) Error() string {
 	// return errors.New(e.message)
 	return e.message
 }
 func (e *errCode) Message() string {
-	if e.detail == nil {
-		return e.message
-	}
-	d, _ := json.Marshal(e.detail)
-	return e.message + ":" + string(d)
+	return e.message
 }
 func (e *errCode) Code() int {
 	return e.code

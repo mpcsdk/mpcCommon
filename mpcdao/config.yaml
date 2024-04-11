@@ -15,7 +15,7 @@ gfcli:
       jsonCase: "CamelLower"
     - link:     "mysql:ssh:123456@tcp(127.0.0.1:3305)/riskcontrol"
       group: "riskcontrol"
-      tables:   "contractrule,contractabi,riskcontrol_rule"
+      tables:   "contractrule,contractabi,riskcontrol_rule,chaincfg"
       jsonCase: "CamelLower"
       typeMapping:
         decimal:

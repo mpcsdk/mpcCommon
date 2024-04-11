@@ -4,16 +4,18 @@ import (
 	"encoding/json"
 
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 	"github.com/nats-io/nats.go"
 )
 
 // /Sub_ChainCfg
 type ChainCfgMsg struct {
-	Opt     string `json:"opt"`
-	Id      int64  `json:"id"`
-	ChainId uint64 `json:"chainId"`
-	Coin    string `json:"coin"`
-	Rpc     string `json:"rpc"`
+	Opt  string           `json:"opt"`
+	Id   int64            `json:"id"`
+	Data *entity.Chaincfg `json:"data"`
+	// ChainId uint64 `json:"chainId"`
+	// Coin    string `json:"coin"`
+	// Rpc     string `json:"rpc"`
 }
 
 func (s *NatsServer) Sub_ChainCfg(subj string, fn func(data *ChainCfgMsg) error) {

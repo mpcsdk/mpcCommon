@@ -11,7 +11,7 @@ import (
 // /Sub_ChainCfg
 type ChainCfgMsg struct {
 	Opt  string           `json:"opt"`
-	Id   int              `json:"id"`
+	Id   int64            `json:"id"`
 	Data *entity.Chaincfg `json:"data"`
 	// ChainId uint64 `json:"chainId"`
 	// Coin    string `json:"coin"`

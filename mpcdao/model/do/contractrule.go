@@ -23,15 +23,7 @@ type Contractrule struct {
 	MethodFromField  interface{} // 方法from字段名
 	MethodToField    interface{} // 方法to字段名
 	MethodValueField interface{} // 方法value字段名
-	EventName        interface{} // 事件名
-	EventSignature   interface{} // 事件签名
-	EventFromField   interface{} // 事件from字段名
-	EventToField     interface{} // 事件to字段名
-	EventValueField  interface{} // 事件value字段名
-	ControlOperation interface{} // 控制操作
-	Threshold        interface{} // 阈值
 	ContractKind     interface{} // 合约类型
-	EventTopic       interface{} // 事件topic
 	WhiteAddrList    interface{} // to地址白名单
 	ChainId          interface{} // 链id
 }

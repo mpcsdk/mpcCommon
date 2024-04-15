@@ -4,23 +4,22 @@ import (
 	"encoding/json"
 
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 	"github.com/nats-io/nats.go"
 )
 
 // ContractAbi
 type ContractAbiMsg struct {
-	Opt             string `json:"opt"`
-	Id              int64  `json:"id"`
-	ContractAddress string `json:"contractAddress"`
-	ChainId         string `json:"chainId"`
+	Msg
+	Data *entity.Contractabi `json:"data"`
 }
 
-func (s *ContractAbiMsg) IsValid() bool {
-	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.ChainId == "" {
-		return false
-	}
-	return true
-}
+// func (s *ContractAbiMsg) IsValid() bool {
+// 	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.ChainId == "" {
+// 		return false
+// 	}
+// 	return true
+// }
 
 func (s *NatsServer) Sub_ContractAbi(subj string, fn func(data *ContractAbiMsg) error) {
 	ch := make(chan *nats.Msg, 64)

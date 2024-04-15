@@ -27,6 +27,7 @@ type ChaincfgColumns struct {
 	Rpc        string // RPC地址
 	IsEnable   string // 启用
 	ChainId    string // 链id
+	Heigh      string // 高度
 }
 
 // chaincfgColumns holds the columns for table chaincfg.
@@ -38,6 +39,7 @@ var chaincfgColumns = ChaincfgColumns{
 	Rpc:        "rpc",
 	IsEnable:   "isEnable",
 	ChainId:    "chainId",
+	Heigh:      "heigh",
 }
 
 // NewChaincfgDao creates and returns a new DAO object for table data access.

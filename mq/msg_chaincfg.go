@@ -10,12 +10,8 @@ import (
 
 // /Sub_ChainCfg
 type ChainCfgMsg struct {
-	Opt  string           `json:"opt"`
-	Id   int64            `json:"id"`
+	Msg
 	Data *entity.Chaincfg `json:"data"`
-	// ChainId uint64 `json:"chainId"`
-	// Coin    string `json:"coin"`
-	// Rpc     string `json:"rpc"`
 }
 
 func (s *NatsServer) Sub_ChainCfg(subj string, fn func(data *ChainCfgMsg) error) {

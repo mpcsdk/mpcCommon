@@ -17,4 +17,5 @@ type Chaincfg struct {
 	Rpc        string      `json:"rpc"        ` // RPC地址
 	IsEnable   int         `json:"isEnable"   ` // 启用
 	ChainId    int64       `json:"chainId"    ` // 链id
+	Heigh      int64       `json:"heigh"      ` // 高度
 }

@@ -64,6 +64,9 @@ func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*Us
 	if info != nil {
 		return info, nil
 	}
+	if err != nil {
+		return nil, err
+	}
 	////
 	resp, err := s.cli.R().
 		SetQueryParams(map[string]string{
@@ -89,13 +92,13 @@ func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*Us
 	return userInfo.Data, nil
 }
 
-func NewUserInfoGeter(url string, cache *gcache.Cache, dur time.Duration) *UserTokenInfoGeter {
+func NewUserInfoGeter(url string, dur int) *UserTokenInfoGeter {
 	c := resty.New()
 	s := &UserTokenInfoGeter{
 		cli:   c,
 		url:   url,
-		cache: cache,
-		dur:   dur,
+		cache: gcache.New(),
+		dur:   time.Duration(dur) * time.Second,
 	}
 	return s
 }

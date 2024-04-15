@@ -12,3 +12,9 @@ const (
 	OptDelete = "delete"
 	OptCheck  = "check"
 )
+
+type Msg struct {
+	Sub  string      `json:"sub"`
+	Opt  string      `json:"opt"`
+	Data interface{} `json:"data"`
+}

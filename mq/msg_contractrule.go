@@ -4,23 +4,14 @@ import (
 	"encoding/json"
 
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 	"github.com/nats-io/nats.go"
 )
 
 // /ContractRule
 type ContractRuleMsg struct {
-	// 'add' | 'update' | 'delete'
-	Opt             string `json:"opt"`
-	Id              int64  `json:"id"`
-	ContractAddress string `json:"contractAddress"`
-	ChainId         string `json:"chainId"`
-}
-
-func (s *ContractRuleMsg) IsValid() bool {
-	if s.Opt == "" || s.Id <= 0 || s.ContractAddress == "" || s.ChainId == "" {
-		return false
-	}
-	return true
+	Msg
+	Data *entity.Contractrule `json:"data"`
 }
 
 func (s *NatsServer) Sub_ContractRule(subj string, fn func(data *ContractRuleMsg) error) {

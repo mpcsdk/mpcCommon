@@ -31,15 +31,7 @@ type ContractruleColumns struct {
 	MethodFromField  string // 方法from字段名
 	MethodToField    string // 方法to字段名
 	MethodValueField string // 方法value字段名
-	EventName        string // 事件名
-	EventSignature   string // 事件签名
-	EventFromField   string // 事件from字段名
-	EventToField     string // 事件to字段名
-	EventValueField  string // 事件value字段名
-	ControlOperation string // 控制操作
-	Threshold        string // 阈值
 	ContractKind     string // 合约类型
-	EventTopic       string // 事件topic
 	WhiteAddrList    string // to地址白名单
 	ChainId          string // 链id
 }
@@ -57,15 +49,7 @@ var contractruleColumns = ContractruleColumns{
 	MethodFromField:  "methodFromField",
 	MethodToField:    "methodToField",
 	MethodValueField: "methodValueField",
-	EventName:        "eventName",
-	EventSignature:   "eventSignature",
-	EventFromField:   "eventFromField",
-	EventToField:     "eventToField",
-	EventValueField:  "eventValueField",
-	ControlOperation: "controlOperation",
-	Threshold:        "threshold",
 	ContractKind:     "contractKind",
-	EventTopic:       "eventTopic",
 	WhiteAddrList:    "whiteAddrList",
 	ChainId:          "chainId",
 }

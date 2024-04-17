@@ -20,4 +20,6 @@ type ChainData struct {
 	Gas       string `json:"gas"       ` //
 	GasPrice  string `json:"gasPrice"  ` //
 	Nonce     int64  `json:"nonce"     ` //
+	Kind      string `json:"kind"      ` //
+	TokenId   string `json:"tokenId"   ` //
 }

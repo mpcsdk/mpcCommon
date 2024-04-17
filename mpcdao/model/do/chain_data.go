@@ -25,4 +25,6 @@ type ChainData struct {
 	Gas       interface{} //
 	GasPrice  interface{} //
 	Nonce     interface{} //
+	Kind      interface{} //
+	TokenId   interface{} //
 }

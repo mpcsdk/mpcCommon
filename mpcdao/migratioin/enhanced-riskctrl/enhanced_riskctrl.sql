@@ -21,10 +21,10 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: chain_data; Type: TABLE; Schema: public; Owner: postgres
+-- Name: chain_tx; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.chain_data (
+CREATE TABLE public.chain_tx (
     chain_id bigint NOT NULL,
     height bigint NOT NULL,
     block_hash character varying(255) NOT NULL,
@@ -45,34 +45,34 @@ CREATE TABLE public.chain_data (
 );
 
 
-ALTER TABLE public.chain_data OWNER TO postgres;
+ALTER TABLE public.chain_tx OWNER TO postgres;
 
 --
 -- Name: fromtscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX fromtscontractid ON public.chain_data USING btree (ts DESC NULLS LAST, "from", contract, chain_id);
+CREATE INDEX fromtscontractid ON public.chain_tx USING btree (ts DESC NULLS LAST, "from", contract, chain_id);
 
 
 --
 -- Name: hashtxidxlogidx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX hashtxidxlogidx ON public.chain_data USING btree (chain_id, tx_hash, tx_idx, log_idx);
+CREATE UNIQUE INDEX hashtxidxlogidx ON public.chain_tx USING btree (chain_id, tx_hash, tx_idx, log_idx);
 
 
 --
 -- Name: totscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX totscontractid ON public.chain_data USING btree (ts DESC NULLS LAST, "to", contract, chain_id);
+CREATE INDEX totscontractid ON public.chain_tx USING btree (ts DESC NULLS LAST, "to", contract, chain_id);
 
 
 --
 -- Name: tscontractid; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX tscontractid ON public.chain_data USING btree (chain_id, ts DESC NULLS LAST, contract);
+CREATE INDEX tscontractid ON public.chain_tx USING btree (chain_id, ts DESC NULLS LAST, contract);
 
 
 --

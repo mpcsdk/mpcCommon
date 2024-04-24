@@ -40,7 +40,8 @@ CREATE TABLE public.chain_data (
     gas_price character varying(255) NOT NULL,
     nonce bigint NOT NULL,
     kind character varying(255) NOT NULL,
-    token_id character varying(255) NOT NULL
+    token_id character varying(255) NOT NULL,
+    contract_name character varying(255) NOT NULL
 );
 
 

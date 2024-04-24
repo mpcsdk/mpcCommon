@@ -63,7 +63,7 @@ var chainDataColumns = ChainDataColumns{
 // NewChainDataDao creates and returns a new DAO object for table data access.
 func NewChainDataDao() *ChainDataDao {
 	return &ChainDataDao{
-		group:   "sync_chain",
+		group:   "enhanced_riskctrl",
 		table:   "chain_data",
 		columns: chainDataColumns,
 	}

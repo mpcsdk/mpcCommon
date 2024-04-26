@@ -15,9 +15,11 @@ type ChainData struct {
 	dur   time.Duration
 }
 type QueryData struct {
+	ChainId  int64  `json:"chainId"`
 	From     string `json:"from"`
 	To       string `json:"to"`
 	Contract string `json:"contract"`
+	Kind     string `json:"kind"`
 	///
 	StartTime int64 `json:"startTime"`
 	EndTime   int64 `json:"endTime"`
@@ -47,6 +49,12 @@ func (s *ChainData) Query(ctx context.Context, query *QueryData) ([]*entity.Chai
 	}
 	//
 	where := dao.ChainData.Ctx(ctx)
+	if query.ChainId != 0 {
+		where = where.Where(dao.ChainData.Columns().ChainId, query.ChainId)
+	}
+	if query.Kind != "" {
+		where = where.Where(dao.ChainData.Columns().Kind, query.Kind)
+	}
 	if query.From != "" {
 		where = where.Where(dao.ChainData.Columns().From, query.From)
 	}

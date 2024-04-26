@@ -42,7 +42,7 @@ func (s *ChainData) Insert(ctx context.Context, data *entity.ChainData) error {
 }
 
 func (s *ChainData) Query(ctx context.Context, query *QueryData) ([]*entity.ChainData, error) {
-	if query.PageSize < 1 || query.Page < 0 {
+	if query.PageSize < 0 || query.Page < 0 {
 		return nil, nil
 	}
 	//

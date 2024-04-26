@@ -105,7 +105,7 @@ type QueryTx struct {
 }
 
 func (s *EnhancedRiskCtrl) Query(ctx context.Context, query *QueryTx) ([]*entity.ChainTx, error) {
-	if query.PageSize < 1 || query.Page < 0 {
+	if query.PageSize < 0 || query.Page < 0 {
 		return nil, nil
 	}
 	//

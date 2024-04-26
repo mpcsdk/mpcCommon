@@ -55,10 +55,10 @@ CREATE INDEX fromtscontractid ON public.chain_data USING btree (ts DESC NULLS LA
 
 
 --
--- Name: hashtxidxlogidx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: hashtxidxlogidxtoken; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX hashtxidxlogidx ON public.chain_data USING btree (chain_id, tx_hash, tx_idx, log_idx);
+CREATE UNIQUE INDEX hashtxidxlogidxtoken ON public.chain_data USING btree (tx_hash, tx_idx, log_idx, token_id, chain_id);
 
 
 --

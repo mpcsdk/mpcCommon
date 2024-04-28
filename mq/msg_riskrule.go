@@ -80,11 +80,21 @@ func (s *NatsServer) SubReply_RiskCtrlRule(subj string, fn func(data *RiskRuleRe
 				var data RiskRuleReplyMsg
 				if err := json.Unmarshal(msg.Data, &data); err != nil {
 					g.Log().Error(s.ctx, "SubReply_RiskCtrlRule Unmarshal:", msg.Data, ",err:", err)
+					b, _ := json.Marshal(&RiskRuleReply{
+						Code: 1,
+						Msg:  err.Error(),
+					})
+					msg.Respond(b)
 					continue
 				}
 				rst, err := fn(&data)
 				if err != nil {
 					g.Log().Error(s.ctx, "SubReply_RiskCtrlRule fn:", err)
+					b, _ := json.Marshal(&RiskRuleReply{
+						Code: 1,
+						Msg:  err.Error(),
+					})
+					msg.Respond(b)
 					continue
 				}
 				b, _ := json.Marshal(rst)

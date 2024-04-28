@@ -8,7 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/mpcsdk/mpcCommon/mpcmodel"
+	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
 
 // /input
@@ -66,7 +66,7 @@ func (s *Analzyer) SignTx(signData string) (*SignTx, error) {
 	// return atx, nil
 }
 
-func (s *Analzyer) AnalzyTxData(tx *SignTxData, contractRule *mpcmodel.ContractRule) (*AnalzyedTxData, error) {
+func (s *Analzyer) AnalzyTxData(tx *SignTxData, contractRule *entity.Contractrule) (*AnalzyedTxData, error) {
 	// tx.Target = strings.ToLower(tx.Target)
 	if abistr, ok := s.abis[tx.Target.String()]; !ok {
 		return nil, nil

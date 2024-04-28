@@ -15,8 +15,9 @@ func (s *ChainCfg) UpdateHeigh(ctx context.Context, chainId int64, heigh int64) 
 	_, err := dao.Chaincfg.Ctx(ctx).
 		Data(g.Map{dao.Chaincfg.Columns().Heigh: heigh}).
 		Where(dao.Chaincfg.Columns().ChainId, chainId).
-		OnConflict(dao.Chaincfg.Columns().ChainId).
-		Save()
+		Update()
+		// OnConflict(dao.Chaincfg.Columns().ChainId).
+		// Save()
 	return err
 }
 func (s *ChainCfg) AllCfg(ctx context.Context) ([]*entity.Chaincfg, error) {

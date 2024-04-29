@@ -14,7 +14,7 @@ func TraceId(ctx context.Context) string {
 }
 
 var (
-	CodeUnknown        = (&errCode{-1, "unknown", nil}).SetDetail
+	CodeUnknown        = (&errCode{-1, "unknown", nil}).instance_json
 	CodeNil            = (&errCode{-1, "nil", nil}).instance            // No error code specified.
 	CodeOK             = (&errCode{0, "ok", nil}).instance              // It is OK.
 	CodeSessionInvalid = (&errCode{1, "Session Invalid", nil}).instance // The token is invalid.

@@ -15,5 +15,4 @@ func Test_err_detail(t *testing.T) {
 	////
 	er := CodeUnknown(d)
 	er.Error()
-
 }

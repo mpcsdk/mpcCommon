@@ -47,6 +47,23 @@ func (e *errCode) instance(detail ...interface{}) error {
 		return gerror.NewCode(&errCode{e.code, e.message, detail})
 	}
 }
+
+func (e *errCode) instance_json(val interface{}) error {
+	if val == nil {
+		return nil
+	}
+	m := &m{}
+	switch val.(type) {
+	case string:
+		json.Unmarshal([]byte(val.(string)), m)
+	case []byte:
+		json.Unmarshal(val.([]byte), m)
+	default:
+		return nil
+	}
+	return gerror.NewCode(&errCode{m.Code, m.Message, m.Detail})
+}
+
 func (e *errCode) Error() string {
 	// return errors.New(e.message)
 	return e.message
@@ -74,20 +91,21 @@ func (e *errCode) Detail() interface{} {
 	return string(v)
 }
 
-func (e *errCode) SetDetail(detail interface{}) error {
-	if detail == nil {
-		return nil
-	}
-	m := &m{}
-	switch detail.(type) {
-	case string:
-		json.Unmarshal([]byte(detail.(string)), m)
-	case []byte:
-		json.Unmarshal(detail.([]byte), m)
-	default:
-		return nil
-	}
-	return gerror.NewCode(&errCode{m.Code, m.Message, m.Detail})
+func (e *errCode) SetDetail(detail interface{}) {
+	e.detail = detail
+	// if detail == nil {
+	// 	return nil
+	// }
+	// m := &m{}
+	// switch detail.(type) {
+	// case string:
+	// 	json.Unmarshal([]byte(detail.(string)), m)
+	// case []byte:
+	// 	json.Unmarshal(detail.([]byte), m)
+	// default:
+	// 	return nil
+	// }
+	// return gerror.NewCode(&errCode{m.Code, m.Message, m.Detail})
 }
 
 type errDetail struct {

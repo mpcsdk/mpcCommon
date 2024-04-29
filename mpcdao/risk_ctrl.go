@@ -84,7 +84,10 @@ func (s *RiskCtrlRule) GetContractAbi(ctx context.Context, ChainId int64, addres
 }
 func (s *RiskCtrlRule) ClearContractRuleCache(ctx context.Context,
 	ChainId int64, kind string, address string) {
-	g.DB().GetCore().GetCache().Remove(ctx, "SelectCache:"+dao.Contractrule.Table()+strconv.FormatInt(ChainId, 10)+kind+address)
+	cache := g.DB(dao.RiskcontrolRule.Group()).GetCache()
+	if cache != nil {
+		g.DB(dao.RiskcontrolRule.Group()).GetCache().Remove(ctx, "SelectCache:"+dao.Contractrule.Table()+strconv.FormatInt(ChainId, 10)+kind+address)
+	}
 }
 func (s *RiskCtrlRule) GetContractRuleBriefs(ctx context.Context, ChainId int64, kind string) ([]*entity.Contractrule, error) {
 	model := dao.Contractrule.Ctx(ctx).Cache(gdb.CacheOption{

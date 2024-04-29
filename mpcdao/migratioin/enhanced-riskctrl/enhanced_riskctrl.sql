@@ -38,7 +38,10 @@ CREATE TABLE public.chain_tx (
     value character varying(255) NOT NULL,
     gas character varying(255) NOT NULL,
     gas_price character varying(255) NOT NULL,
-    nonce bigint
+    nonce bigint NOT NULL,
+    kind character varying(255) NOT NULL,
+    token_id character varying(255) NOT NULL,
+    contract_name character varying(255) NOT NULL
 );
 
 
@@ -55,7 +58,7 @@ CREATE INDEX fromtscontractid ON public.chain_tx USING btree (ts DESC NULLS LAST
 -- Name: hashtxidxlogidx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX hashtxidxlogidx ON public.chain_tx USING btree (chain_id, tx_hash, tx_idx, log_idx);
+CREATE UNIQUE INDEX hashtxidxlogidxtoken ON public.chain_tx USING btree (tx_hash, tx_idx, log_idx, token_id, chain_id);
 
 
 --

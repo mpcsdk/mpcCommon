@@ -1,6 +1,7 @@
 package mpccode
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/gogf/gf/v2/encoding/gjson"
@@ -39,14 +40,6 @@ func Equal(err error, target error) bool {
 	return false
 }
 
-//
-//	func (e *errCode) errCode() gcode.Code {
-//		return gcode.New(e.code, e.message, e.detail)
-//	}
-// func (e *errCode) CodeErr() error {
-// 	return gerror.WrapCode(gcode.New(e.code, e.message, e.detail), e)
-// }
-
 func (e *errCode) instance(detail ...interface{}) error {
 	if len(detail) == 0 {
 		return gerror.NewCode(&errCode{e.code, e.message, nil})
@@ -64,14 +57,38 @@ func (e *errCode) Message() string {
 func (e *errCode) Code() int {
 	return e.code
 }
-func (e *errCode) Detail() interface{} {
-	return e.detail
+
+type m struct {
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Detail  interface{} `json:"detail"`
 }
 
-// func (e *errCode) SetDetail(detail any) error {
-// 	e.detail = detail
-// 	return e.CodeErr()
-// }
+func (e *errCode) Detail() interface{} {
+	m := &m{
+		Code:    e.code,
+		Message: e.message,
+		Detail:  e.detail,
+	}
+	v, _ := json.Marshal(m)
+	return string(v)
+}
+
+func (e *errCode) SetDetail(detail interface{}) error {
+	if detail == nil {
+		return nil
+	}
+	m := &m{}
+	switch detail.(type) {
+	case string:
+		json.Unmarshal([]byte(detail.(string)), m)
+	case []byte:
+		json.Unmarshal(detail.([]byte), m)
+	default:
+		return nil
+	}
+	return gerror.NewCode(&errCode{m.Code, m.Message, m.Detail})
+}
 
 type errDetail struct {
 	K string

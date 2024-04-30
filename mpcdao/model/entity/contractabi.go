@@ -19,4 +19,5 @@ type Contractabi struct {
 	AbiContent      string      `json:"abiContent"      ` // 合约abi
 	ContractKind    string      `json:"contractKind"    ` // 合约类型
 	ChainId         int64       `json:"chainId"         ` // 链id
+	Decimal         int         `json:"decimal"         ` //
 }

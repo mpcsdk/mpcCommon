@@ -41,8 +41,9 @@ func (s *RiskCtrlRule) GetContractAbiBriefs(ctx context.Context, ChainId int64, 
 		dao.Contractabi.Columns().ContractAddress,
 		dao.Contractabi.Columns().ContractName,
 		dao.Contractabi.Columns().ContractKind,
+		dao.Contractabi.Columns().Decimal,
 	)
-	if ChainId >= 0 {
+	if ChainId > 0 {
 		model = model.Where(dao.Contractabi.Columns().ChainId, ChainId)
 	}
 	if kind != "" {
@@ -100,7 +101,7 @@ func (s *RiskCtrlRule) GetContractRuleBriefs(ctx context.Context, ChainId int64,
 		dao.Contractrule.Columns().ContractName,
 		dao.Contractrule.Columns().ContractKind,
 	)
-	if ChainId >= 0 {
+	if ChainId > 0 {
 		model = model.Where(dao.Contractrule.Columns().ChainId, ChainId)
 	}
 	if kind != "" {

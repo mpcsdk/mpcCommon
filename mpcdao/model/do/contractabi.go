@@ -21,4 +21,5 @@ type Contractabi struct {
 	AbiContent      interface{} // 合约abi
 	ContractKind    interface{} // 合约类型
 	ChainId         interface{} // 链id
+	Decimal         interface{} //
 }

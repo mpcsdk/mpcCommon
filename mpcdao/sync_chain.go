@@ -10,7 +10,7 @@ import (
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
 
-type ChainData struct {
+type ChainTransfer struct {
 	redis *gredis.Redis
 	dur   time.Duration
 }
@@ -28,48 +28,53 @@ type QueryData struct {
 	PageSize int `json:"pageSize"`
 }
 
-func NewChainData(redis *gredis.Redis, dur int) *ChainData {
-	// g.DB(dao.ChainData.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
-	dao.ChainData.DB().GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
+func NewChainTransfer(redis *gredis.Redis, dur int) *ChainTransfer {
+	// g.DB(dao.ChainTransfer.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
+	dao.ChainTransfer.DB().GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
 
-	return &ChainData{
+	return &ChainTransfer{
 		redis: redis,
 		dur:   time.Duration(dur) * time.Second,
 	}
 }
 
-func (s *ChainData) Insert(ctx context.Context, data *entity.ChainData) error {
-	_, err := dao.ChainData.Ctx(ctx).Insert(data)
+func (s *ChainTransfer) Insert(ctx context.Context, data *entity.ChainTransfer) error {
+	_, err := dao.ChainTransfer.Ctx(ctx).Insert(data)
 	return err
 }
 
-func (s *ChainData) Query(ctx context.Context, query *QueryData) ([]*entity.ChainData, error) {
+func (s *ChainTransfer) InsertBatch(ctx context.Context, data []*entity.ChainTransfer) error {
+	_, err := dao.ChainTransfer.Ctx(ctx).Insert(data)
+	return err
+}
+
+func (s *ChainTransfer) Query(ctx context.Context, query *QueryData) ([]*entity.ChainTransfer, error) {
 	if query.PageSize < 0 || query.Page < 0 {
 		return nil, nil
 	}
 	//
-	where := dao.ChainData.Ctx(ctx)
+	where := dao.ChainTransfer.Ctx(ctx)
 	if query.ChainId != 0 {
-		where = where.Where(dao.ChainData.Columns().ChainId, query.ChainId)
+		where = where.Where(dao.ChainTransfer.Columns().ChainId, query.ChainId)
 	}
 	if query.Kind != "" {
-		where = where.Where(dao.ChainData.Columns().Kind, query.Kind)
+		where = where.Where(dao.ChainTransfer.Columns().Kind, query.Kind)
 	}
 	if query.From != "" {
-		where = where.Where(dao.ChainData.Columns().From, query.From)
+		where = where.Where(dao.ChainTransfer.Columns().From, query.From)
 	}
 	if query.To != "" {
-		where = where.Where(dao.ChainData.Columns().To, query.To)
+		where = where.Where(dao.ChainTransfer.Columns().To, query.To)
 	}
 	if query.Contract != "" {
-		where = where.Where(dao.ChainData.Columns().Contract, query.Contract)
+		where = where.Where(dao.ChainTransfer.Columns().Contract, query.Contract)
 	}
 	///time
 	if query.StartTime != 0 {
-		where = where.WhereGTE(dao.ChainData.Columns().Ts, query.StartTime)
+		where = where.WhereGTE(dao.ChainTransfer.Columns().Ts, query.StartTime)
 	}
 	if query.EndTime != 0 {
-		where = where.WhereLTE(dao.ChainData.Columns().Ts, query.EndTime)
+		where = where.WhereLTE(dao.ChainTransfer.Columns().Ts, query.EndTime)
 	}
 	///
 	if query.PageSize != 0 {
@@ -80,7 +85,7 @@ func (s *ChainData) Query(ctx context.Context, query *QueryData) ([]*entity.Chai
 	if err != nil {
 		return nil, err
 	}
-	data := []*entity.ChainData{}
+	data := []*entity.ChainTransfer{}
 	err = result.Structs(&data)
 	///
 	return data, err

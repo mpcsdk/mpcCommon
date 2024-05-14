@@ -113,10 +113,10 @@ func (s *EnhancedRiskCtrl) Query(ctx context.Context, query *QueryTx) ([]*entity
 	//
 	where := dao.ChainTx.Ctx(ctx)
 	if query.ChainId != 0 {
-		where = where.Where(dao.ChainData.Columns().ChainId, query.ChainId)
+		where = where.Where(dao.ChainTx.Columns().ChainId, query.ChainId)
 	}
 	if query.Kind != "" {
-		where = where.Where(dao.ChainData.Columns().Kind, query.Kind)
+		where = where.Where(dao.ChainTx.Columns().Kind, query.Kind)
 	}
 	if query.From != "" {
 		where = where.Where(dao.ChainTx.Columns().From, query.From)

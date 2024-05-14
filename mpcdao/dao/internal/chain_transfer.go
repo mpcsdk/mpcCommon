@@ -11,15 +11,15 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-// ChainDataDao is the data access object for table chain_data.
-type ChainDataDao struct {
-	table   string           // table is the underlying table name of the DAO.
-	group   string           // group is the database configuration group name of current DAO.
-	columns ChainDataColumns // columns contains all the column names of Table for convenient usage.
+// ChainTransferDao is the data access object for table chain_transfer.
+type ChainTransferDao struct {
+	table   string               // table is the underlying table name of the DAO.
+	group   string               // group is the database configuration group name of current DAO.
+	columns ChainTransferColumns // columns contains all the column names of Table for convenient usage.
 }
 
-// ChainDataColumns defines and stores column names for table chain_data.
-type ChainDataColumns struct {
+// ChainTransferColumns defines and stores column names for table chain_transfer.
+type ChainTransferColumns struct {
 	ChainId   string //
 	Height    string //
 	BlockHash string //
@@ -36,10 +36,12 @@ type ChainDataColumns struct {
 	Nonce     string //
 	Kind      string //
 	TokenId   string //
+	Removed   string //
+	Status    string //
 }
 
-// chainDataColumns holds the columns for table chain_data.
-var chainDataColumns = ChainDataColumns{
+// chainTransferColumns holds the columns for table chain_transfer.
+var chainTransferColumns = ChainTransferColumns{
 	ChainId:   "chain_id",
 	Height:    "height",
 	BlockHash: "block_hash",
@@ -56,39 +58,41 @@ var chainDataColumns = ChainDataColumns{
 	Nonce:     "nonce",
 	Kind:      "kind",
 	TokenId:   "token_id",
+	Removed:   "removed",
+	Status:    "status",
 }
 
-// NewChainDataDao creates and returns a new DAO object for table data access.
-func NewChainDataDao() *ChainDataDao {
-	return &ChainDataDao{
+// NewChainTransferDao creates and returns a new DAO object for table data access.
+func NewChainTransferDao() *ChainTransferDao {
+	return &ChainTransferDao{
 		group:   "sync_chain",
-		table:   "chain_data",
-		columns: chainDataColumns,
+		table:   "chain_transfer",
+		columns: chainTransferColumns,
 	}
 }
 
 // DB retrieves and returns the underlying raw database management object of current DAO.
-func (dao *ChainDataDao) DB() gdb.DB {
+func (dao *ChainTransferDao) DB() gdb.DB {
 	return g.DB(dao.group)
 }
 
 // Table returns the table name of current dao.
-func (dao *ChainDataDao) Table() string {
+func (dao *ChainTransferDao) Table() string {
 	return dao.table
 }
 
 // Columns returns all column names of current dao.
-func (dao *ChainDataDao) Columns() ChainDataColumns {
+func (dao *ChainTransferDao) Columns() ChainTransferColumns {
 	return dao.columns
 }
 
 // Group returns the configuration group name of database of current dao.
-func (dao *ChainDataDao) Group() string {
+func (dao *ChainTransferDao) Group() string {
 	return dao.group
 }
 
 // Ctx creates and returns the Model for current DAO, It automatically sets the context for current operation.
-func (dao *ChainDataDao) Ctx(ctx context.Context) *gdb.Model {
+func (dao *ChainTransferDao) Ctx(ctx context.Context) *gdb.Model {
 	return dao.DB().Model(dao.table).Safe().Ctx(ctx)
 }
 
@@ -98,6 +102,6 @@ func (dao *ChainDataDao) Ctx(ctx context.Context) *gdb.Model {
 //
 // Note that, you should not Commit or Rollback the transaction in function f
 // as it is automatically handled by this function.
-func (dao *ChainDataDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
+func (dao *ChainTransferDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
 	return dao.Ctx(ctx).Transaction(ctx, f)
 }

@@ -4,8 +4,8 @@ import (
 	"github.com/nats-io/nats.go/jetstream"
 )
 
-const JetSub_ChainTx = "chainData.tx"
-const JetStream_ChainTx = "chainData_stream"
+const JetSub_ChainTransfer = "syncChain.transfer"
+const JetStream_SyncChain = "syncChain_stream"
 
 func (s *NatsServer) JetStream() (jetstream.JetStream, error) {
 
@@ -16,7 +16,7 @@ func (s *NatsServer) JetStream() (jetstream.JetStream, error) {
 	//
 	return jets, nil
 }
-func (s *NatsServer) GetUpChainTxStream(args ...int64) (jetstream.Stream, error) {
+func (s *NatsServer) CreateOrUpdateTransferStream(args ...int64) (jetstream.Stream, error) {
 	jets, err := jetstream.New(s.nc)
 	if err != nil {
 		return nil, err
@@ -27,9 +27,9 @@ func (s *NatsServer) GetUpChainTxStream(args ...int64) (jetstream.Stream, error)
 		msgSize = args[0]
 	}
 	stream, err := jets.CreateOrUpdateStream(s.ctx, jetstream.StreamConfig{
-		Name:        JetStream_ChainTx,
-		Description: JetStream_ChainTx,
-		Subjects:    []string{"chainData", JetSub_ChainTx},
+		Name:        JetStream_SyncChain,
+		Description: JetStream_SyncChain,
+		Subjects:    []string{"syncChain", JetSub_ChainTransfer},
 		Retention:   jetstream.LimitsPolicy,
 		Compression: jetstream.S2Compression,
 		MaxMsgs:     msgSize,
@@ -38,20 +38,20 @@ func (s *NatsServer) GetUpChainTxStream(args ...int64) (jetstream.Stream, error)
 	return stream, err
 }
 
-func (s *NatsServer) GetChainTxStream() (jetstream.Stream, error) {
+func (s *NatsServer) GetChainTransferStream() (jetstream.Stream, error) {
 	///
 	jets, err := jetstream.New(s.nc)
 	if err != nil {
 		return nil, err
 	}
 	//
-	stream, err := jets.Stream(s.ctx, JetStream_ChainTx)
+	stream, err := jets.Stream(s.ctx, JetStream_SyncChain)
 	////
 	return stream, err
 }
 
-func (s *NatsServer) GetChainTxConsumer(name, sub string) (jetstream.Consumer, error) {
-	stream, err := s.GetChainTxStream()
+func (s *NatsServer) GetChainTransferConsumer(name, sub string) (jetstream.Consumer, error) {
+	stream, err := s.GetChainTransferStream()
 	if err != nil {
 		return nil, err
 	}

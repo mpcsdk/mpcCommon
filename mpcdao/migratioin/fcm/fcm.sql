@@ -1,0 +1,75 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.3 (Debian 12.3-1.pgdg100+1)
+-- Dumped by pg_dump version 12.16 (Ubuntu 12.16-0ubuntu0.20.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: fcm_token; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.fcm_token (
+    user_id character varying(255) NOT NULL,
+    fcm_token character varying(255) NOT NULL,
+    token character varying(255) NOT NULL,
+    address character varying(255) NOT NULL,
+    created_time timestamp without time zone,
+    updated_time timestamp without time zone
+);
+
+
+ALTER TABLE public.fcm_token OWNER TO postgres;
+
+--
+-- Name: push_err; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.push_err (
+    fmc_token character varying(255),
+    title character varying(255),
+    body character varying(255),
+    data character varying,
+    err character varying,
+    address character varying(255),
+    user_id character varying(255),
+    created_time timestamp without time zone
+);
+
+
+ALTER TABLE public.push_err OWNER TO postgres;
+
+--
+-- Name: fcm_token fcm_token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.fcm_token
+    ADD CONSTRAINT fcm_token_pkey PRIMARY KEY (address);
+
+
+--
+-- Name: addrfcm; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX addrfcm ON public.fcm_token USING btree (address, fcm_token, user_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

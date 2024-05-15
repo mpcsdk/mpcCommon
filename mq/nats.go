@@ -8,12 +8,14 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/nats-io/nats.go"
+	"github.com/nats-io/nats.go/jetstream"
 )
 
 type NatsServer struct {
 	ctx context.Context
 	nc  *nats.Conn
 	///
+	jets jetstream.JetStream
 }
 
 // /
@@ -31,7 +33,12 @@ func New(urls string) *NatsServer {
 	s.nc = nc
 	s.ctx = gctx.GetInitCtx()
 	///
-	s.ctx = gctx.GetInitCtx()
+	jets, err := jetstream.New(s.nc)
+	if err != nil {
+		panic(err)
+	}
+	//
+	s.jets = jets
 	///
 	return s
 }

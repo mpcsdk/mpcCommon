@@ -12,7 +12,7 @@ func Test_StreamConsumer(t *testing.T) {
 	natsServer := New(url)
 
 	/////
-	_, err := natsServer.CreateOrUpdateStream("testStream", []string{"testStream.>"})
+	_, err := natsServer.CreateOrUpdateStream(JetStream_SyncChain, []string{JetSub_SyncChainTransfer, JetSub_SyncChainMint})
 	if err != nil {
 		t.Fatal(err)
 	}

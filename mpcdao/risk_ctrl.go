@@ -49,11 +49,19 @@ func (s *RiskCtrlRule) GetContractAbiBriefs(ctx context.Context, ChainId int64, 
 	if kind != "" {
 		model = model.Where(dao.Contractabi.Columns().ContractKind, kind)
 	}
+	////
+	// model = model.Hook(gdb.HookHandler{
+	// 	Select: func(ctx context.Context, in *gdb.HookSelectInput) (result gdb.Result, err error) {
+	// 		fmt.Println(in)
+	// 		return nil, nil
+	// 	},
+	// })
+	///
 	rst, err := model.All()
 	if err != nil {
 		return nil, err
 	}
-	///
+	// ///
 	rule := []*entity.Contractabi{}
 	rst.Structs(&rule)
 	return rule, nil

@@ -61,6 +61,9 @@ func (s *Fcm) QueryFcmTokenAll(ctx context.Context, pos PosFcmToken, limit int) 
 	///
 	where.Fields()
 	result, err := where.All()
+	if result.Len() == 0 {
+		return nil, nil, nil
+	}
 	if err != nil {
 		return nil, nil, err
 	}

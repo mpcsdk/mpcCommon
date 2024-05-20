@@ -21,6 +21,25 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: fcm_offline_msg; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.fcm_offline_msg (
+    fmc_token character varying(255) NOT NULL,
+    title character varying(255) NOT NULL,
+    body character varying(255) NOT NULL,
+    data character varying NOT NULL,
+    err character varying NOT NULL,
+    address character varying(255) NOT NULL,
+    user_id character varying(255) NOT NULL,
+    created_time timestamp(6) without time zone NOT NULL,
+    id character varying NOT NULL
+);
+
+
+ALTER TABLE public.fcm_offline_msg OWNER TO postgres;
+
+--
 -- Name: fcm_token; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -55,6 +74,14 @@ CREATE TABLE public.push_err (
 ALTER TABLE public.push_err OWNER TO postgres;
 
 --
+-- Name: fcm_offline_msg fcm_offline_msg_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.fcm_offline_msg
+    ADD CONSTRAINT fcm_offline_msg_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: fcm_token fcm_token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -67,6 +94,13 @@ ALTER TABLE ONLY public.fcm_token
 --
 
 CREATE UNIQUE INDEX addrfcm ON public.fcm_token USING btree (address, fcm_token, user_id);
+
+
+--
+-- Name: history_msg_address_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX history_msg_address_idx ON public.fcm_offline_msg USING btree (address);
 
 
 --

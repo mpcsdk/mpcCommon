@@ -4,7 +4,7 @@ import (
 	"github.com/nats-io/nats.go/jetstream"
 )
 
-// const JetSub_SyncChain = "syncChain"
+const JetSub_SyncChain = "syncChain.>"
 const JetSub_SyncChainTransfer = "syncChain.transfer"
 const JetSub_SyncChainMint = "syncChain.mint"
 

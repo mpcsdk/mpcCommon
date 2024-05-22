@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao"
@@ -22,15 +23,39 @@ type QueryFcmToken struct {
 
 func NewFcm(redis *gredis.Redis, dur int) *Fcm {
 	// g.DB(dao.ChainTransfer.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
-	dao.FcmToken.DB().GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
+	if redis != nil {
+		dao.FcmToken.DB().GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
+	}
 	return &Fcm{
 		redis: redis,
 		dur:   time.Duration(dur) * time.Second,
 	}
 }
 
+func (s *Fcm) ExistsFcmToken(ctx context.Context, address string, fcmToken string) (bool, error) {
+	result, err := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
+		Duration: s.dur,
+		Name:     dao.MpcContext.Table() + address + fcmToken,
+		Force:    true,
+	}).Where(dao.FcmToken.Columns().Address, address).
+		Where(dao.FcmToken.Columns().FcmToken, fcmToken).Count()
+	if err != nil {
+		return false, err
+	}
+
+	if result == 0 {
+		return false, nil
+	}
+	return true, nil
+}
+
+// /////
 func (s *Fcm) InsertFcmToken(ctx context.Context, data *entity.FcmToken) error {
-	_, err := dao.FcmToken.Ctx(ctx).Insert(data)
+	_, err := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
+		Duration: s.dur,
+		Name:     dao.MpcContext.Table() + data.Address + data.FcmToken,
+		Force:    true,
+	}).Insert(data)
 	return err
 }
 func (s *Fcm) InsertPushErr(ctx context.Context, data *entity.PushErr) error {
@@ -96,18 +121,49 @@ func (s *Fcm) QueryFcmOfflineMsg(ctx context.Context, pos PosFcmOffline, limit i
 }
 
 func (s *Fcm) QueryFcmToken(ctx context.Context, query *QueryFcmToken) ([]*entity.FcmToken, error) {
+	if query == nil {
+		return nil, nil
+	}
+	if query.Address == "" && query.FcmToken == "" {
+		return nil, nil
+	}
 	//
-	where := dao.ChainTransfer.Ctx(ctx)
-	where = where.WhereGTE(dao.FcmToken.Columns().Address, query.Address)
+	where := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
+		Duration: s.dur,
+		Name:     dao.MpcContext.Table() + query.Address + query.FcmToken,
+		Force:    true,
+	})
+	if query.Address != "" {
+		where = where.Where(dao.FcmToken.Columns().Address, query.Address)
+	}
+	if query.FcmToken != "" {
+		where = where.Where(dao.FcmToken.Columns().FcmToken, query.FcmToken)
+	}
 	///
 
 	///
-	result, err := where.All()
+	rst, err := where.All()
 	if err != nil {
 		return nil, err
 	}
 	data := []*entity.FcmToken{}
-	err = result.Structs(&data)
+	err = rst.Structs(&data)
 	///
 	return data, err
+}
+
+func (s *Fcm) DelFcmToken(ctx context.Context, address string, fcmToken string) error {
+	//
+	where := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
+		Duration: s.dur,
+		Name:     dao.MpcContext.Table() + address + address,
+		Force:    true,
+	})
+	where = where.Where(dao.FcmToken.Columns().Address, address)
+	where = where.Where(dao.FcmToken.Columns().FcmToken, fcmToken)
+	///
+
+	///
+	_, err := where.Delete()
+	return err
 }

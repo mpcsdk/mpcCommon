@@ -82,16 +82,21 @@ type m struct {
 }
 
 func (e *errCode) Detail() interface{} {
-	m := &m{
-		Code:    e.code,
-		Message: e.message,
-		Detail:  e.detail,
+	if e.detail == nil {
+		return nil
 	}
-	v, _ := json.Marshal(m)
-	return string(v)
+	return e.Detail
+	// m := &m{
+	// 	Code:    e.code,
+	// 	Message: e.message,
+	// 	Detail:  e.detail,
+	// }
+	// v, _ := json.Marshal(m)
+	// return string(v)
 }
 
 func (e *errCode) SetDetail(detail interface{}) {
+
 	e.detail = detail
 	// if detail == nil {
 	// 	return nil

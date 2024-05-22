@@ -20,44 +20,46 @@ type ChainTxDao struct {
 
 // ChainTxColumns defines and stores column names for table chain_tx.
 type ChainTxColumns struct {
-	ChainId      string //
-	Height       string //
-	BlockHash    string //
-	Ts           string //
-	TxHash       string //
-	TxIdx        string //
-	LogIdx       string //
-	From         string //
-	To           string //
-	Contract     string //
-	Value        string //
-	Gas          string //
-	GasPrice     string //
-	Nonce        string //
-	Kind         string //
-	TokenId      string //
-	ContractName string //
+	ChainId   string //
+	Height    string //
+	BlockHash string //
+	Ts        string //
+	TxHash    string //
+	TxIdx     string //
+	LogIdx    string //
+	From      string //
+	To        string //
+	Contract  string //
+	Value     string //
+	Gas       string //
+	GasPrice  string //
+	Nonce     string //
+	Kind      string //
+	TokenId   string //
+	Removed   string //
+	Status    string //
 }
 
 // chainTxColumns holds the columns for table chain_tx.
 var chainTxColumns = ChainTxColumns{
-	ChainId:      "chain_id",
-	Height:       "height",
-	BlockHash:    "block_hash",
-	Ts:           "ts",
-	TxHash:       "tx_hash",
-	TxIdx:        "tx_idx",
-	LogIdx:       "log_idx",
-	From:         "from",
-	To:           "to",
-	Contract:     "contract",
-	Value:        "value",
-	Gas:          "gas",
-	GasPrice:     "gas_price",
-	Nonce:        "nonce",
-	Kind:         "kind",
-	TokenId:      "token_id",
-	ContractName: "contract_name",
+	ChainId:   "chain_id",
+	Height:    "height",
+	BlockHash: "block_hash",
+	Ts:        "ts",
+	TxHash:    "tx_hash",
+	TxIdx:     "tx_idx",
+	LogIdx:    "log_idx",
+	From:      "from",
+	To:        "to",
+	Contract:  "contract",
+	Value:     "value",
+	Gas:       "gas",
+	GasPrice:  "gas_price",
+	Nonce:     "nonce",
+	Kind:      "kind",
+	TokenId:   "token_id",
+	Removed:   "removed",
+	Status:    "status",
 }
 
 // NewChainTxDao creates and returns a new DAO object for table data access.

@@ -18,4 +18,5 @@ type Tfa struct {
 	PhoneUpdatedAt *gtime.Time `json:"phoneUpdatedAt" ` //
 	MailUpdatedAt  *gtime.Time `json:"mailUpdatedAt"  ` //
 	TokenData      string      `json:"tokenData"      ` //
+	TxNeedVerify   bool        `json:"txNeedVerify"   ` //
 }

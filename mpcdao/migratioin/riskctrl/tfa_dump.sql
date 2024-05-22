@@ -32,7 +32,8 @@ CREATE TABLE public.tfa (
     mail character varying(254),
     phone_updated_at timestamp(0) without time zone,
     mail_updated_at timestamp(0) without time zone,
-    token_data text
+    token_data text,
+    tx_need_verify boolean DEFAULT false NOT NULL
 );
 
 

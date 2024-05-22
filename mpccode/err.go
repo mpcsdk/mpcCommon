@@ -82,10 +82,8 @@ type m struct {
 }
 
 func (e *errCode) Detail() interface{} {
-	if e.detail == nil {
-		return nil
-	}
-	return e.Detail
+
+	return e.detail
 	// m := &m{
 	// 	Code:    e.code,
 	// 	Message: e.message,

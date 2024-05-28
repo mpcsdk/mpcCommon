@@ -24,7 +24,6 @@ type FcmOfflineMsgColumns struct {
 	Title       string //
 	Body        string //
 	Data        string //
-	Err         string //
 	Address     string //
 	UserId      string //
 	CreatedTime string //
@@ -37,7 +36,6 @@ var fcmOfflineMsgColumns = FcmOfflineMsgColumns{
 	Title:       "title",
 	Body:        "body",
 	Data:        "data",
-	Err:         "err",
 	Address:     "address",
 	UserId:      "user_id",
 	CreatedTime: "created_time",

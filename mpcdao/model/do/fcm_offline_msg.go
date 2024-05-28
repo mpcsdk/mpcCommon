@@ -16,7 +16,6 @@ type FcmOfflineMsg struct {
 	Title       interface{} //
 	Body        interface{} //
 	Data        interface{} //
-	Err         interface{} //
 	Address     interface{} //
 	UserId      interface{} //
 	CreatedTime *gtime.Time //

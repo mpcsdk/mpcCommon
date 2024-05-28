@@ -14,7 +14,6 @@ type FcmOfflineMsg struct {
 	Title       string      `json:"title"       ` //
 	Body        string      `json:"body"        ` //
 	Data        string      `json:"data"        ` //
-	Err         string      `json:"err"         ` //
 	Address     string      `json:"address"     ` //
 	UserId      string      `json:"userId"      ` //
 	CreatedTime *gtime.Time `json:"createdTime" ` //

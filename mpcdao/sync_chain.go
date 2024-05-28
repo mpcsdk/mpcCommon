@@ -15,11 +15,11 @@ type ChainTransfer struct {
 	dur   time.Duration
 }
 type QueryData struct {
-	ChainId  int64  `json:"chainId"`
-	From     string `json:"from"`
-	To       string `json:"to"`
-	Contract string `json:"contract"`
-	Kind     string `json:"kind"`
+	ChainId  int64    `json:"chainId"`
+	From     string   `json:"from"`
+	To       string   `json:"to"`
+	Contract string   `json:"contract"`
+	Kinds    []string `json:"kinds"`
 	///
 	StartTime int64 `json:"startTime"`
 	EndTime   int64 `json:"endTime"`
@@ -57,8 +57,8 @@ func (s *ChainTransfer) Query(ctx context.Context, query *QueryData) ([]*entity.
 	if query.ChainId != 0 {
 		where = where.Where(dao.ChainTransfer.Columns().ChainId, query.ChainId)
 	}
-	if query.Kind != "" {
-		where = where.Where(dao.ChainTransfer.Columns().Kind, query.Kind)
+	if len(query.Kinds) > 0 {
+		where = where.Where(dao.ChainTransfer.Columns().Kind, query.Kinds)
 	}
 	if query.From != "" {
 		where = where.Where(dao.ChainTransfer.Columns().From, query.From)

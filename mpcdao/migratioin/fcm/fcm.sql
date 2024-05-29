@@ -29,7 +29,6 @@ CREATE TABLE public.fcm_offline_msg (
     title character varying(255) NOT NULL,
     body character varying(255) NOT NULL,
     data character varying NOT NULL,
-    err character varying NOT NULL,
     address character varying(255) NOT NULL,
     user_id character varying(255) NOT NULL,
     created_time timestamp(6) without time zone NOT NULL,

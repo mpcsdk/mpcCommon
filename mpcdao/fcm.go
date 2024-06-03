@@ -35,7 +35,7 @@ func NewFcm(redis *gredis.Redis, dur int) *Fcm {
 func (s *Fcm) ExistsFcmToken(ctx context.Context, address string, fcmToken string) (bool, error) {
 	result, err := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
-		Name:     dao.MpcContext.Table() + address + fcmToken,
+		Name:     dao.FcmToken.Table() + address,
 		Force:    true,
 	}).Where(dao.FcmToken.Columns().Address, address).
 		Where(dao.FcmToken.Columns().FcmToken, fcmToken).Count()
@@ -53,7 +53,7 @@ func (s *Fcm) ExistsFcmToken(ctx context.Context, address string, fcmToken strin
 func (s *Fcm) InsertFcmToken(ctx context.Context, data *entity.FcmToken) error {
 	_, err := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
-		Name:     dao.MpcContext.Table() + data.Address + data.FcmToken,
+		Name:     dao.FcmToken.Table() + data.Address,
 		Force:    true,
 	}).Insert(data)
 	return err
@@ -76,8 +76,10 @@ type PosFcmToken *entity.FcmToken
 func (s *Fcm) QueryFcmTokenAll(ctx context.Context, pos PosFcmToken, limit int) ([]*entity.FcmToken, PosFcmToken, error) {
 	where := dao.FcmToken.Ctx(ctx)
 	if pos != nil {
-		where = where.WhereGTE(dao.FcmToken.Columns().Address, pos.Address)
-		where = where.WhereGTE(dao.FcmToken.Columns().FcmToken, pos.FcmToken)
+		where = where.WhereGT(dao.FcmToken.Columns().Address, pos.Address)
+		where = where.WhereGT(dao.FcmToken.Columns().FcmToken, pos.FcmToken)
+		where = where.OrderAsc(dao.FcmToken.Columns().Address)
+		where = where.OrderAsc(dao.FcmToken.Columns().FcmToken)
 	}
 	///
 	if limit > 0 {
@@ -120,34 +122,32 @@ func (s *Fcm) QueryFcmOfflineMsg(ctx context.Context, pos PosFcmOffline, limit i
 	return data, data[len(data)-1], err
 }
 
-func (s *Fcm) QueryFcmToken(ctx context.Context, query *QueryFcmToken) ([]*entity.FcmToken, error) {
+func (s *Fcm) QueryFcmToken(ctx context.Context, query *QueryFcmToken) (*entity.FcmToken, error) {
 	if query == nil {
 		return nil, nil
 	}
-	if query.Address == "" && query.FcmToken == "" {
+	if query.Address == "" {
 		return nil, nil
 	}
 	//
 	where := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
-		Name:     dao.MpcContext.Table() + query.Address + query.FcmToken,
+		Name:     dao.FcmToken.Table() + query.Address,
 		Force:    true,
 	})
-	if query.Address != "" {
-		where = where.Where(dao.FcmToken.Columns().Address, query.Address)
-	}
+	where = where.Where(dao.FcmToken.Columns().Address, query.Address)
 	if query.FcmToken != "" {
 		where = where.Where(dao.FcmToken.Columns().FcmToken, query.FcmToken)
 	}
 	///
 
 	///
-	rst, err := where.All()
+	rst, err := where.One()
 	if err != nil {
 		return nil, err
 	}
-	data := []*entity.FcmToken{}
-	err = rst.Structs(&data)
+	data := &entity.FcmToken{}
+	err = rst.Struct(&data)
 	///
 	return data, err
 }
@@ -156,7 +156,7 @@ func (s *Fcm) DelFcmToken(ctx context.Context, address string, fcmToken string) 
 	//
 	where := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
-		Name:     dao.MpcContext.Table() + address + address,
+		Name:     dao.FcmToken.Table() + address,
 		Force:    true,
 	})
 	where = where.Where(dao.FcmToken.Columns().Address, address)
@@ -165,5 +165,17 @@ func (s *Fcm) DelFcmToken(ctx context.Context, address string, fcmToken string) 
 
 	///
 	_, err := where.Delete()
+	return err
+}
+func (s *Fcm) UpdateFcmToken(ctx context.Context, address string, data *entity.FcmToken) error {
+	//
+	where := dao.FcmToken.Ctx(ctx).Cache(gdb.CacheOption{
+		Duration: s.dur,
+		Name:     dao.FcmToken.Table() + address,
+		Force:    true,
+	})
+	_, err := where.Data(data).Where(dao.FcmToken.Columns().Address, address).Update()
+	// OnConflict(dao.Chaincfg.Columns().ChainId).
+	// Save()
 	return err
 }

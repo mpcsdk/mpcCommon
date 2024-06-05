@@ -10,14 +10,14 @@ import (
 
 // Contractabi is the golang structure for table contractabi.
 type Contractabi struct {
-	Id              int         `json:"id"              ` // ID
-	CreateTime      *gtime.Time `json:"createTime"      ` // 创建时间
-	UpdateTime      *gtime.Time `json:"updateTime"      ` // 更新时间
-	ContractName    string      `json:"contractName"    ` // 合约名
-	ContractAddress string      `json:"contractAddress" ` // 合约地址
-	SceneNo         string      `json:"sceneNo"         ` // 场景号
-	AbiContent      string      `json:"abiContent"      ` // 合约abi
-	ContractKind    string      `json:"contractKind"    ` // 合约类型
-	ChainId         int64       `json:"chainId"         ` // 链id
-	Decimal         int         `json:"decimal"         ` //
+	Id              int         `json:"id"              orm:"id"              ` // ID
+	CreateTime      *gtime.Time `json:"createTime"      orm:"createTime"      ` // 创建时间
+	UpdateTime      *gtime.Time `json:"updateTime"      orm:"updateTime"      ` // 更新时间
+	ContractName    string      `json:"contractName"    orm:"contractName"    ` // 合约名
+	ContractAddress string      `json:"contractAddress" orm:"contractAddress" ` // 合约地址
+	SceneNo         string      `json:"sceneNo"         orm:"sceneNo"         ` // 场景号
+	AbiContent      string      `json:"abiContent"      orm:"abiContent"      ` // 合约abi
+	ContractKind    string      `json:"contractKind"    orm:"contractKind"    ` // 合约类型
+	ChainId         int64       `json:"chainId"         orm:"chainId"         ` // 链id
+	Decimal         int         `json:"decimal"         orm:"decimal"         ` //
 }

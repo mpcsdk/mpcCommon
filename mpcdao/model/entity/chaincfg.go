@@ -10,12 +10,12 @@ import (
 
 // Chaincfg is the golang structure for table chaincfg.
 type Chaincfg struct {
-	Id         int         `json:"id"         ` // ID
-	CreateTime *gtime.Time `json:"createTime" ` // 创建时间
-	UpdateTime *gtime.Time `json:"updateTime" ` // 更新时间
-	Coin       string      `json:"coin"       ` // 币种
-	Rpc        string      `json:"rpc"        ` // RPC地址
-	IsEnable   int         `json:"isEnable"   ` // 启用
-	ChainId    int64       `json:"chainId"    ` // 链id
-	Heigh      int64       `json:"heigh"      ` // 高度
+	Id         int         `json:"id"         orm:"id"         ` // ID
+	CreateTime *gtime.Time `json:"createTime" orm:"createTime" ` // 创建时间
+	UpdateTime *gtime.Time `json:"updateTime" orm:"updateTime" ` // 更新时间
+	Coin       string      `json:"coin"       orm:"coin"       ` // 币种
+	Rpc        string      `json:"rpc"        orm:"rpc"        ` // RPC地址
+	IsEnable   int         `json:"isEnable"   orm:"isEnable"   ` // 启用
+	ChainId    int64       `json:"chainId"    orm:"chainId"    ` // 链id
+	Heigh      int64       `json:"heigh"      orm:"heigh"      ` // 高度
 }

@@ -17,7 +17,7 @@ gfcli:
       group: "mpc"
       tables:   "mpc_context"
       jsonCase: "CamelLower"
-    - link:     "mysql:ssh:123456@tcp(127.0.0.1:3305)/riskcontrol"
+    - link:     "mysql:riskcontrol:123456@tcp(127.0.0.1:3306)/riskcontrol"
       group: "riskcontrol"
       tables:   "contractrule,contractabi,riskcontrol_rule,chaincfg"
       jsonCase: "CamelLower"

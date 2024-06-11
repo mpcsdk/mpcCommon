@@ -18,6 +18,9 @@ func (s *BigInt) NewDecimal(value float64, exp int32) *BigInt {
 
 	return (*BigInt)(data)
 }
+func (s *BigInt) NewInt(a int64) *BigInt {
+	return (*BigInt)(big.NewInt(a))
+}
 func (s *BigInt) CmpInt(a int64) int {
 	return s.Int().Cmp(big.NewInt(a))
 }

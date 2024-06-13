@@ -146,6 +146,9 @@ func (s *Fcm) QueryFcmToken(ctx context.Context, query *QueryFcmToken) (*entity.
 	if err != nil {
 		return nil, err
 	}
+	if rst.IsEmpty() {
+		return nil, nil
+	}
 	data := &entity.FcmToken{}
 	err = rst.Struct(&data)
 	///

@@ -117,7 +117,10 @@ func (s *ChainTransfer) Insert(ctx context.Context, data *entity.ChainTransfer) 
 	return err
 }
 func (s *ChainTransfer) DelChainBlockNumber(ctx context.Context, chainId int64, number int64) error {
-	_, err := s.dbmod.Ctx(ctx).Delete(dao.ChainTransfer.Columns().ChainId, chainId, dao.ChainTransfer.Columns().Height, number)
+	_, err := s.dbmod.Ctx(ctx).
+		Where(dao.ChainTransfer.Columns().ChainId, chainId).
+		Where(dao.ChainTransfer.Columns().Height, number).
+		Delete()
 
 	return err
 }

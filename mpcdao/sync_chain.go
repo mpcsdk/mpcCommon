@@ -116,7 +116,11 @@ func (s *ChainTransfer) Insert(ctx context.Context, data *entity.ChainTransfer) 
 	_, err := s.dbmod.Ctx(ctx).Insert(data)
 	return err
 }
+func (s *ChainTransfer) DelChainBlockNumber(ctx context.Context, chainId int64, number int64) error {
+	_, err := s.dbmod.Ctx(ctx).Delete(dao.ChainTransfer.Columns().ChainId, chainId, dao.ChainTransfer.Columns().Height, number)
 
+	return err
+}
 func (s *ChainTransfer) InsertBatch(ctx context.Context, data []*entity.ChainTransfer) error {
 	_, err := s.dbmod.Ctx(ctx).Insert(data)
 	return err

@@ -33,15 +33,14 @@ func (s *NatsServer) Sub_ContractAbi(subj string, fn func(data *ContractAbiMsg) 
 			select {
 			case msg := <-ch:
 				var data ContractAbiMsg
-				if err := json.Unmarshal(msg.Data, &data); err != nil {
-					g.Log().Error(s.ctx, "Sub_ContractAbi Unmarshal:", msg.Data, ",err:", err)
-					continue
+				var err error
+				if err = json.Unmarshal(msg.Data, &data); err == nil {
+					err = fn(&data)
 				}
-				err = fn(&data)
 				if err != nil {
-					g.Log().Error(s.ctx, "Sub_ContractAbi fn:", err)
-					continue
+					g.Log().Error(s.ctx, "Sub_ContractAbi err:", msg.Data, ",err:", err)
 				}
+				msg.Ack()
 			case <-s.ctx.Done():
 				sub.Unsubscribe()
 				close(ch)

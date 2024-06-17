@@ -26,15 +26,14 @@ func (s *NatsServer) Sub_ChainCfg(subj string, fn func(data *ChainCfgMsg) error)
 			select {
 			case msg := <-ch:
 				var data ChainCfgMsg
-				if err := json.Unmarshal(msg.Data, &data); err != nil {
-					g.Log().Error(s.ctx, "Sub_ChainCfg Unmarshal:", msg.Data, ",err:", err)
-					continue
+				var err error
+				if err = json.Unmarshal(msg.Data, &data); err == nil {
+					err = fn(&data)
 				}
-				err = fn(&data)
 				if err != nil {
-					g.Log().Error(s.ctx, "Sub_ChainCfg fn:", err)
-					continue
+					g.Log().Error(s.ctx, "Sub_ChainCfg err:", msg.Data, ",err:", err)
 				}
+				msg.Ack()
 			case <-s.ctx.Done():
 				sub.Unsubscribe()
 				close(ch)

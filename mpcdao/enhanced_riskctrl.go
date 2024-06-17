@@ -77,10 +77,10 @@ func (s *EnhancedRiskCtrl) AggTx(ctx context.Context, tx *entity.ChainTx) error 
 		return err
 	}
 	///
-	_, err = s.redis.Do(ctx, "Zadd", aggKey(0, tx.From, tx.Contract), tx.Ts, tx)
-	if err != nil {
-		return err
-	}
+	// _, err = s.redis.Do(ctx, "Zadd", aggKey(0, tx.From, gconv.String(tx.ChainId)), tx.Ts, tx)
+	// if err != nil {
+	// 	return err
+	// }
 	return nil
 }
 

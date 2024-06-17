@@ -93,11 +93,11 @@ func (s *EnhancedRiskCtrl) InsertTx(ctx context.Context, tx *entity.ChainTx) err
 
 // //
 type QueryTx struct {
-	ChainId  int64  `json:"chainId"`
-	From     string `json:"from"`
-	To       string `json:"to"`
-	Contract string `json:"contract"`
-	Kind     string `json:"kind"`
+	ChainId  int64    `json:"chainId"`
+	From     string   `json:"from"`
+	To       string   `json:"to"`
+	Contract string   `json:"contract"`
+	Kinds    []string `json:"kind"`
 	///
 	StartTime int64 `json:"startTime"`
 	EndTime   int64 `json:"endTime"`
@@ -115,8 +115,8 @@ func (s *EnhancedRiskCtrl) Query(ctx context.Context, query *QueryTx) ([]*entity
 	if query.ChainId != 0 {
 		where = where.Where(dao.ChainTx.Columns().ChainId, query.ChainId)
 	}
-	if query.Kind != "" {
-		where = where.Where(dao.ChainTx.Columns().Kind, query.Kind)
+	if len(query.Kinds) != 0 {
+		where = where.Where(dao.ChainTx.Columns().Kind, query.Kinds)
 	}
 	if query.From != "" {
 		where = where.Where(dao.ChainTx.Columns().From, query.From)

@@ -19,8 +19,26 @@ type SignData struct {
 	Txs     []*SignTx      `json:"txs,omitempty"`
 	TxHash  string         `json:"txHash,omitempty"`
 }
+type BigNumberish struct {
+	Type   string `json:"type"`
+	Hex    string `json:"hex"`
+	bigint *big.Int
+}
+
+func (s *BigNumberish) BigInt() *big.Int {
+	if s.bigint == nil {
+		if s.Type == "BigNumber" {
+			b := big.NewInt(0)
+			b.UnmarshalText([]byte(s.Hex))
+			s.bigint = b
+		}
+	}
+	return s.bigint
+}
+
 type SignTx struct {
 	Target common.Address `json:"target,omitempty"`
+	Value  *BigNumberish  `json:"value,omitempty"`
 	Data   string         `json:"data,omitempty"`
 }
 

@@ -15,7 +15,7 @@ gfcli:
       jsonCase: "CamelLower"
     - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/mpc"
       group: "mpc"
-      tables:   "mpc_context"
+      tables:   "mpc_context,wallet_addr"
       jsonCase: "CamelLower"
     - link:     "mysql:riskcontrol:123456@tcp(127.0.0.1:3306)/riskcontrol"
       group: "riskcontrol"

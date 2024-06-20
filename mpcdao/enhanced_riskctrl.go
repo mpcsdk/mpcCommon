@@ -22,6 +22,7 @@ type QueryEnhancedRiskCtrlRes struct {
 	ChainId  int64
 	From     string
 	Contract string
+	TokenId  string
 	StartTs  int64
 	EndTs    int64
 }
@@ -30,16 +31,33 @@ func (s *EnhancedRiskCtrl) Clear(ctx context.Context, res QueryEnhancedRiskCtrlR
 	if res.EndTs <= 0 {
 		return nil
 	}
-	key := aggKey(res.ChainId, res.From, res.Contract)
+	key := aggKey(res.ChainId, res.From, res.Contract, res.TokenId)
 	_, err := s.redis.Do(ctx, "ZREMRANGEBYSCORE", key, 0, res.EndTs)
 	return err
+}
+
+func (s *EnhancedRiskCtrl) GetAgg(ctx context.Context, res QueryEnhancedRiskCtrlRes) ([]*entity.ChainTx, error) {
+	if res.EndTs == 0 {
+		res.EndTs = math.MaxInt64
+	}
+	key := aggKey(res.ChainId, res.From, res.Contract, res.TokenId)
+	v, err := s.redis.Do(ctx, "ZRANGEBYSCORE", key, res.StartTs, res.EndTs)
+	if err != nil {
+		return nil, err
+	}
+	//
+	data := []*entity.ChainTx{}
+	v.Struct(&data)
+	///
+
+	return data, nil
 }
 
 func (s *EnhancedRiskCtrl) GetAggSum(ctx context.Context, res QueryEnhancedRiskCtrlRes) (*big.Int, error) {
 	if res.EndTs == 0 {
 		res.EndTs = math.MaxInt64
 	}
-	key := aggKey(res.ChainId, res.From, res.Contract)
+	key := aggKey(res.ChainId, res.From, res.Contract, res.TokenId)
 	v, err := s.redis.Do(ctx, "ZRANGEBYSCORE", key, res.StartTs, res.EndTs)
 	if err != nil {
 		return nil, err
@@ -61,26 +79,22 @@ func (s *EnhancedRiskCtrl) GetAggCnt(ctx context.Context, res QueryEnhancedRiskC
 	if res.EndTs == 0 {
 		res.EndTs = math.MaxInt64
 	}
-	key := aggKey(res.ChainId, res.From, res.Contract)
+	key := aggKey(res.ChainId, res.From, res.Contract, res.TokenId)
 	v, err := s.redis.Do(ctx, "Zcount", key, res.StartTs, res.EndTs)
 	if err != nil {
 		return 0, err
 	}
 	return v.Int64(), nil
 }
-func aggKey(chainId int64, from, contract string) string {
-	return fmt.Sprintf("%d_%s_%s", chainId, from, contract)
+func aggKey(chainId int64, from, contract string, tokenId string) string {
+	return fmt.Sprintf("%d_%s_%s_%s", chainId, from, contract, tokenId)
 }
 func (s *EnhancedRiskCtrl) AggTx(ctx context.Context, tx *entity.ChainTx) error {
-	_, err := s.redis.Do(ctx, "Zadd", aggKey(tx.ChainId, tx.From, tx.Contract), tx.Ts, tx)
+	_, err := s.redis.Do(ctx, "Zadd", aggKey(tx.ChainId, tx.From, tx.Contract, tx.TokenId), tx.Ts, tx)
 	if err != nil {
 		return err
 	}
 	///
-	_, err = s.redis.Do(ctx, "Zadd", aggKey(0, tx.From, tx.Contract), tx.Ts, tx)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 

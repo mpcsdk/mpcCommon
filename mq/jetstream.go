@@ -6,6 +6,7 @@ import (
 
 const JetSub_SyncChain = "syncChain.>"
 const JetSub_SyncChainTransfer = "syncChain.transfer"
+const JetSub_SyncChainTransfer_Latest = "syncChain.transfer.latest"
 const JetSub_SyncChainMint = "syncChain.mint"
 
 const JetStream_SyncChain = "syncChain_stream"

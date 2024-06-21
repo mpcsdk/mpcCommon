@@ -20,4 +20,5 @@ type Contractabi struct {
 	ContractKind    string      `json:"contractKind"    orm:"contractKind"    ` // 合约类型
 	ChainId         int64       `json:"chainId"         orm:"chainId"         ` // 链id
 	Decimal         int         `json:"decimal"         orm:"decimal"         ` //
+	TokenId         string      `json:"tokenId"         orm:"tokenId"         ` // tokenId
 }

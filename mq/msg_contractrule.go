@@ -26,15 +26,14 @@ func (s *NatsServer) Sub_ContractRule(subj string, fn func(data *ContractRuleMsg
 			select {
 			case msg := <-ch:
 				var data ContractRuleMsg
-				if err := json.Unmarshal(msg.Data, &data); err != nil {
-					g.Log().Error(s.ctx, "Sub_ContractRule Unmarshal:", msg.Data, ",err:", err)
-					continue
+				var err error
+				if err = json.Unmarshal(msg.Data, &data); err == nil {
+					err = fn(&data)
 				}
-				err = fn(&data)
 				if err != nil {
-					g.Log().Error(s.ctx, "Sub_ContractRule fn:", err)
-					continue
+					g.Log().Error(s.ctx, "Sub_ContractRule Unmarshal:", msg.Data, ",err:", err)
 				}
+				msg.Ack()
 			case <-s.ctx.Done():
 				sub.Unsubscribe()
 				close(ch)

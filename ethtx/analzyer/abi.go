@@ -6,27 +6,34 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 )
 
+type abiStruct struct {
+	abistr string
+	abi    *abi.ABI
+	// abiStructs map[string]*abi.ABI
+}
+
 type Analzyer struct {
-	abis       map[string]string
-	abiStructs map[string]*abi.ABI
+	abis map[string]*abiStruct
 }
 
 func NewAnalzer() *Analzyer {
 	return &Analzyer{
-		abis:       map[string]string{},
-		abiStructs: map[string]*abi.ABI{},
+		abis: map[string]*abiStruct{},
+		// abis:       map[string]string{},
+		// abiStructs: map[string]*abi.ABI{},
 	}
 }
 
 func (s *Analzyer) AddAbi(contract string, abistr string) error {
-	// contract = strings.ToLower(contract)
-	s.abis[contract] = abistr
-
 	abiabi, err := abi.JSON(strings.NewReader(abistr))
 	if err != nil {
 		return err
 	}
-	s.abiStructs[contract] = &abiabi
+
+	s.abis[contract] = &abiStruct{
+		abistr: abistr,
+		abi:    &abiabi,
+	}
 
 	return nil
 }

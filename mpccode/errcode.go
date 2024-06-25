@@ -38,7 +38,8 @@ var (
 	///
 	CodePerformRiskForbidden        = (&errCode{31, "Perform Risk Forbidden", nil}).instance         //
 	CodePerformRiskNeedVerification = (&errCode{32, "Perform Risk Need Verification", nil}).instance //
-	CodePerformRiskError            = (&errCode{33, "Perform Risk Error", nil}).instance             //
+	CodePerformRiskTimeOut          = (&errCode{33, "Perform Risk TimeOut", nil}).instance           //
+	CodePerformRiskInternalError    = (&errCode{34, "Perform Risk Error", nil}).instance             //
 	///
 	///
 	CodeInternalError = (&errCode{50, "Internal Error", nil}).instance // An error occurred internally.

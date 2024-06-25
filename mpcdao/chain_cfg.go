@@ -2,13 +2,20 @@ package mpcdao
 
 import (
 	"context"
+	"time"
 
+	"github.com/gogf/gf/v2/database/gdb"
+	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gcache"
+	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao"
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
 
 type ChainCfg struct {
+	redis *gredis.Redis
+	dur   time.Duration
 }
 
 func (s *ChainCfg) UpdateHeigh(ctx context.Context, chainId int64, heigh int64) error {
@@ -31,7 +38,11 @@ func (s *ChainCfg) AllCfg(ctx context.Context) ([]*entity.Chaincfg, error) {
 }
 func (s *ChainCfg) GetCfg(ctx context.Context, chainId int64) (*entity.Chaincfg, error) {
 
-	rst, err := dao.Chaincfg.Ctx(ctx).Where(dao.Chaincfg.Columns().ChainId, chainId).One()
+	rst, err := dao.Chaincfg.Ctx(ctx).Cache(gdb.CacheOption{
+		Duration: s.dur,
+		Name:     dao.Chaincfg.Table() + gconv.String(chainId),
+		Force:    true,
+	}).Where(dao.Chaincfg.Columns().ChainId, chainId).One()
 	if err != nil {
 		return nil, err
 	}
@@ -41,6 +52,12 @@ func (s *ChainCfg) GetCfg(ctx context.Context, chainId int64) (*entity.Chaincfg,
 	return data, err
 
 }
-func NewChainCfg() *ChainCfg {
-	return &ChainCfg{}
+func NewChainCfg(redis *gredis.Redis, dur int) *ChainCfg {
+	if redis != nil {
+		g.DB(dao.Chaincfg.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
+	}
+	return &ChainCfg{
+		redis: redis,
+		dur:   time.Duration(dur) * time.Second,
+	}
 }

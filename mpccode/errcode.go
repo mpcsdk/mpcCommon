@@ -32,9 +32,9 @@ var (
 	// CodeRiskNeedVerification   = (&errCode{21, "Risk Need a VerificationCode", nil}).instance.Instance()// The risk need verification code
 	CodeRiskVerifyCodeInvalid  = (&errCode{22, "Verify Code Invalid", nil}).instance // The verify code is invalid.
 	CodeRiskSerialNotExist     = (&errCode{23, "Verify RiskSerial NotExist", nil}).instance
-	CodeRiskVerifyPhoneInvalid = (&errCode{24, "Verify Phone Invalid", nil}).instance  //
-	CodeRiskVerifyMailInvalid  = (&errCode{25, "Verify Mail Invalid", nil}).instance   //
-	CodeRiskNotExist           = (&errCode{26, "Verify Risk Not Exist", nil}).instance //
+	CodeRiskVerifyPhoneInvalid = (&errCode{24, "Verify Phone Invalid", nil}).instance //
+	CodeRiskVerifyMailInvalid  = (&errCode{25, "Verify Mail Invalid", nil}).instance  //
+	// CodeRiskNotExist           = (&errCode{26, "Verify Risk Not Exist", nil}).instance //
 	///
 	CodePerformRiskForbidden        = (&errCode{31, "Perform Risk Forbidden", nil}).instance         //
 	CodePerformRiskNeedVerification = (&errCode{32, "Perform Risk Need Verification", nil}).instance //

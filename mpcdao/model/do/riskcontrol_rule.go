@@ -21,5 +21,4 @@ type RiskcontrolRule struct {
 	Salience   interface{} // 优先级
 	IsEnable   interface{} // 启用
 	Desc       interface{} // 描述
-	ChainId    interface{} // 链id
 }

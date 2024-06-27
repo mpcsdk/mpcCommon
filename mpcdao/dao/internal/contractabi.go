@@ -29,7 +29,7 @@ type ContractabiColumns struct {
 	AbiContent      string // 合约abi
 	ContractKind    string // 合约类型
 	ChainId         string // 链id
-	Decimal         string //
+	Decimal         string // Decimal
 	TokenId         string // tokenId
 }
 

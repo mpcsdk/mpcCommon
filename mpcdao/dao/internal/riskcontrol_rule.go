@@ -29,7 +29,6 @@ type RiskcontrolRuleColumns struct {
 	Salience   string // 优先级
 	IsEnable   string // 启用
 	Desc       string // 描述
-	ChainId    string // 链id
 }
 
 // riskcontrolRuleColumns holds the columns for table riskcontrol_rule.
@@ -43,7 +42,6 @@ var riskcontrolRuleColumns = RiskcontrolRuleColumns{
 	Salience:   "salience",
 	IsEnable:   "isEnable",
 	Desc:       "desc",
-	ChainId:    "chainId",
 }
 
 // NewRiskcontrolRuleDao creates and returns a new DAO object for table data access.

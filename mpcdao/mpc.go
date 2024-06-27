@@ -8,6 +8,7 @@ import (
 	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcache"
+	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/mpcsdk/mpcCommon/mpccode"
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao"
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/do"
@@ -80,8 +81,8 @@ func (s *MpcContext) FetchContext(ctx context.Context, userId string) (*entity.M
 func (s *MpcContext) InsertWalletAddr(ctx context.Context, userId string, addr string, chainId int64) error {
 	_, err := dao.WalletAddr.DB().Model(dao.WalletAddr.Table()).Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
-		Name:     dao.WalletAddr.Table() + userId + addr,
-		Force:    true,
+		Name:     dao.WalletAddr.Table() + gconv.String(chainId) + addr,
+		Force:    false,
 	}).Data(&entity.WalletAddr{
 		UserId:     userId,
 		ChainId:    chainId,
@@ -93,21 +94,21 @@ func (s *MpcContext) InsertWalletAddr(ctx context.Context, userId string, addr s
 	}
 	return nil
 }
-func (s *MpcContext) ExistsWalletAddr(ctx context.Context, addr string) (bool, error) {
-	cnt, err := dao.WalletAddr.DB().Model(dao.WalletAddr.Table()).Ctx(ctx).Cache(gdb.CacheOption{
+func (s *MpcContext) ExistsWalletAddr(ctx context.Context, addr string, chainId int64) (bool, error) {
+	rst, err := dao.WalletAddr.DB().Model(dao.WalletAddr.Table()).Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
-		Name:     dao.WalletAddr.Table() + addr,
-		Force:    true,
-	}).Where(dao.WalletAddr.Columns().WalletAddr, addr).Count()
+		Name:     dao.WalletAddr.Table() + gconv.String(chainId) + addr,
+		Force:    false,
+	}).Where(dao.WalletAddr.Columns().WalletAddr, addr).One()
 	if err != nil {
 		g.Log().Error(ctx, "ExistsWalletAddr:", "addr", addr, "err", err)
 		return false, mpccode.CodeInternalError()
 	}
 
-	if cnt > 0 {
-		return true, nil
+	if rst.IsEmpty() {
+		return false, nil
 	}
-	return false, nil
+	return true, nil
 }
 
 func NewMcpContet(redis *gredis.Redis, dur int) *MpcContext {

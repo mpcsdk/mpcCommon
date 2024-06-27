@@ -19,5 +19,4 @@ type RiskcontrolRule struct {
 	Salience   int         `json:"salience"   orm:"salience"   ` // 优先级
 	IsEnable   int         `json:"isEnable"   orm:"isEnable"   ` // 启用
 	Desc       string      `json:"desc"       orm:"desc"       ` // 描述
-	ChainId    int64       `json:"chainId"    orm:"chainId"    ` // 链id
 }

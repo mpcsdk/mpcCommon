@@ -58,39 +58,39 @@ func CreateChainTransferDB(ctx context.Context, chainId int64) error {
 		"kind" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
 		"token_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
 		"removed" bool NOT NULL,
-		"status" int8 NOT NULL
+		"status" int8 NOT NULL,
+		"traceTag" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
 	  )
 	  ;
 	  
 	  ALTER TABLE "public"."chain_transfer" 
 		OWNER TO "postgres";
 	  
-	  CREATE INDEX "fromtscontractid" ON "public"."chain_transfer" USING btree (
-		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST,
+	  CREATE INDEX "chain_transfer_from_kind_contract_ts_idx" ON "public"."chain_transfer" USING btree (
 		"from" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+		"kind" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
-		"chain_id" "pg_catalog"."int8_ops" ASC NULLS LAST
+		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
 	  );
 	  
-	  CREATE UNIQUE INDEX "hashtxidxlogidxtoken" ON "public"."chain_transfer" USING btree (
+	  CREATE INDEX "chain_transfer_to_kind_contract_ts_idx" ON "public"."chain_transfer" USING btree (
+		"to" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+		"kind" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
+	  );
+	  
+	  CREATE UNIQUE INDEX "chain_transfer_tx_hash_tx_idx_log_idx_traceTag_token_id_idx" ON "public"."chain_transfer" USING btree (
 		"tx_hash" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"tx_idx" "pg_catalog"."int4_ops" ASC NULLS LAST,
 		"log_idx" "pg_catalog"."int4_ops" ASC NULLS LAST,
-		"token_id" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
-		"chain_id" "pg_catalog"."int8_ops" ASC NULLS LAST
-	  );
-	  
-	  CREATE INDEX "totscontractid" ON "public"."chain_transfer" USING btree (
-		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST,
-		"to" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
-		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
-		"chain_id" "pg_catalog"."int8_ops" ASC NULLS LAST
+		"traceTag" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+		"token_id" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
 	  );
 	  
 	  CREATE INDEX "tscontractid" ON "public"."chain_transfer" USING btree (
-		"chain_id" "pg_catalog"."int8_ops" ASC NULLS LAST,
-		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST,
-		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
 	  );`)
 	return err
 }

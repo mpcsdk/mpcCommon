@@ -38,6 +38,7 @@ type ChainTransferColumns struct {
 	TokenId   string //
 	Removed   string //
 	Status    string //
+	TraceTag  string //
 }
 
 // chainTransferColumns holds the columns for table chain_transfer.
@@ -60,6 +61,7 @@ var chainTransferColumns = ChainTransferColumns{
 	TokenId:   "token_id",
 	Removed:   "removed",
 	Status:    "status",
+	TraceTag:  "traceTag",
 }
 
 // NewChainTransferDao creates and returns a new DAO object for table data access.

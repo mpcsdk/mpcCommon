@@ -34,7 +34,7 @@ type QueryData struct {
 	PageSize int `json:"pageSize"`
 }
 
-func CreateChainDB(ctx context.Context, chainId int64) error {
+func CreateChainTransferDB(ctx context.Context, chainId int64) error {
 	dbname := "sync_chain_" + gconv.String(chainId)
 	_, err := dao.ChainTransfer.DB().Exec(ctx, "CREATE DATABASE "+dbname)
 	if err != nil {

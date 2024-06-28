@@ -9,6 +9,7 @@ import (
 	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcache"
+	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao"
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
@@ -72,7 +73,7 @@ func (s *RiskCtrlRule) GetContractAbiBriefs(ctx context.Context, ChainId int64, 
 func (s *RiskCtrlRule) GetContractAbi(ctx context.Context, ChainId int64, address string, detail bool) (*entity.Contractabi, error) {
 	where := dao.Contractabi.Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
-		Name:     dao.Contractabi.Table() + strconv.FormatInt(ChainId, 10) + address,
+		Name:     dao.Contractabi.Table() + strconv.FormatInt(ChainId, 10) + address + gconv.String(detail),
 		Force:    true,
 	}).
 		Where(dao.Contractabi.Columns().ChainId, ChainId).
@@ -101,7 +102,7 @@ func (s *RiskCtrlRule) GetContractRuleBriefs(ctx context.Context, ChainId int64,
 	model := dao.Contractrule.Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: s.dur,
 		Name:     dao.Contractrule.Table() + strconv.FormatInt(ChainId, 10) + kind,
-		Force:    true,
+		Force:    false,
 	}).Fields(
 		dao.Contractrule.Columns().ChainId,
 		dao.Contractrule.Columns().ContractAddress,
@@ -135,7 +136,7 @@ func (s *RiskCtrlRule) GetContractRule(ctx context.Context, ChainId int64, addre
 			}
 		}(),
 		Name:  dao.Contractrule.Table() + strconv.FormatInt(ChainId, 10) + address,
-		Force: true,
+		Force: false,
 	}).Where(dao.Contractrule.Columns().ChainId, ChainId).
 		Where(dao.Contractrule.Columns().ContractAddress, address).One()
 	if err != nil {

@@ -20,8 +20,7 @@ var (
 	CodeSessionInvalid = (&errCode{1, "Session Invalid", nil}).instance // The token is invalid.
 	CodeParamInvalid   = (&errCode{2, "invalid argument", nil}).instance
 	///
-	CodeTokenInvalid      = (&errCode{11, "Token Invalid", nil}).instance        // The token is invalid.
-	CodeTokenNotExist     = (&errCode{12, "Token NotExist", nil}).instance       // The token does not exist.
+	CodeTokenInvalid      = (&errCode{11, "Token Invalid", nil}).instance        // The token does not exist.
 	CodeTFANotExist       = (&errCode{12, "TFA NotExist", nil}).instance         // The token does not exist.
 	CodeTFAExist          = (&errCode{13, "TFA Exist", nil}).instance            // The token does not exist.
 	CodeTFASendSmsFailed  = (&errCode{14, "TFA Send Sms Failed", nil}).instance  // The token does not exist.
@@ -58,3 +57,6 @@ var (
 	///
 	CodeErr = (&errCode{65535, "CodeErr", nil}).instance
 )
+
+//////
+//////

@@ -53,6 +53,7 @@ func (s *MpcContext) InertContext(ctx context.Context, userId string, data *do.M
 	return err
 }
 func (s *MpcContext) FetchContext(ctx context.Context, userId string) (*entity.MpcContext, error) {
+	g.Log().Debug(ctx, "FetchContext userId:", userId)
 	var data *entity.MpcContext
 	if userId == "" {
 		return nil, nil

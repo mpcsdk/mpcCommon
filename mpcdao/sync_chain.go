@@ -66,11 +66,20 @@ func CreateChainTransferDB(ctx context.Context, chainId int64) error {
 	  ALTER TABLE "public"."chain_transfer" 
 		OWNER TO "postgres";
 	  
+	  CREATE INDEX "chain_transfer_contract_ts" ON "public"."chain_transfer" USING btree (
+		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
+	  );
+	  
 	  CREATE INDEX "chain_transfer_from_kind_contract_ts_idx" ON "public"."chain_transfer" USING btree (
 		"from" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"kind" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
+	  );
+	  
+	  CREATE INDEX "chain_transfer_height_idx" ON "public"."chain_transfer" USING btree (
+		"height" "pg_catalog"."int8_ops" ASC NULLS LAST
 	  );
 	  
 	  CREATE INDEX "chain_transfer_to_kind_contract_ts_idx" ON "public"."chain_transfer" USING btree (
@@ -84,13 +93,7 @@ func CreateChainTransferDB(ctx context.Context, chainId int64) error {
 		"tx_hash" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"tx_idx" "pg_catalog"."int4_ops" ASC NULLS LAST,
 		"log_idx" "pg_catalog"."int4_ops" ASC NULLS LAST,
-		"traceTag" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
-		"token_id" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
-	  );
-	  
-	  CREATE INDEX "tscontractid" ON "public"."chain_transfer" USING btree (
-		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
-		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
+		"traceTag" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
 	  );`)
 	return err
 }

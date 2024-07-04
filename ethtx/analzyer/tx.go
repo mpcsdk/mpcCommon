@@ -118,15 +118,47 @@ func (s *Analzyer) AnalzySignTx(signTx *SignTx, contractRule *entity.Contractrul
 	from := ""
 	to := ""
 	val := big.NewInt(0)
-	if v, ok := args[contractRule.MethodFromField]; ok {
-		from = v.(common.Address).Hex()
+	tokenId := big.NewInt(0)
+	ids := []*big.Int{}
+	vals := []*big.Int{}
+	//todo:
+	if contractRule.ContractKind == "erc20" {
+		if v, ok := args[contractRule.MethodFromField]; ok {
+			from = v.(common.Address).Hex()
+		}
+		if v, ok := args[contractRule.MethodToField]; ok {
+			to = v.(common.Address).Hex()
+		}
+		if v, ok := args[contractRule.MethodValueField]; ok {
+			val = v.(*big.Int)
+		}
+	} else if contractRule.ContractKind == "erc721" {
+		if v, ok := args[contractRule.MethodFromField]; ok {
+			from = v.(common.Address).Hex()
+		}
+		if v, ok := args[contractRule.MethodToField]; ok {
+			to = v.(common.Address).Hex()
+		}
+		if v, ok := args[contractRule.MethodValueField]; ok {
+			tokenId = v.(*big.Int)
+		}
+	} else if contractRule.ContractKind == "erc1155" {
+		if v, ok := args[contractRule.MethodFromField]; ok {
+			from = v.(common.Address).Hex()
+		}
+		if v, ok := args[contractRule.MethodToField]; ok {
+			to = v.(common.Address).Hex()
+		}
+
+		if v, ok := args["id"]; ok {
+			tokenId = v.(*big.Int)
+		}
+		if v, ok := args["value"]; ok {
+			val = v.(*big.Int)
+		}
+
 	}
-	if v, ok := args[contractRule.MethodToField]; ok {
-		to = v.(common.Address).Hex()
-	}
-	if v, ok := args[contractRule.MethodValueField]; ok {
-		val = v.(*big.Int)
-	}
+
 	atx := &AnalzyedSignTx{
 		Target:     signTx.Target.String(),
 		MethodId:   hex.EncodeToString(method.ID),
@@ -135,9 +167,12 @@ func (s *Analzyer) AnalzySignTx(signTx *SignTx, contractRule *entity.Contractrul
 		Data:       signTx.Data,
 		Args:       args,
 		///
-		From:  from,
-		To:    to,
-		Value: (*BigInt)(val),
+		From:     from,
+		To:       to,
+		Value:    (*BigInt)(val),
+		TokenId:  (*BigInt)(tokenId),
+		TokenIds: ids,
+		Values:   vals,
 	}
 	return atx, nil
 }

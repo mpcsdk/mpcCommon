@@ -38,6 +38,7 @@ type ChainTxColumns struct {
 	TokenId   string //
 	Removed   string //
 	Status    string //
+	TraceTag  string //
 }
 
 // chainTxColumns holds the columns for table chain_tx.
@@ -60,6 +61,7 @@ var chainTxColumns = ChainTxColumns{
 	TokenId:   "token_id",
 	Removed:   "removed",
 	Status:    "status",
+	TraceTag:  "traceTag",
 }
 
 // NewChainTxDao creates and returns a new DAO object for table data access.

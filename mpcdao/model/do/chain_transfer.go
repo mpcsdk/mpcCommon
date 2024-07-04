@@ -29,4 +29,5 @@ type ChainTransfer struct {
 	TokenId   interface{} //
 	Removed   interface{} //
 	Status    interface{} //
+	TraceTag  interface{} //
 }

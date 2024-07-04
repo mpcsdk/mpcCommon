@@ -24,4 +24,5 @@ type ChainTx struct {
 	TokenId   string `json:"tokenId"   orm:"token_id"   ` //
 	Removed   bool   `json:"removed"   orm:"removed"    ` //
 	Status    int64  `json:"status"    orm:"status"     ` //
+	TraceTag  string `json:"traceTag"  orm:"traceTag"   ` //
 }

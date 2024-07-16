@@ -89,6 +89,10 @@ func CreateChainTransferDB(ctx context.Context, chainId int64) error {
 		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
 	  );
 	  
+	  CREATE INDEX "chain_transfer_ts_idx" ON "public"."chain_transfer" USING btree (
+		"ts" "pg_catalog"."int8_ops" ASC NULLS LAST
+	  );
+	  
 	  CREATE UNIQUE INDEX "chain_transfer_tx_hash_tx_idx_log_idx_traceTag_token_id_idx" ON "public"."chain_transfer" USING btree (
 		"tx_hash" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"tx_idx" "pg_catalog"."int4_ops" ASC NULLS LAST,

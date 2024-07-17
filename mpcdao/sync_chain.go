@@ -137,10 +137,12 @@ func (s *ChainTransfer) InsertBatch(ctx context.Context, data []*entity.ChainTra
 }
 func (s *ChainTransfer) Insert_Transaction(ctx context.Context, data []*entity.ChainTransfer) error {
 	err := s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
-		for _, transfer := range data {
-			_, err := s.dbmod.TX(tx).Insert(ctx, transfer)
+		for i, transfer := range data {
+			tx.SavePoint(gconv.String(i))
+			_, err := tx.Insert("chain_transfer", transfer)
 			if err != nil {
 				g.Log().Warning(ctx, "Insert_Transaction:", err)
+				tx.RollbackTo(gconv.String(i))
 			}
 		}
 		return nil

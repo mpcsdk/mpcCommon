@@ -71,10 +71,30 @@ func (s *NftHolding) UpdateTransfer(ctx context.Context, tx *entity.NftHolding) 
 
 // //
 func (s *NftHolding) UpdateStat(ctx context.Context, stat *entity.NftHoldingStat) error {
-	return nil
+	_, err := dao.NftHoldingStat.Ctx(ctx).Data(&entity.NftHoldingStat{
+		ChainId:     stat.ChainId,
+		BlockNumber: stat.BlockNumber,
+	}).
+		Where(dao.NftHolding.Columns().ChainId, stat.ChainId).
+		OnConflict(dao.NftHolding.Columns().ChainId).
+		Save()
+
+	return err
 }
 func (s *NftHolding) GetStat(ctx context.Context, chainId int64) (*entity.NftHoldingStat, error) {
-	return nil, nil
+	rst, err := dao.NftHoldingStat.Ctx(ctx).
+		Where(dao.NftHolding.Columns().ChainId, chainId).One()
+
+	if err != nil {
+		return nil, err
+	}
+	if rst.IsEmpty() {
+		return nil, nil
+	}
+	data := &entity.NftHoldingStat{}
+	err = rst.Struct(&data)
+
+	return data, err
 }
 
 func (s *NftHolding) Query(ctx context.Context, query *QueryNftHolding) ([]*entity.NftHolding, error) {

@@ -78,19 +78,19 @@ func (s *NftHolding) GetStat(ctx context.Context, chainId int64) (*entity.NftHol
 }
 
 func (s *NftHolding) Query(ctx context.Context, query *QueryNftHolding) ([]*entity.NftHolding, error) {
-	if query.PageSize < 0 || query.Page < 0 {
+	if query.PageSize <= 0 || query.Page < 0 {
+		return nil, nil
+	}
+	if query.Address == "" {
 		return nil, nil
 	}
 	//
 	where := dao.NftHolding.Ctx(ctx)
+	where = where.Where(dao.NftHolding.Columns().Address, query.Address)
 
 	if len(query.Kinds) > 0 {
 		where = where.Where(dao.NftHolding.Columns().Kind, query.Kinds)
 	}
-	if query.Address != "" {
-		where = where.Where(dao.NftHolding.Columns().Address, query.Address)
-	}
-
 	if query.Contract != "" {
 		where = where.Where(dao.NftHolding.Columns().Contract, query.Contract)
 	}

@@ -62,16 +62,14 @@ var ftRules = map[string]*entity.Contractrule{
 
 func Test_AnalzyTx(t *testing.T) {
 	analzer := NewAnalzer()
-	analzer.AddAbi("0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db", contractABI)
+	analzer.AddAbi("0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db", contractABI, "erc20", 18)
 	signData, err := DeSignData(signDataStr)
 	if err != nil {
 		t.Error(err)
 	}
 
 	ethtx, err := analzer.AnalzySignTx(
-		// "0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db",
-		signData.Txs[0],
-		ftRules["0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db"])
+		signData.Txs[0])
 	if err != nil {
 		t.Error(err)
 	}

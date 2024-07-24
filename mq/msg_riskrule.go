@@ -4,19 +4,15 @@ import (
 	"encoding/json"
 
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 	"github.com/nats-io/nats.go"
 )
 
 // /RiskRule
 type RiskCtrlRuleMsg struct {
 	//up/del/verify
-	Opt string `json:"opt"`
-	// Salience int    `json:"salience"`
-	// RuleName string `json:"ruleName"`
-	// RuleStr  string `json:"ruleStr"`
-	// Desc     string `json:"desc"`
-	Id       int  `json:"id"`
-	IsEnable bool `json:"isEnable"`
+	Msg
+	Data *entity.RiskcontrolRule `json:"data"`
 }
 
 func (s *RiskCtrlRuleMsg) IsValid() bool {
@@ -36,16 +32,15 @@ func (s *NatsServer) Sub_RiskCtrlRule(subj string, fn func(data *RiskCtrlRuleMsg
 		for {
 			select {
 			case msg := <-ch:
-				var data RiskCtrlRuleMsg
-				if err := json.Unmarshal(msg.Data, &data); err != nil {
-					g.Log().Error(s.ctx, "Sub_RiskCtrlRule Unmarshal:", msg.Data, ",err:", err)
-					continue
+				data := RiskCtrlRuleMsg{}
+				var err error
+				if err = json.Unmarshal(msg.Data, &data); err == nil {
+					err = fn(&data)
 				}
-				err = fn(&data)
 				if err != nil {
-					g.Log().Error(s.ctx, "Sub_RiskCtrlRule fn:", err)
-					continue
+					g.Log().Error(s.ctx, "Sub_RiskCtrlRule Unmarshal:", msg.Data, ",err:", err)
 				}
+				msg.Ack()
 			case <-s.ctx.Done():
 				sub.Unsubscribe()
 				close(ch)

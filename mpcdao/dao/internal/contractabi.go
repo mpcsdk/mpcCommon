@@ -29,7 +29,8 @@ type ContractabiColumns struct {
 	AbiContent      string // 合约abi
 	ContractKind    string // 合约类型
 	ChainId         string // 链id
-	Decimal         string //
+	Decimal         string // Decimal
+	TokenId         string // tokenId
 }
 
 // contractabiColumns holds the columns for table contractabi.
@@ -44,6 +45,7 @@ var contractabiColumns = ContractabiColumns{
 	ContractKind:    "contractKind",
 	ChainId:         "chainId",
 	Decimal:         "decimal",
+	TokenId:         "tokenId",
 }
 
 // NewContractabiDao creates and returns a new DAO object for table data access.

@@ -1,12 +1,13 @@
 package analzyer
 
 import (
+	"math/big"
 	"testing"
 
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
 
-var signData string = `{
+var signDataStr string = `{
 	"chainId": 9527,
 	"address": "0x77990137A0032b8f31d4C3AE696f60d6AFa0ba99",
 	"number": 22,
@@ -38,14 +39,14 @@ var contractABI string = `[{"constant":true,"inputs":[],"name":"name","outputs":
 // var data string = `0xa9059cbb000000000000000000000000752ab37a4471bf059602863f6c8225816975730e000000000000000000000000000000000000000000000000016345785d8a0000`
 var ftRules = map[string]*entity.Contractrule{
 	"0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db": &entity.Contractrule{
-		// Contract: "0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db",
-		// Name:     "RPG",
+		ContractAddress: "0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db",
+		ContractName:    "RPG",
 
-		// MethodName:       "transfer",
+		MethodName: "transfer",
 		// MethodSig:        "transfer(address,uint256)",
-		// MethodFromField:  "",
-		// MethodToField:    "dst",
-		// MethodValueField: "wad",
+		MethodFromField:  "",
+		MethodToField:    "dst",
+		MethodValueField: "wad",
 
 		// EventName:       "Transfer",
 		// EventSig:        "Transfer(address,address,uint256)",
@@ -61,23 +62,21 @@ var ftRules = map[string]*entity.Contractrule{
 
 func Test_AnalzyTx(t *testing.T) {
 	analzer := NewAnalzer()
-	analzer.AddAbi("0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db", contractABI)
-	signTx, err := analzer.SignTx(signData)
+	analzer.AddAbi("0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db", contractABI, "erc20", 18)
+	signData, err := DeSignData(signDataStr)
 	if err != nil {
 		t.Error(err)
 	}
 
-	ethtx, err := analzer.AnalzyTxData(
-		// "0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db",
-		signTx.Txs[0],
-		ftRules["0x71d9cfd1b7adb1e8eb4c193ce6ffbe19b4aee0db"])
+	ethtx, err := analzer.AnalzySignTx(
+		signData.Txs[0])
 	if err != nil {
 		t.Error(err)
 	}
 	if ethtx.From == "" {
-		ethtx.From = signTx.Address.String()
+		ethtx.From = signData.Address.String()
 	}
-	if ethtx.Value.String() != "100000000000000000" {
+	if (*big.Int)(ethtx.Value).String() != "100000000000000000" {
 		t.Error(ethtx)
 	}
 }

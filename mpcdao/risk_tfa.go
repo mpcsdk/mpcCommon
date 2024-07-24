@@ -50,7 +50,12 @@ func (s *RiskTfa) FetchTfaInfo(ctx context.Context, userId string) (*entity.Tfa,
 		g.Log().Error(ctx, "ExistsTfaInfo:", "userId", userId, "agg:", aggdo, "err", err)
 		return nil, mpccode.CodeInternalError()
 	}
-
+	///
+	// if data.MailUpdatedAt != nil {
+	// 	g.Log().Debug(ctx, "##time1:", data.MailUpdatedAt.String(), data.MailUpdatedAt.Timestamp(), data.MailUpdatedAt.UTC().Timestamp())
+	// 	// data.MailUpdatedAt = gtime.New(data.MailUpdatedAt.String())
+	// 	g.Log().Debug(ctx, "##time11:", data.MailUpdatedAt.String(), data.MailUpdatedAt.Timestamp(), data.MailUpdatedAt.UTC().Timestamp())
+	// }
 	return data, nil
 }
 func (s *RiskTfa) TfaMailNotExists(ctx context.Context, mail string) (bool, error) {
@@ -105,6 +110,11 @@ func (s *RiskTfa) InsertTfaInfo(ctx context.Context, userId string, data *do.Tfa
 	return nil
 }
 func (s *RiskTfa) UpdateTfaInfo(ctx context.Context, userId string, data *do.Tfa) error {
+	///todo:
+	// if data != nil && data.MailUpdatedAt != nil {
+	// 	g.Log().Debug(ctx, "##timeup:", data.MailUpdatedAt.String(), data.MailUpdatedAt.Timestamp(), data.MailUpdatedAt.UTC().Timestamp())
+	// }
+
 	_, err := dao.Tfa.Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: -1,
 		Name:     dao.Tfa.Table() + userId,

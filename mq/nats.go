@@ -68,15 +68,15 @@ func (s *NatsServer) queueSubscribe(sub *nats.Subscription, ch chan *nats.Msg, f
 	for {
 		select {
 		case natsmsg := <-ch:
-			switch natsmsg.Subject {
-			case Sub_RiskRuleReply:
-				b, err := fn(natsmsg.Data)
-				if err != nil {
-					g.Log().Error(s.ctx, err)
-					continue
-				} ///
-				natsmsg.Respond(b)
-			}
+			// switch natsmsg.Subject {
+			// case Sub_RiskRuleReply:
+			b, err := fn(natsmsg.Data)
+			if err != nil {
+				g.Log().Error(s.ctx, err)
+				continue
+			} ///
+			natsmsg.Respond(b)
+			// }
 
 		case <-s.ctx.Done():
 			sub.Unsubscribe()

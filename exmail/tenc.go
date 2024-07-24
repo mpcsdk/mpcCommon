@@ -58,7 +58,7 @@ func (t *TencMailClient) SendVerificationCode(destination string, templateId uin
 	if code, err := t.sendMail(destination, templateId, code); err != nil {
 		if terr, ok := err.(*errors.TencentCloudSDKError); ok {
 			if terr.Code == "FailedOperation.FrequencyLimit" {
-				return code, mpccode.CodeLimitSendMailCode()
+				return code, mpccode.CodeLimitSendMailService()
 			}
 			return "", err
 		}

@@ -114,7 +114,9 @@ func (s *NftHolding) Query(ctx context.Context, query *QueryNftHolding) ([]*enti
 	if query.Contract != "" {
 		where = where.Where(dao.NftHolding.Columns().Contract, query.Contract)
 	}
-
+	if query.ChainId != 0 {
+		where = where.Where(dao.NftHolding.Columns().ChainId, query.ChainId)
+	}
 	///
 	if query.PageSize != 0 {
 		where = where.Limit(query.Page*query.PageSize, query.PageSize)

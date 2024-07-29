@@ -78,7 +78,7 @@ func (s *NftHolding) UpdateTransfer721(ctx context.Context, tx *entity.NftHoldin
 		Where(dao.NftHolding.Columns().Address, tx.Address).
 		Where(dao.NftHolding.Columns().Contract, tx.Contract).
 		Where(dao.NftHolding.Columns().TokenId, tx.TokenId).
-		OnConflict(dao.NftHolding.Columns().ChainId, dao.NftHolding.Columns().Address, dao.NftHolding.Columns().Contract, dao.NftHolding.Columns().TokenId).
+		OnConflict(dao.NftHolding.Columns().Address, dao.NftHolding.Columns().Contract, dao.NftHolding.Columns().TokenId, dao.NftHolding.Columns().ChainId).
 		OnDuplicate(dao.NftHolding.Columns().Value, dao.NftHolding.Columns().UpdatedAt).
 		Save()
 	cnt, err := rst.RowsAffected()

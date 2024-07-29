@@ -16,10 +16,10 @@ type NftHolding struct {
 	dur   time.Duration
 }
 type QueryNftHolding struct {
-	ChainId  int64    `json:"chainId"`
-	Address  string   `json:"address"`
-	Contract string   `json:"contract"`
-	Kinds    []string `json:"kinds"`
+	ChainId   int64    `json:"chainId"`
+	Address   string   `json:"address"`
+	Contracts []string `json:"contracts"`
+	Kinds     []string `json:"kinds"`
 	///
 	Page     int `json:"page"`
 	PageSize int `json:"pageSize"`
@@ -130,13 +130,18 @@ func (s *NftHolding) Query(ctx context.Context, query *QueryNftHolding) ([]*enti
 	where := dao.NftHolding.Ctx(ctx)
 	where = where.Where(dao.NftHolding.Columns().Address, query.Address)
 
+	if query.ChainId > 0 {
+		where = where.Where(dao.NftHolding.Columns().ChainId, query.ChainId)
+	}
 	if len(query.Kinds) > 0 {
 		where = where.Where(dao.NftHolding.Columns().Kind, query.Kinds)
 	}
-	if query.Contract != "" {
-		where = where.Where(dao.NftHolding.Columns().Contract, query.Contract)
+	if len(query.Contracts) > 0 {
+		where = where.Where(dao.NftHolding.Columns().Contract, query.Contracts)
 	}
-
+	if query.ChainId != 0 {
+		where = where.Where(dao.NftHolding.Columns().ChainId, query.ChainId)
+	}
 	///
 	if query.PageSize != 0 {
 		where = where.Limit(query.Page*query.PageSize, query.PageSize)

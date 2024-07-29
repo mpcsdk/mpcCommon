@@ -7,8 +7,10 @@ import (
 )
 
 type abiStruct struct {
-	abistr string
-	abi    *abi.ABI
+	abistr  string
+	abi     *abi.ABI
+	kind    string
+	decimal int
 	// abiStructs map[string]*abi.ABI
 }
 
@@ -24,15 +26,17 @@ func NewAnalzer() *Analzyer {
 	}
 }
 
-func (s *Analzyer) AddAbi(contract string, abistr string) error {
+func (s *Analzyer) AddAbi(contract string, abistr string, kind string, decimal int) error {
 	abiabi, err := abi.JSON(strings.NewReader(abistr))
 	if err != nil {
 		return err
 	}
 
 	s.abis[contract] = &abiStruct{
-		abistr: abistr,
-		abi:    &abiabi,
+		abistr:  abistr,
+		abi:     &abiabi,
+		kind:    kind,
+		decimal: decimal,
 	}
 
 	return nil

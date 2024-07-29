@@ -45,7 +45,7 @@ func NewNftHolding() *NftHolding {
 func nftHoldingKey(chainId int64, address string, contract string, tokenId string) string {
 	return dao.NftHolding.Table() + strconv.FormatInt(chainId, 10) + ":" + address + ":" + contract + ":" + tokenId
 }
-func (s *NftHolding) UpdateTransfer(ctx context.Context, tx *entity.NftHolding) error {
+func (s *NftHolding) UpdateTransfer1155(ctx context.Context, tx *entity.NftHolding) error {
 	rst, err := dao.NftHolding.Ctx(ctx).Data(tx).Cache(gdb.CacheOption{
 		Duration: -1,
 		Name:     nftHoldingKey(tx.ChainId, tx.Address, tx.Contract, tx.TokenId),
@@ -59,6 +59,28 @@ func (s *NftHolding) UpdateTransfer(ctx context.Context, tx *entity.NftHolding) 
 	// OnConflict(dao.NftHolding.Columns().ChainId, dao.NftHolding.Columns().Address, dao.NftHolding.Columns().Contract, dao.NftHolding.Columns().TokenId).
 	// OnDuplicate(dao.NftHolding.Columns().Value, dao.NftHolding.Columns().UpdatedAt).
 	// Save()
+	cnt, err := rst.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if cnt == 0 {
+		_, err = dao.NftHolding.Ctx(ctx).Data(tx).Insert()
+	}
+	return err
+}
+func (s *NftHolding) UpdateTransfer721(ctx context.Context, tx *entity.NftHolding) error {
+	rst, err := dao.NftHolding.Ctx(ctx).Data(tx).Cache(gdb.CacheOption{
+		Duration: -1,
+		Name:     nftHoldingKey(tx.ChainId, tx.Address, tx.Contract, tx.TokenId),
+		Force:    false,
+	}).
+		Where(dao.NftHolding.Columns().ChainId, tx.ChainId).
+		Where(dao.NftHolding.Columns().Address, tx.Address).
+		Where(dao.NftHolding.Columns().Contract, tx.Contract).
+		Where(dao.NftHolding.Columns().TokenId, tx.TokenId).
+		OnConflict(dao.NftHolding.Columns().ChainId, dao.NftHolding.Columns().Address, dao.NftHolding.Columns().Contract, dao.NftHolding.Columns().TokenId).
+		OnDuplicate(dao.NftHolding.Columns().Value, dao.NftHolding.Columns().UpdatedAt).
+		Save()
 	cnt, err := rst.RowsAffected()
 	if err != nil {
 		return err

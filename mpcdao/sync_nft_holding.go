@@ -156,3 +156,35 @@ func (s *NftHolding) Query(ctx context.Context, query *QueryNftHolding) ([]*enti
 	///
 	return data, err
 }
+func (s *NftHolding) QueryCount(ctx context.Context, query *QueryNftHolding) ([]*entity.NftHolding, error) {
+	if query.Address == "" {
+		return nil, nil
+	}
+	//
+	where := dao.NftHolding.Ctx(ctx)
+	where = where.Where(dao.NftHolding.Columns().Address, query.Address)
+
+	if query.ChainId > 0 {
+		where = where.Where(dao.NftHolding.Columns().ChainId, query.ChainId)
+	}
+
+	////
+	where = where.Fields(
+		dao.NftHolding.Columns().Contract,
+		`sum("value") as "value"`,
+	).
+		Group(
+			dao.NftHolding.Columns().Contract,
+			dao.NftHolding.Columns().Value,
+		).
+		Having(`"value">0`)
+	///
+	result, err := where.All()
+	if err != nil {
+		return nil, err
+	}
+	data := []*entity.NftHolding{}
+	err = result.Structs(&data)
+	///
+	return data, err
+}

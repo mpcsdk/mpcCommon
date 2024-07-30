@@ -92,9 +92,9 @@ func DeSignData(signDataStr string) (*SignData, error) {
 //		}
 //		return asdata, nil
 //	}
+
 func (s *Analzyer) AnalzySignTx(signTx *SignTx) (*AnalzyedSignTx, error) {
 	///////
-
 	contractAbi := s.abis[signTx.Target.Hex()]
 	if contractAbi == nil {
 		return nil, errors.New("unsupport contract:" + signTx.Target.String())

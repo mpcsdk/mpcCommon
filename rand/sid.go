@@ -15,3 +15,7 @@ func InitIdGen(workId int) {
 	option := idgen.NewIdGeneratorOptions(uint16(workId))
 	idgen.SetIdGenerator(option)
 }
+
+func init() {
+	InitIdGen(1)
+}

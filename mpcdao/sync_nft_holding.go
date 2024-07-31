@@ -146,6 +146,7 @@ func (s *NftHolding) Query(ctx context.Context, query *QueryNftHolding) ([]*enti
 	if query.PageSize != 0 {
 		where = where.Limit(query.Page*query.PageSize, query.PageSize)
 	}
+	where = where.WhereGT(dao.NftHolding.Columns().Value, 0)
 	///
 	result, err := where.All()
 	if err != nil {

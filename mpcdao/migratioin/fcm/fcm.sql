@@ -108,7 +108,7 @@ CREATE UNIQUE INDEX addrfcm ON public.fcm_token USING btree (address, fcm_token,
 -- Name: history_msg_address_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX history_msg_address_idx ON public.fcm_offline_msg USING btree (address);
+CREATE INDEX history_msg_address_idx ON public.fcm_offline_msg USING btree (address);
 
 
 --

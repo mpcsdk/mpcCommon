@@ -3,12 +3,11 @@ package analzyer
 import (
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"math/big"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/mpcsdk/mpcCommon/mpccode"
-	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
 
 // /input
@@ -93,12 +92,12 @@ func DeSignData(signDataStr string) (*SignData, error) {
 //		}
 //		return asdata, nil
 //	}
-func (s *Analzyer) AnalzySignTx(signTx *SignTx, contractRule *entity.Contractrule) (*AnalzyedSignTx, error) {
-	///////
 
+func (s *Analzyer) AnalzySignTx(signTx *SignTx) (*AnalzyedSignTx, error) {
+	///////
 	contractAbi := s.abis[signTx.Target.Hex()]
 	if contractAbi == nil {
-		return nil, mpccode.CodeParamInvalid()
+		return nil, errors.New("unsupport contract:" + signTx.Target.String())
 	}
 	//data
 	dataByte, err := hex.DecodeString(strings.TrimPrefix(signTx.Data, "0x"))
@@ -122,31 +121,38 @@ func (s *Analzyer) AnalzySignTx(signTx *SignTx, contractRule *entity.Contractrul
 	ids := []*big.Int{}
 	vals := []*big.Int{}
 	//todo:
-	if contractRule.ContractKind == "erc20" {
-		if v, ok := args[contractRule.MethodFromField]; ok {
-			from = v.(common.Address).Hex()
+	if contractAbi.kind == "erc20" {
+		if method.Name != "transfer" {
+			return nil, errors.New("unsupport contract method:" + method.Name)
 		}
-		if v, ok := args[contractRule.MethodToField]; ok {
+
+		if v, ok := args["recipient"]; ok {
 			to = v.(common.Address).Hex()
 		}
-		if v, ok := args[contractRule.MethodValueField]; ok {
+		if v, ok := args["amount"]; ok {
 			val = v.(*big.Int)
 		}
-	} else if contractRule.ContractKind == "erc721" {
-		if v, ok := args[contractRule.MethodFromField]; ok {
+	} else if contractAbi.kind == "erc721" {
+		if method.Name != "transferFrom" {
+			return nil, errors.New("unsupport contract method:" + method.Name)
+		}
+		if v, ok := args["from"]; ok {
 			from = v.(common.Address).Hex()
 		}
-		if v, ok := args[contractRule.MethodToField]; ok {
+		if v, ok := args["to"]; ok {
 			to = v.(common.Address).Hex()
 		}
-		if v, ok := args[contractRule.MethodValueField]; ok {
+		if v, ok := args["tokenId"]; ok {
 			tokenId = v.(*big.Int)
 		}
-	} else if contractRule.ContractKind == "erc1155" {
-		if v, ok := args[contractRule.MethodFromField]; ok {
+	} else if contractAbi.kind == "erc1155" {
+		if method.Name != "safeTransferFrom" {
+			return nil, errors.New("unsupport contract method:" + method.Name)
+		}
+		if v, ok := args["from"]; ok {
 			from = v.(common.Address).Hex()
 		}
-		if v, ok := args[contractRule.MethodToField]; ok {
+		if v, ok := args["to"]; ok {
 			to = v.(common.Address).Hex()
 		}
 

@@ -18,6 +18,7 @@ type NftHolding struct {
 type QueryNftHolding struct {
 	ChainId   int64    `json:"chainId"`
 	Address   string   `json:"address"`
+	Contract  string   `json:"contract"`
 	Contracts []string `json:"contracts"`
 	Kinds     []string `json:"kinds"`
 	///
@@ -165,7 +166,9 @@ func (s *NftHolding) QueryCount(ctx context.Context, query *QueryNftHolding) ([]
 	if query.ChainId > 0 {
 		where = where.Where(dao.NftHolding.Columns().ChainId, query.ChainId)
 	}
-
+	if query.Contract != "" {
+		where = where.Where(dao.NftHolding.Columns().Contract, query.Contract)
+	}
 	////
 	where = where.Fields(
 		dao.NftHolding.Columns().Contract,

@@ -168,6 +168,8 @@ func (s *NftHolding) QueryCount(ctx context.Context, query *QueryNftHolding) ([]
 	}
 	if query.Contract != "" {
 		where = where.Where(dao.NftHolding.Columns().Contract, query.Contract)
+	} else if len(query.Contracts) > 0 {
+		where = where.Where(dao.NftHolding.Columns().Contract, query.Contracts)
 	}
 	////
 	where = where.Fields(

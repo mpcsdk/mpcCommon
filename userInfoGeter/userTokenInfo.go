@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/go-resty/resty/v2"
+	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/mpcsdk/mpcCommon/mpccode"
 )
@@ -92,12 +93,20 @@ func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*Us
 	return userInfo.Data, nil
 }
 
-func NewUserInfoGeter(url string, dur int) *UserTokenInfoGeter {
+func NewUserInfoGeter(url string, redis *gredis.Redis, dur int) *UserTokenInfoGeter {
 	c := resty.New()
+	cache := gcache.New()
+	if redis != nil {
+		_, err := redis.Conn(context.Background())
+		if err != nil {
+			panic(err)
+		}
+		cache.SetAdapter(gcache.NewAdapterRedis(redis))
+	}
 	s := &UserTokenInfoGeter{
 		cli:   c,
 		url:   url,
-		cache: gcache.New(),
+		cache: cache,
 		dur:   time.Duration(dur) * time.Second,
 	}
 	return s

@@ -10,7 +10,9 @@ require (
 	github.com/gogf/gf/contrib/drivers/pgsql/v2 v2.7.2
 	github.com/gogf/gf/contrib/nosql/redis/v2 v2.7.2
 	github.com/gogf/gf/v2 v2.7.2
+	github.com/golang/protobuf v1.5.3
 	github.com/nats-io/nats.go v1.33.1
+	github.com/nats-rpc/nrpc v0.0.0-20240925085410-8f47f6a864d1
 	github.com/satori/go.uuid v1.2.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.763
@@ -18,6 +20,7 @@ require (
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.763
 	github.com/yitter/idgenerator-go v1.3.3
 	go.opentelemetry.io/otel/trace v1.14.0
+	google.golang.org/protobuf v1.33.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 

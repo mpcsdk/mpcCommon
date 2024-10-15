@@ -9,7 +9,7 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
-type NrpcServer struct {
+type NRpcServer struct {
 	sub *nats.Subscription
 	nc  *nats.Conn
 	// cache *gcache.Cache
@@ -32,13 +32,13 @@ type AuthRpcServerCfg struct {
 	TimeOut int
 }
 
-func NewAuthRpcServer(ctx context.Context, cfg *AuthRpcServerCfg, authserver AuthServerServer) (*NrpcServer, error) {
+func NewAuthRpcServer(ctx context.Context, cfg *AuthRpcServerCfg, authserver AuthServerServer) (*NRpcServer, error) {
 	//
 	nc, err := nats.Connect(cfg.Url, nats.Timeout(time.Duration(cfg.TimeOut)*time.Second))
 	if err != nil {
 		return nil, err
 	}
-	s := &NrpcServer{}
+	s := &NRpcServer{}
 	///
 	h := NewAuthServerHandler(gctx.GetInitCtx(), nc, authserver)
 	sub, err := nc.QueueSubscribe(h.Subject(), "authServer", h.Handler)

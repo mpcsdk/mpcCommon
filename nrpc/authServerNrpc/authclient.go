@@ -1,4 +1,4 @@
-package authServer
+package authServerNrpc
 
 import (
 	"time"

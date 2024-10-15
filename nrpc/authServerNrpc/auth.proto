@@ -3,9 +3,9 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "nrpc.proto";
 
-package authServer;
+package authServerNrpc;
 
-option go_package = "/authServer";
+option go_package = "/authServerNrpc";
 
 service AuthServer{
     rpc AuthToken (AuthTokenReq) returns (AuthTokenRes) {}

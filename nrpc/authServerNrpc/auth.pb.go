@@ -4,7 +4,7 @@
 // 	protoc        v3.6.1
 // source: authServer/auth.proto
 
-package authServer
+package authServerNrpc
 
 import (
 	_ "github.com/golang/protobuf/ptypes/empty"

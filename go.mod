@@ -10,6 +10,7 @@ require (
 	github.com/gogf/gf/contrib/drivers/pgsql/v2 v2.7.2
 	github.com/gogf/gf/contrib/nosql/redis/v2 v2.7.2
 	github.com/gogf/gf/v2 v2.7.2
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/golang/protobuf v1.5.3
 	github.com/nats-io/nats.go v1.33.1
 	github.com/nats-rpc/nrpc v0.0.0-20240925085410-8f47f6a864d1

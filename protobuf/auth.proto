@@ -1,0 +1,36 @@
+
+syntax = "proto3";
+import "nrpc.proto";
+
+package authServiceNrpc;
+
+option go_package = "/authServiceNrpc";
+
+service AuthService{
+    rpc AuthToken (AuthTokenReq) returns (AuthTokenRes) {}
+    rpc RefreshToken (RefreshTokenReq) returns (RefreshTokenRes) {}
+    rpc TokenInfo(TokenInfoReq) returns (TokenInfoRes) {}
+}
+///
+message AuthTokenReq {
+    string UserToken = 1; // v: required
+}
+message AuthTokenRes {
+    string Token = 1;
+}
+//////
+message TokenInfoReq {
+    string Token = 1; // v: required
+}
+message TokenInfoRes {
+    string AppId = 1;
+    string UserId = 2;
+    bool IsValid = 3;
+}
+//////
+message RefreshTokenReq {
+    string Token = 1; // v: required
+}
+message RefreshTokenRes {
+    string Token = 1; // v: required
+}

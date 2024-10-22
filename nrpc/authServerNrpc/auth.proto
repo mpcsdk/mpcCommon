@@ -1,0 +1,36 @@
+
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "nrpc.proto";
+
+package authServerNrpc;
+
+option go_package = "/authServerNrpc";
+
+service AuthServer{
+    rpc AuthToken (AuthTokenReq) returns (AuthTokenRes) {}
+    rpc RefreshToken (RefreshTokenReq) returns (RefreshTokenRes) {}
+    rpc TokenGetInfo(TokenGetInfoReq) returns (TokenGetInfoRes) {}
+}
+///
+message AuthTokenReq {
+    string UserToken = 1; // v: required
+}
+message AuthTokenRes {
+    string Token = 1;
+}
+//////
+message TokenGetInfoReq {
+    string Token = 1; // v: required
+}
+message TokenGetInfoRes {
+    string AppId = 1;
+    string UserId = 2;
+}
+//////
+message RefreshTokenReq {
+    string Token = 1; // v: required
+}
+message RefreshTokenRes {
+    string Token = 1; // v: required
+}

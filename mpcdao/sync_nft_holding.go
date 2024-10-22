@@ -18,6 +18,7 @@ type NftHolding struct {
 type QueryNftHolding struct {
 	ChainId   int64    `json:"chainId"`
 	Address   string   `json:"address"`
+	Contract  string   `json:"contract"`
 	Contracts []string `json:"contracts"`
 	Kinds     []string `json:"kinds"`
 	///
@@ -139,13 +140,47 @@ func (s *NftHolding) Query(ctx context.Context, query *QueryNftHolding) ([]*enti
 	if len(query.Contracts) > 0 {
 		where = where.Where(dao.NftHolding.Columns().Contract, query.Contracts)
 	}
-	if query.ChainId != 0 {
-		where = where.Where(dao.NftHolding.Columns().ChainId, query.ChainId)
-	}
+	where = where.WhereGT(dao.NftHolding.Columns().Value, 0)
 	///
 	if query.PageSize != 0 {
 		where = where.Limit(query.Page*query.PageSize, query.PageSize)
 	}
+	///
+	result, err := where.All()
+	if err != nil {
+		return nil, err
+	}
+	data := []*entity.NftHolding{}
+	err = result.Structs(&data)
+	///
+	return data, err
+}
+func (s *NftHolding) QueryCount(ctx context.Context, query *QueryNftHolding) ([]*entity.NftHolding, error) {
+	if query.Address == "" {
+		return nil, nil
+	}
+	//
+	where := dao.NftHolding.Ctx(ctx)
+	where = where.Where(dao.NftHolding.Columns().Address, query.Address)
+
+	if query.ChainId > 0 {
+		where = where.Where(dao.NftHolding.Columns().ChainId, query.ChainId)
+	}
+	if query.Contract != "" {
+		where = where.Where(dao.NftHolding.Columns().Contract, query.Contract)
+	} else if len(query.Contracts) > 0 {
+		where = where.Where(dao.NftHolding.Columns().Contract, query.Contracts)
+	}
+	////
+	where = where.Fields(
+		dao.NftHolding.Columns().Contract,
+		`sum("value") as "value"`,
+	).
+		Group(
+			dao.NftHolding.Columns().Contract,
+			dao.NftHolding.Columns().Value,
+		).
+		Having(`"value">0`)
 	///
 	result, err := where.All()
 	if err != nil {

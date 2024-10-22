@@ -2,11 +2,11 @@ package authService
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/mpcsdk/mpcCommon/authService/authServiceModel.go"
 )
 
 // /serTokenInfo
@@ -20,16 +20,23 @@ type UserInfo struct {
 	KeyHash    string `json:"keyHash"`
 	CreateTime int64  `json:"create_time"`
 }
-type respUserInfo struct {
-	Status  int                        `json:"status"`
-	ErrCode int                        `json:"errorCode"`
-	Msg     string                     `json:"msg"`
-	Data    *authServiceModel.UserInfo `json:"data"`
+
+func (s *UserInfo) String() string {
+	j, _ := json.Marshal(s)
+	return string(j)
+
 }
 
-func GetUserTokenInfo(ctx context.Context, url string, tokenStr string) (*authServiceModel.UserInfo, error) {
+type respUserInfo struct {
+	Status  int       `json:"status"`
+	ErrCode int       `json:"errorCode"`
+	Msg     string    `json:"msg"`
+	Data    *UserInfo `json:"data"`
+}
+
+func GetUserTokenInfo(ctx context.Context, url string, tokenStr string) (*UserInfo, error) {
 	if tokenStr == "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBQdWJLZXkiOiJhYmNkIiwiaWF0IjoxNjk0NDk5Njg5LCJleHAiOjE3MjYwMzU2ODl9.OsI4nFQoSoegZJbzTQnWBaB1shMjaPinhWZlnntGub4" {
-		return &authServiceModel.UserInfo{
+		return &UserInfo{
 			UserId: "abcd",
 		}, nil
 	}

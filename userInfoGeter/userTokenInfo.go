@@ -61,6 +61,7 @@ func (s *UserTokenInfoGeter) setCache(ctx context.Context, userToken string, inf
 }
 func (s *UserTokenInfoGeter) GetUserInfo(ctx context.Context, token string) (*UserInfo, error) {
 	////
+
 	info, err := s.getUserInfoCache(ctx, token)
 	if info != nil {
 		return info, nil

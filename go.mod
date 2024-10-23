@@ -6,10 +6,10 @@ require (
 	github.com/dchest/captcha v1.0.0
 	github.com/ethereum/go-ethereum v1.13.14
 	github.com/go-resty/resty/v2 v2.11.0
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.2
-	github.com/gogf/gf/contrib/drivers/pgsql/v2 v2.7.2
-	github.com/gogf/gf/contrib/nosql/redis/v2 v2.7.2
-	github.com/gogf/gf/v2 v2.7.2
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.4
+	github.com/gogf/gf/contrib/drivers/pgsql/v2 v2.7.4
+	github.com/gogf/gf/contrib/nosql/redis/v2 v2.7.4
+	github.com/gogf/gf/v2 v2.7.4
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/golang/protobuf v1.5.3
 	github.com/nats-io/nats.go v1.33.1

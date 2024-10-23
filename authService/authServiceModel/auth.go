@@ -1,4 +1,4 @@
-package authServer
+package authServiceModel
 
 import "github.com/golang-jwt/jwt/v4"
 
@@ -11,7 +11,7 @@ type UserInfo struct {
 	KeyHash    string `json:"keyHash"`
 	CreateTime int64  `json:"create_time"`
 }
-type UserInfoClaims struct {
+type MpcUserToken struct {
 	UserInfo *UserInfo
 	jwt.RegisteredClaims
 }

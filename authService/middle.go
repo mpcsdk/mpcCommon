@@ -21,21 +21,21 @@ func BuildMiddlewareParseTokenApi(authapi *authServiceApi.AuthServiceApi) func(r
 	}
 }
 
-func BuildMiddlewareParseTokenNrpc(nrpc *authServiceNrpc.AuthClientNrpc) func(r *ghttp.Request) {
-	return func(r *ghttp.Request) {
-		tokenStr := r.Get("token").String()
-		token, err := nrpc.TokenInfo(r.Context(), tokenStr)
-		if err != nil {
-			g.RequestFromCtx(r.Context()).Response.WriteStatusExit(500)
-		}
-		if !token.IsValid {
-			g.RequestFromCtx(r.Context()).Response.WriteStatusExit(500)
-		}
+// func BuildMiddlewareParseTokenNrpc(nrpc *authServiceNrpc.AuthClientNrpc) func(r *ghttp.Request) {
+// 	return func(r *ghttp.Request) {
+// 		tokenStr := r.Get("token").String()
+// 		token, err := nrpc.TokenInfo(r.Context(), tokenStr)
+// 		if err != nil {
+// 			g.RequestFromCtx(r.Context()).Response.WriteStatusExit(500)
+// 		}
+// 		if !token.IsValid {
+// 			g.RequestFromCtx(r.Context()).Response.WriteStatusExit(500)
+// 		}
 
-		// r.SetParam("mpcToken", token)
-		r.Middleware.Next()
-	}
-}
+// 		// r.SetParam("mpcToken", token)
+// 		r.Middleware.Next()
+// 	}
+// }
 
 type MiddlewareAuthTokenInfoNrpcCfg struct {
 	tokenInfoFn            func(ctx context.Context, tokenStr string) (*authServiceNrpc.TokenInfoRes, error)

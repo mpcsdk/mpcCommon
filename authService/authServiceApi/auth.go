@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/gogf/gf/v2/os/gctx"
-	"github.com/mpcsdk/mpcCommon/authServiceModel"
+	"github.com/mpcsdk/mpcCommon/authService/authServiceModel"
 )
 
 // //mpc user token

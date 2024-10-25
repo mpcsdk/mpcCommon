@@ -36,3 +36,7 @@ gfcli:
         group: "tfa"
         tables: "tfa"
         jsonCase: "CamelLower"
+      - link: "mysql:riskcontrol:123456@tcp(127.0.0.1:3306)/relayeradmin"
+        group: "relayeradmin"
+        tables: "relayer_channel,relayer_fee"
+        jsonCase: "CamelLower"

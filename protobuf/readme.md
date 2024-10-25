@@ -14,5 +14,5 @@ protoc  -I ./mpcCommon/protobuf --go_out=./api --nrpc_out=./api ./mpcCommon/prot
 protoc  -I ./mpcCommon/protobuf --go_out=./api --nrpc_out=./api ./mpcCommon/protobuf/riskctrl/riskctrl.proto
 ```
 ```
-protoc  -I ./mpcCommon/protobuf --go_out=./authService --nrpc_out=./authService ./mpcCommon/protobuf/auth.proto
+protoc  -I ./protobuf --go_out=./authService --nrpc_out=./authService ./mpcCommon/protobuf/auth.proto
 ```

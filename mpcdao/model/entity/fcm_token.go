@@ -10,7 +10,7 @@ import (
 
 // FcmToken is the golang structure for table fcm_token.
 type FcmToken struct {
-	UserId      string      `json:"userId"      orm:"user_id"      ` //
+	UserId      string      `json:"userId"      orm:"user_id"      ` // 用户id
 	FcmToken    string      `json:"fcmToken"    orm:"fcm_token"    ` //
 	Token       string      `json:"token"       orm:"token"        ` //
 	Address     string      `json:"address"     orm:"address"      ` //

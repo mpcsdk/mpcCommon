@@ -1,5 +1,6 @@
 
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 import "nrpc.proto";
 
 package authServiceNrpc;
@@ -7,6 +8,7 @@ package authServiceNrpc;
 option go_package = "/authServiceNrpc";
 
 service AuthService{
+    rpc Alive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
     rpc AuthToken (AuthTokenReq) returns (AuthTokenRes) {}
     rpc RefreshToken (RefreshTokenReq) returns (RefreshTokenRes) {}
     rpc TokenInfo(TokenInfoReq) returns (TokenInfoRes) {}

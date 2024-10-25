@@ -19,6 +19,6 @@ type RiskcontrolRule struct {
 	RuleName   interface{} // 风控名
 	RuleStr    interface{} // 脚本
 	Salience   interface{} // 优先级
-	IsEnable   interface{} // 启用
 	Desc       interface{} // 描述
+	IsEnable   interface{} // 启用
 }

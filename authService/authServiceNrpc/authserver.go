@@ -9,25 +9,25 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
-type AuthServiceNrpc struct {
+type AuthRpcService struct {
 	sub *nats.Subscription
 	nc  *nats.Conn
 	// cache *gcache.Cache
 }
 
 // /nrpc opts
-type AuthServiceNrpcCfg struct {
+type AuthRpcServiceCfg struct {
 	Url     string
 	TimeOut int64
 }
 
-func NewAuthServiceNrpc(ctx context.Context, cfg *AuthServiceNrpcCfg, authserver AuthServiceServer) (*AuthServiceNrpc, error) {
+func NewAuthRpcService(ctx context.Context, cfg *AuthRpcServiceCfg, authserver AuthServiceServer) (*AuthRpcService, error) {
 	//
 	nc, err := nats.Connect(cfg.Url, nats.Timeout(time.Duration(cfg.TimeOut)*time.Second))
 	if err != nil {
 		return nil, err
 	}
-	s := &AuthServiceNrpc{}
+	s := &AuthRpcService{}
 	///
 	h := NewAuthServiceHandler(gctx.GetInitCtx(), nc, authserver)
 	sub, err := nc.QueueSubscribe(h.Subject(), "AuthServer", h.Handler)
@@ -43,6 +43,3 @@ func NewAuthServiceNrpc(ctx context.Context, cfg *AuthServiceNrpcCfg, authserver
 }
 
 // //
-func WithAuthToken(fn func(context.Context, *AuthTokenReq) (*AuthTokenRes, error)) {
-
-}

@@ -6,14 +6,16 @@ import (
 	"log"
 	"time"
 
-	"github.com/nats-io/nats.go"
-	"github.com/nats-rpc/nrpc"
 	"google.golang.org/protobuf/proto"
+	"github.com/nats-io/nats.go"
+	github_com_golang_protobuf_ptypes_empty "github.com/golang/protobuf/ptypes/empty"
+	"github.com/nats-rpc/nrpc"
 )
 
 // AuthServiceServer is the interface that providers of the service
 // AuthService should implement.
 type AuthServiceServer interface {
+	Alive(ctx context.Context, req *github_com_golang_protobuf_ptypes_empty.Empty) (*github_com_golang_protobuf_ptypes_empty.Empty, error)
 	AuthToken(ctx context.Context, req *AuthTokenReq) (*AuthTokenRes, error)
 	RefreshToken(ctx context.Context, req *RefreshTokenReq) (*RefreshTokenRes, error)
 	TokenInfo(ctx context.Context, req *TokenInfoReq) (*TokenInfoRes, error)
@@ -79,6 +81,28 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 	// call handler and form response
 	var immediateError *nrpc.Error
 	switch name {
+	case "Alive":
+		_, request.Encoding, err = nrpc.ParseSubjectTail(0, request.SubjectTail)
+		if err != nil {
+			log.Printf("AliveHanlder: Alive subject parsing failed: %v", err)
+			break
+		}
+		var req github_com_golang_protobuf_ptypes_empty.Empty
+		if err := nrpc.Unmarshal(request.Encoding, msg.Data, &req); err != nil {
+			log.Printf("AliveHandler: Alive request unmarshal failed: %v", err)
+			immediateError = &nrpc.Error{
+				Type: nrpc.Error_CLIENT,
+				Message: "bad request received: " + err.Error(),
+			}
+		} else {
+			request.Handler = func(ctx context.Context)(proto.Message, error){
+				innerResp, err := h.server.Alive(ctx, &req)
+				if err != nil {
+					return nil, err
+				}
+				return innerResp, err
+			}
+		}
 	case "AuthToken":
 		_, request.Encoding, err = nrpc.ParseSubjectTail(0, request.SubjectTail)
 		if err != nil {
@@ -89,11 +113,11 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 		if err := nrpc.Unmarshal(request.Encoding, msg.Data, &req); err != nil {
 			log.Printf("AuthTokenHandler: AuthToken request unmarshal failed: %v", err)
 			immediateError = &nrpc.Error{
-				Type:    nrpc.Error_CLIENT,
+				Type: nrpc.Error_CLIENT,
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
-			request.Handler = func(ctx context.Context) (proto.Message, error) {
+			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.AuthToken(ctx, &req)
 				if err != nil {
 					return nil, err
@@ -111,11 +135,11 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 		if err := nrpc.Unmarshal(request.Encoding, msg.Data, &req); err != nil {
 			log.Printf("RefreshTokenHandler: RefreshToken request unmarshal failed: %v", err)
 			immediateError = &nrpc.Error{
-				Type:    nrpc.Error_CLIENT,
+				Type: nrpc.Error_CLIENT,
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
-			request.Handler = func(ctx context.Context) (proto.Message, error) {
+			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.RefreshToken(ctx, &req)
 				if err != nil {
 					return nil, err
@@ -133,11 +157,11 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 		if err := nrpc.Unmarshal(request.Encoding, msg.Data, &req); err != nil {
 			log.Printf("TokenInfoHandler: TokenInfo request unmarshal failed: %v", err)
 			immediateError = &nrpc.Error{
-				Type:    nrpc.Error_CLIENT,
+				Type: nrpc.Error_CLIENT,
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
-			request.Handler = func(ctx context.Context) (proto.Message, error) {
+			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.TokenInfo(ctx, &req)
 				if err != nil {
 					return nil, err
@@ -148,7 +172,7 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 	default:
 		log.Printf("AuthServiceHandler: unknown name %q", name)
 		immediateError = &nrpc.Error{
-			Type:    nrpc.Error_CLIENT,
+			Type: nrpc.Error_CLIENT,
 			Message: "unknown name: " + name,
 		}
 	}
@@ -173,19 +197,32 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 }
 
 type AuthServiceClient struct {
-	nc       nrpc.NatsConn
-	Subject  string
+	nc      nrpc.NatsConn
+	Subject string
 	Encoding string
-	Timeout  time.Duration
+	Timeout time.Duration
 }
 
 func NewAuthServiceClient(nc nrpc.NatsConn) *AuthServiceClient {
 	return &AuthServiceClient{
-		nc:       nc,
-		Subject:  "AuthService",
+		nc:      nc,
+		Subject: "AuthService",
 		Encoding: "protobuf",
-		Timeout:  5 * time.Second,
+		Timeout: 5 * time.Second,
 	}
+}
+
+func (c *AuthServiceClient) Alive(req *github_com_golang_protobuf_ptypes_empty.Empty) (*github_com_golang_protobuf_ptypes_empty.Empty, error) {
+
+	subject := c.Subject + "." + "Alive"
+
+	// call
+	var resp = github_com_golang_protobuf_ptypes_empty.Empty{}
+	if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
 }
 
 func (c *AuthServiceClient) AuthToken(req *AuthTokenReq) (*AuthTokenRes, error) {
@@ -228,17 +265,17 @@ func (c *AuthServiceClient) TokenInfo(req *TokenInfoReq) (*TokenInfoRes, error) 
 }
 
 type Client struct {
-	nc              nrpc.NatsConn
+	nc      nrpc.NatsConn
 	defaultEncoding string
-	defaultTimeout  time.Duration
-	AuthService     *AuthServiceClient
+	defaultTimeout time.Duration
+	AuthService *AuthServiceClient
 }
 
 func NewClient(nc nrpc.NatsConn) *Client {
 	c := Client{
-		nc:              nc,
+		nc: nc,
 		defaultEncoding: "protobuf",
-		defaultTimeout:  5 * time.Second,
+		defaultTimeout: 5*time.Second,
 	}
 	c.AuthService = NewAuthServiceClient(nc)
 	return &c

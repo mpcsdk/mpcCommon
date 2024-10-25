@@ -17,6 +17,6 @@ type RiskcontrolRule struct {
 	RuleName   string      `json:"ruleName"   orm:"ruleName"   ` // 风控名
 	RuleStr    string      `json:"ruleStr"    orm:"ruleStr"    ` // 脚本
 	Salience   int         `json:"salience"   orm:"salience"   ` // 优先级
-	IsEnable   int         `json:"isEnable"   orm:"isEnable"   ` // 启用
 	Desc       string      `json:"desc"       orm:"desc"       ` // 描述
+	IsEnable   int         `json:"isEnable"   orm:"isEnable"   ` // 启用
 }

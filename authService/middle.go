@@ -41,7 +41,7 @@ type MiddlewareAuthTokenInfoNrpcCfg struct {
 	tokenInfoFn            func(ctx context.Context, tokenStr string) (*authServiceNrpc.TokenInfoRes, error)
 	tokenInfoErrHandle     func(ctx context.Context, err error)
 	tokenInfoInValidHandle func(ctx context.Context, tokenInfo *authServiceNrpc.TokenInfoRes)
-	middlewareFn           func(r *ghttp.Request)
+	middlewareFn           func(r *ghttp.Request, tokenInfo *authServiceNrpc.TokenInfoRes)
 	middlewareErrFn        func(r *ghttp.Request)
 }
 type MiddlewareAuthTokenInfoNrpcOption func(*MiddlewareAuthTokenInfoNrpcCfg)
@@ -61,7 +61,7 @@ func WithTokenInfoInValidHandle(fn func(ctx context.Context, tokenInfo *authServ
 		cfg.tokenInfoInValidHandle = fn
 	}
 }
-func WithMiddlewareFn(fn func(r *ghttp.Request)) MiddlewareAuthTokenInfoNrpcOption {
+func WithMiddlewareFn(fn func(r *ghttp.Request, tokenInfo *authServiceNrpc.TokenInfoRes)) MiddlewareAuthTokenInfoNrpcOption {
 	return func(cfg *MiddlewareAuthTokenInfoNrpcCfg) {
 		cfg.middlewareFn = fn
 	}
@@ -89,6 +89,7 @@ func BuildMiddlewareAuthTokenInfoNrpc(opts ...MiddlewareAuthTokenInfoNrpcOption)
 			s.tokenInfoInValidHandle(r.Context(), tokenInfo)
 		}
 
-		s.middlewareFn(r)
+		r.SetParam("tokenInfo", tokenInfo)
+		s.middlewareFn(r, tokenInfo)
 	}
 }

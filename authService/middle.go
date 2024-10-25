@@ -38,11 +38,10 @@ func BuildMiddlewareParseTokenApi(authapi *authServiceApi.AuthServiceApi) func(r
 // }
 
 type MiddlewareAuthTokenInfoNrpcCfg struct {
-	tokenInfoFn            func(ctx context.Context, tokenStr string) (*authServiceNrpc.TokenInfoRes, error)
-	tokenInfoErrHandle     func(ctx context.Context, err error)
-	tokenInfoInValidHandle func(ctx context.Context, tokenInfo *authServiceNrpc.TokenInfoRes)
-	middlewareFn           func(r *ghttp.Request, tokenInfo *authServiceNrpc.TokenInfoRes)
-	middlewareErrFn        func(r *ghttp.Request)
+	tokenInfoFn        func(ctx context.Context, tokenStr string) (*authServiceNrpc.TokenInfoRes, error)
+	tokenInfoErrHandle func(ctx context.Context, err error)
+	middlewareFn       func(r *ghttp.Request, tokenInfo *authServiceNrpc.TokenInfoRes)
+	middlewareErrFn    func(r *ghttp.Request)
 }
 type MiddlewareAuthTokenInfoNrpcOption func(*MiddlewareAuthTokenInfoNrpcCfg)
 
@@ -56,11 +55,7 @@ func WithTokenInfoErrHandle(fn func(ctx context.Context, err error)) MiddlewareA
 		cfg.tokenInfoErrHandle = fn
 	}
 }
-func WithTokenInfoInValidHandle(fn func(ctx context.Context, tokenInfo *authServiceNrpc.TokenInfoRes)) MiddlewareAuthTokenInfoNrpcOption {
-	return func(cfg *MiddlewareAuthTokenInfoNrpcCfg) {
-		cfg.tokenInfoInValidHandle = fn
-	}
-}
+
 func WithMiddlewareFn(fn func(r *ghttp.Request, tokenInfo *authServiceNrpc.TokenInfoRes)) MiddlewareAuthTokenInfoNrpcOption {
 	return func(cfg *MiddlewareAuthTokenInfoNrpcCfg) {
 		cfg.middlewareFn = fn
@@ -79,14 +74,13 @@ func BuildMiddlewareAuthTokenInfoNrpc(opts ...MiddlewareAuthTokenInfoNrpcOption)
 	return func(r *ghttp.Request) {
 		tokenStr := r.Get("token").String()
 		if tokenStr == "" {
+			g.Log().Error(r.Context(), "TokenMiddleware tokenStr is empty")
 			s.middlewareErrFn(r)
 		}
 		tokenInfo, err := s.tokenInfoFn(r.Context(), tokenStr)
 		if err != nil {
+			g.Log().Error(r.Context(), "TokenMiddleware tokenInfoFn err:", err, "token:", tokenStr)
 			s.tokenInfoErrHandle(r.Context(), err)
-		}
-		if !tokenInfo.IsValid {
-			s.tokenInfoInValidHandle(r.Context(), tokenInfo)
 		}
 
 		r.SetParam("tokenInfo", tokenInfo)

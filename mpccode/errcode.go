@@ -3,6 +3,8 @@ package mpccode
 import (
 	"context"
 
+	"github.com/gogf/gf/v2/errors/gcode"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -11,6 +13,9 @@ func TraceId(ctx context.Context) string {
 	traceId := spanCtx.TraceID()
 	return traceId.String()
 
+}
+func InstanceCode(err error) gcode.Code {
+	return gerror.Code(err)
 }
 
 var (

@@ -20,6 +20,17 @@ type MpcContext struct {
 	dur   time.Duration
 }
 
+// func (s *MpcContext) SaveContext(ctx context.Context, userId string, data *do.MpcContext) error {
+// 	_, err := dao.MpcContext.Ctx(ctx).Cache(gdb.CacheOption{
+// 		Duration: -1,
+// 		Name:     dao.MpcContext.Table() + userId,
+// 		Force:    false,
+// 	}).Data(data).Where(do.MpcContext{
+// 		UserId: userId,
+// 	}).OnConflict(dao.MpcContext.Columns().UserId).Save()
+// 	return err
+// }
+
 // ///context
 func (s *MpcContext) UpdateContext(ctx context.Context, userId string, data *do.MpcContext) error {
 	_, err := dao.MpcContext.Ctx(ctx).Cache(gdb.CacheOption{
@@ -42,7 +53,6 @@ func (s *MpcContext) InertContext(ctx context.Context, userId string, data *do.M
 	if cnt != 0 {
 		return nil
 	}
-
 	_, err = dao.MpcContext.Ctx(ctx).Cache(gdb.CacheOption{
 		Duration: -1,
 		Name:     dao.MpcContext.Table() + userId,

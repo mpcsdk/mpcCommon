@@ -78,6 +78,9 @@ func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*TokenI
 		return res, nil
 	}
 	res, err := s.authclient.TokenInfo(&TokenInfoReq{Token: tokenStr})
+	if err != nil {
+		return nil, err
+	}
 	//todo: expire
 	s.cache.Set(ctx, "AuthNrpc:TokenInfo:"+tokenStr, res, 0)
 

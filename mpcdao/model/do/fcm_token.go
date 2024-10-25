@@ -12,7 +12,7 @@ import (
 // FcmToken is the golang structure of table fcm_token for DAO operations like Where/Data.
 type FcmToken struct {
 	g.Meta      `orm:"table:fcm_token, do:true"`
-	UserId      interface{} //
+	UserId      interface{} // 用户id
 	FcmToken    interface{} //
 	Token       interface{} //
 	Address     interface{} //

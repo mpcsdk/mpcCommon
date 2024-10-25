@@ -20,7 +20,7 @@ type FcmTokenDao struct {
 
 // FcmTokenColumns defines and stores column names for table fcm_token.
 type FcmTokenColumns struct {
-	UserId      string //
+	UserId      string // 用户id
 	FcmToken    string //
 	Token       string //
 	Address     string //

@@ -22,7 +22,7 @@ func (s *UserInfo) String() string {
 }
 
 type MpcUserToken struct {
-	UserInfo *UserInfo
+	UserInfo UserInfo
 	ErrCode  uint32
 	ErrMsg   string
 	jwt.RegisteredClaims

@@ -9,6 +9,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/gogf/gf/v2/os/gctx"
+	"github.com/mpcsdk/mpcCommon/authService/authServiceModel"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -47,33 +48,29 @@ func (s *AuthRpcClient) Flush() {
 	}
 	s.authclient = NewAuthServiceClient(s.nc)
 }
-func (s *AuthRpcClient) AuthToken(ctx context.Context, tokenStr string) (*AuthTokenRes, error) {
+func (s *AuthRpcClient) AuthToken(ctx context.Context, tokenStr string) (string, error) {
 	if v, err := s.cache.Get(ctx, "AuthNrpc:AuthToken:"+tokenStr); err == nil && !v.IsEmpty() {
-		var res *AuthTokenRes = nil
-		v.Struct(&res)
-		return res, nil
+		return v.String(), nil
 	}
 	res, err := s.authclient.AuthToken(&AuthTokenReq{UserToken: tokenStr})
 	//todo: expire
 	s.cache.Set(ctx, "AuthNrpc:AuthToken:"+tokenStr, res, 0)
 
-	return res, err
+	return res.Token, err
 }
-func (s *AuthRpcClient) RefreshToken(ctx context.Context, tokenStr string) (*RefreshTokenRes, error) {
+func (s *AuthRpcClient) RefreshToken(ctx context.Context, tokenStr string) (string, error) {
 	if v, err := s.cache.Get(ctx, "AuthNrpc:RefreshToken:"+tokenStr); err == nil && !v.IsEmpty() {
-		var res *RefreshTokenRes = nil
-		v.Struct(&res)
-		return res, nil
+		return v.String(), nil
 	}
 	res, err := s.authclient.RefreshToken(&RefreshTokenReq{Token: tokenStr})
 	//todo: expire
 	s.cache.Set(ctx, "AuthNrpc:RefreshToken:"+tokenStr, res, 0)
 
-	return res, err
+	return res.Token, err
 }
-func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*TokenInfoRes, error) {
+func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*authServiceModel.MpcUserToken, error) {
 	if v, err := s.cache.Get(ctx, "AuthNrpc:TokenInfo:"+tokenStr); err == nil && !v.IsEmpty() {
-		var res *TokenInfoRes = nil
+		var res *authServiceModel.MpcUserToken = nil
 		v.Struct(&res)
 		return res, nil
 	}
@@ -84,7 +81,7 @@ func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*TokenI
 	//todo: expire
 	s.cache.Set(ctx, "AuthNrpc:TokenInfo:"+tokenStr, res, 0)
 
-	return res, err
+	return &authServiceModel.MpcUserToken{}, err
 }
 
 // ///

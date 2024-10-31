@@ -31,6 +31,7 @@ func GetUserTokenInfo(ctx context.Context, url string, tokenStr string) (authSer
 	if tokenStr == "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBQdWJLZXkiOiJhYmNkIiwiaWF0IjoxNjk0NDk5Njg5LCJleHAiOjE3MjYwMzU2ODl9.OsI4nFQoSoegZJbzTQnWBaB1shMjaPinhWZlnntGub4" {
 		return authServiceModel.UserInfo{
 			UserId: "abcd",
+			AppId:  "abcd",
 		}, nil
 	}
 	/////

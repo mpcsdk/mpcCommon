@@ -7,13 +7,13 @@ import (
 )
 
 type UserInfo struct {
-	Id         int    `json:"id"`
-	UserId     string `json:"appPubKey"`
-	Email      string `json:"email"`
-	LoginType  string `json:"loginType"`
-	Address    string `json:"address"`
-	KeyHash    string `json:"keyHash"`
-	CreateTime int64  `json:"create_time"`
+	UserId string `json:"appPubKey"`
+	AppId  string `json:"appId"`
+
+	// TimeStamp int64 `json:"timestamp"`
+	// Nonce     int64 `json:"nonce"`
+	// Iat       int64 `json:"iat"`
+	// Exp       int64 `json:"exp"`
 }
 
 func (s *UserInfo) String() string {
@@ -23,7 +23,6 @@ func (s *UserInfo) String() string {
 
 type MpcUserToken struct {
 	UserInfo UserInfo
-	ErrCode  uint32
-	ErrMsg   string
+
 	jwt.RegisteredClaims
 }

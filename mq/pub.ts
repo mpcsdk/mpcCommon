@@ -1,4 +1,3 @@
-import { AnyRecord } from 'dns';
 
 const Sub_ChainCfg = 'ChainCgf';
 const Sub_ContractAbi = 'ContractCfg';

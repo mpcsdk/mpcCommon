@@ -7,9 +7,6 @@ const Sub_RiskRule = "RiskRule"
 
 const Sub_RiskRuleReply = "RiskRuleReply"
 
-const Sub_RelayerChannelNotify = "RelayerChannelNotify"
-const Sub_RelayerFeeNotify = "RelayerFeeNotify"
-
 // //
 // //
 const (

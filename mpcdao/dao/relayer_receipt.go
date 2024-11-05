@@ -8,19 +8,19 @@ import (
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao/internal"
 )
 
-// internalRelayerFeeDao is internal type for wrapping internal DAO implements.
-type internalRelayerFeeDao = *internal.RelayerFeeDao
+// internalRelayerReceiptDao is internal type for wrapping internal DAO implements.
+type internalRelayerReceiptDao = *internal.RelayerReceiptDao
 
-// relayerFeeDao is the data access object for table relayer_fee.
+// relayerReceiptDao is the data access object for table receipt.
 // You can define custom methods on it to extend its functionality as you wish.
-type relayerFeeDao struct {
-	internalRelayerFeeDao
+type relayerReceiptDao struct {
+	internalRelayerReceiptDao
 }
 
 var (
-	// RelayerFee is globally public accessible object for table relayer_fee operations.
-	RelayerFee = relayerFeeDao{
-		internal.NewRelayerFeeDao(),
+	// RelayerReceipt is globally public accessible object for table receipt operations.
+	RelayerReceipt = relayerReceiptDao{
+		internal.NewRelayerReceiptDao(),
 	}
 )
 

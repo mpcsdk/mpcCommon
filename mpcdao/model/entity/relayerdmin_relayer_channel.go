@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// RelayerChannel is the golang structure for table relayer_channel.
-type RelayerChannel struct {
+// RelayerdminRelayerChannel is the golang structure for table relayerdmin_relayer_channel.
+type RelayerdminRelayerChannel struct {
 	Id          int         `json:"id"          orm:"id"          ` // ID
 	CreateTime  *gtime.Time `json:"createTime"  orm:"createTime"  ` // 创建时间
 	UpdateTime  *gtime.Time `json:"updateTime"  orm:"updateTime"  ` // 更新时间

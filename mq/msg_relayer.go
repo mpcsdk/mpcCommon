@@ -4,10 +4,13 @@ import (
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
 
+const Sub_RelayerFeeNotify = "RelayerFeeNotify"
+const Sub_RelayerChannelNotify = "RelayerChannelNotify"
+
 type RelayerChannelMsg struct {
 	//up/del/verify
 	Msg
-	Data *entity.RelayerChannel `json:"data"`
+	Data *entity.RelayerdminRelayerChannel `json:"data"`
 }
 
 func (s *RelayerChannelMsg) IsValid() bool {
@@ -20,5 +23,5 @@ func (s *RelayerChannelMsg) IsValid() bool {
 type RelayerFeeMsg struct {
 	//up/del/verify
 	Msg
-	Data *entity.RelayerFee `json:"data"`
+	Data *entity.RelayerdminRelayerFee `json:"data"`
 }

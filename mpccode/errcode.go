@@ -43,12 +43,12 @@ func ToResponse(err error) *ghttp.DefaultHandlerResponse {
 }
 
 var (
-	CodeUnknown        = (&errCode{-1, "unknown", nil}).instance_json
-	CodeNil            = (&errCode{-1, "nil", nil}).instance            // No error code specified.
-	CodeOK             = (&errCode{0, "ok", nil}).instance              // It is OK.
-	CodeSessionInvalid = (&errCode{1, "Session Invalid", nil}).instance // The token is invalid.
-	CodeParamInvalid   = (&errCode{2, "Invalid Argument", nil}).instance
-	CodeTimeOut        = (&errCode{3, "Time Out", nil}).instance
+	CodeUnknown      = (&errCode{-1, "unknown", nil}).instance_json
+	CodeNil          = (&errCode{-1, "nil", nil}).instance    // No error code specified.
+	CodeOK           = (&errCode{0, "ok", nil}).instance      // It is OK.
+	CodeExpired      = (&errCode{1, "Expired", nil}).instance // The token is invalid.
+	CodeParamInvalid = (&errCode{2, "Invalid Argument", nil}).instance
+	CodeTimeOut      = (&errCode{3, "Time Out", nil}).instance
 	///
 	CodeTokenInvalid      = (&errCode{11, "Token Invalid", nil}).instance        // The token does not exist.
 	CodeTFANotExist       = (&errCode{12, "TFA NotExist", nil}).instance         // The token does not exist.

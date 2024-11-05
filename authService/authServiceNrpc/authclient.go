@@ -10,6 +10,7 @@ import (
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/mpcsdk/mpcCommon/authService/authServiceModel"
+	"github.com/mpcsdk/mpcCommon/mpccode"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -75,8 +76,9 @@ func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*authSe
 		return res, nil
 	}
 	res, err := s.authclient.TokenInfo(&TokenInfoReq{Token: tokenStr})
+
 	if err != nil {
-		return nil, err
+		return nil, mpccode.FromNrcpErr(err)
 	}
 	//todo: expire
 	s.cache.Set(ctx, "AuthNrpc:TokenInfo:"+tokenStr, res, 0)

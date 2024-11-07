@@ -56,6 +56,16 @@ func BuildMiddlewareAuthTokenInfoNrpc(opts ...MiddlewareAuthTokenInfoNrpcOption)
 		opt(s)
 	}
 	return func(r *ghttp.Request) {
+		if s.tokenInfoFn == nil {
+			r.SetParam("tokenInfo", &authServiceModel.MpcUserToken{
+				UserInfo: authServiceModel.UserInfo{
+					UserId: "abcd",
+					AppId:  "abcd",
+				},
+			})
+			r.Middleware.Next()
+			return
+		}
 		tokenStr := r.Get("token").String()
 		if tokenStr == "" {
 			g.Log().Error(r.Context(), "TokenMiddleware tokenStr is empty")

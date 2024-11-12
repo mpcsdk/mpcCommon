@@ -5,6 +5,7 @@ import (
 
 	"github.com/gogf/gf/v2/errors/gcode"
 	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/net/ghttp"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -16,6 +17,29 @@ func TraceId(ctx context.Context) string {
 }
 func InstanceCode(err error) gcode.Code {
 	return gerror.Code(err)
+}
+func ToResponse(err error) *ghttp.DefaultHandlerResponse {
+	code := gerror.Code(err)
+	if code == gcode.CodeNil {
+		if err != nil {
+			code = gcode.CodeInternalError
+		} else {
+			code = gcode.CodeOK
+		}
+	}
+
+	response := &ghttp.DefaultHandlerResponse{
+		Code:    code.Code(),
+		Message: code.Message(),
+		Data: func() interface{} {
+			detail := code.Detail()
+			if detail != nil {
+				return detail
+			}
+			return nil
+		}(),
+	}
+	return response
 }
 
 var (

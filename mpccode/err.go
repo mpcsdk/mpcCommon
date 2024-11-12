@@ -7,6 +7,8 @@ import (
 	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/gogf/gf/v2/errors/gcode"
 	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/nats-io/nats.go"
+	"github.com/nats-rpc/nrpc"
 )
 
 type errCode struct {
@@ -16,7 +18,15 @@ type errCode struct {
 }
 
 func FromNrcpErr(err error) error {
-	return &errCode{}
+	if nrpcerr, ok := err.(*nrpc.Error); ok {
+		e := &errCode{}
+		return e.instance_json(nrpcerr.Message)
+	} else {
+		if err == nats.ErrTimeout {
+			return CodeTimeOut()
+		}
+		return CodeTokenInvalid(err.Error())
+	}
 }
 func (e *errCode) Equal(err error) bool {
 	if !errors.As(err, &e) {
@@ -51,22 +61,22 @@ func (e *errCode) instance(detail ...interface{}) error {
 		errcode = &errCode{e.ErrCode, e.ErrMsg, detail}
 	}
 	return gerror.NewCode(errcode, errcode.Text())
+
 }
 
 func (e *errCode) instance_json(val interface{}) error {
 	if val == nil {
 		return nil
 	}
-	m := &m{}
 	switch val.(type) {
 	case string:
-		json.Unmarshal([]byte(val.(string)), m)
+		json.Unmarshal([]byte(val.(string)), e)
 	case []byte:
-		json.Unmarshal(val.([]byte), m)
+		json.Unmarshal(val.([]byte), e)
 	default:
 		return nil
 	}
-	return gerror.NewCode(&errCode{m.Code, m.Message, m.Detail})
+	return gerror.NewCode(&errCode{e.ErrCode, e.ErrMsg, e.ErrDetail})
 }
 func (e *errCode) Text() string {
 	j, _ := json.Marshal(e)

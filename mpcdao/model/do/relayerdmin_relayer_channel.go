@@ -9,8 +9,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// RelayerChannel is the golang structure of table relayer_channel for DAO operations like Where/Data.
-type RelayerChannel struct {
+// RelayerdminRelayerChannel is the golang structure of table relayer_channel for DAO operations like Where/Data.
+type RelayerdminRelayerChannel struct {
 	g.Meta      `orm:"table:relayer_channel, do:true"`
 	Id          interface{} // ID
 	CreateTime  *gtime.Time // 创建时间

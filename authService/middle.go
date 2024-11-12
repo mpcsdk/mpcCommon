@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/mpcsdk/mpcCommon/authService/authServiceApi"
 	"github.com/mpcsdk/mpcCommon/authService/authServiceModel"
+	"github.com/mpcsdk/mpcCommon/mpccode"
 )
 
 func BuildMiddlewareParseTokenApi(authapi *authServiceApi.AuthServiceApi) func(r *ghttp.Request) {
@@ -25,7 +26,7 @@ type MiddlewareAuthTokenInfoNrpcCfg struct {
 	tokenInfoFn        func(ctx context.Context, tokenStr string) (*authServiceModel.MpcUserToken, error)
 	tokenInfoErrHandle func(ctx context.Context, err error)
 	middlewareFn       func(r *ghttp.Request, tokenInfo *authServiceModel.MpcUserToken)
-	middlewareErrFn    func(r *ghttp.Request)
+	middlewareErrFn    func(ctx context.Context, err error)
 }
 type MiddlewareAuthTokenInfoNrpcOption func(*MiddlewareAuthTokenInfoNrpcCfg)
 
@@ -45,7 +46,7 @@ func WithMiddlewareFn(fn func(r *ghttp.Request, tokenInfo *authServiceModel.MpcU
 		cfg.middlewareFn = fn
 	}
 }
-func WithMiddlewareErrFn(fn func(r *ghttp.Request)) MiddlewareAuthTokenInfoNrpcOption {
+func WithMiddlewareErrFn(fn func(ctx context.Context, err error)) MiddlewareAuthTokenInfoNrpcOption {
 	return func(cfg *MiddlewareAuthTokenInfoNrpcCfg) {
 		cfg.middlewareErrFn = fn
 	}
@@ -69,7 +70,7 @@ func BuildMiddlewareAuthTokenInfoNrpc(opts ...MiddlewareAuthTokenInfoNrpcOption)
 		tokenStr := r.Get("token").String()
 		if tokenStr == "" {
 			g.Log().Error(r.Context(), "TokenMiddleware tokenStr is empty")
-			s.middlewareErrFn(r)
+			s.middlewareErrFn(r.Context(), mpccode.CodeParamInvalid())
 		}
 		tokenInfo, err := s.tokenInfoFn(r.Context(), tokenStr)
 		if err != nil {

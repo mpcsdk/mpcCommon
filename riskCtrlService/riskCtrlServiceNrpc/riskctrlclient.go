@@ -20,7 +20,7 @@ type RiskCtrlRpcClient struct {
 	cache *gcache.Cache
 }
 
-func NewRiskCtrlRpcClient(r *gredis.Redis, natsUrl string, timeout int64) (*RiskCtrlRpcClient, error) {
+func NewRiskCtrlRpcClient(r *gredis.Redis, natsUrl string, timeout int) (*RiskCtrlRpcClient, error) {
 	s := &RiskCtrlRpcClient{}
 	nc, err := nats.Connect(natsUrl, nats.Timeout(time.Second*time.Duration(timeout)))
 	if err != nil {

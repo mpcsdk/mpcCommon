@@ -19,10 +19,9 @@ type AuthRpcClient struct {
 	authclient *AuthServiceClient
 	nc         *nats.Conn
 	cache      *gcache.Cache
-	cacheDur   time.Duration
 }
 
-func NewAuthRpcClient(r *gredis.Redis, natsUrl string, timeout int, cacheExp int) (*AuthRpcClient, error) {
+func NewAuthRpcClient(r *gredis.Redis, natsUrl string, timeout int) (*AuthRpcClient, error) {
 	s := &AuthRpcClient{}
 	nc, err := nats.Connect(natsUrl, nats.Timeout(time.Second*time.Duration(timeout)))
 	if err != nil {
@@ -41,7 +40,6 @@ func NewAuthRpcClient(r *gredis.Redis, natsUrl string, timeout int, cacheExp int
 	s.nc = nc
 	s.authclient = authclient
 	s.cache = cache
-	s.cacheDur = time.Duration(cacheExp) * time.Second
 	return s, nil
 }
 func (s *AuthRpcClient) Flush() {

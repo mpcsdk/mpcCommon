@@ -26,7 +26,7 @@ type RiskCtrlRpcService struct {
 // /nrpc opts
 type RiskCtrlRpcServiceCfg struct {
 	Url     string
-	TimeOut int64
+	TimeOut int
 
 	checkRiskRulelFn   func(*mq.RiskRuleReplyMsg) (*mq.RiskRuleReply, error)
 	consumerRiskCtrlFn func(ctx context.Context, data *mq.RiskCtrlRuleMsg) error
@@ -59,7 +59,7 @@ func (s *RiskCtrlRpcServiceCfg) WithUrl(url string) *RiskCtrlRpcServiceCfg {
 	s.Url = url
 	return s
 }
-func (s *RiskCtrlRpcServiceCfg) WithTimeOut(TimeOut int64) *RiskCtrlRpcServiceCfg {
+func (s *RiskCtrlRpcServiceCfg) WithTimeOut(TimeOut int) *RiskCtrlRpcServiceCfg {
 	s.TimeOut = TimeOut
 	return s
 }

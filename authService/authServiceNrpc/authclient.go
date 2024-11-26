@@ -12,6 +12,7 @@ import (
 	"github.com/mpcsdk/mpcCommon/authService/authServiceModel"
 	"github.com/mpcsdk/mpcCommon/mpccode"
 	"github.com/nats-io/nats.go"
+	"github.com/nats-rpc/nrpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -21,7 +22,7 @@ type AuthRpcClient struct {
 	cache      *gcache.Cache
 }
 
-func NewAuthRpcClient(r *gredis.Redis, natsUrl string, timeout int64) (*AuthRpcClient, error) {
+func NewAuthRpcClient(r *gredis.Redis, natsUrl string, timeout int) (*AuthRpcClient, error) {
 	s := &AuthRpcClient{}
 	nc, err := nats.Connect(natsUrl, nats.Timeout(time.Second*time.Duration(timeout)))
 	if err != nil {
@@ -49,6 +50,25 @@ func (s *AuthRpcClient) Flush() {
 	}
 	s.authclient = NewAuthServiceClient(s.nc)
 }
+
+func (s *AuthRpcClient) TryFlush(err error) {
+	if _, ok := err.(*nrpc.Error); ok {
+		return
+	} else {
+		if err == nats.ErrTimeout {
+
+		} else {
+			return
+
+		}
+	}
+	err = s.nc.Flush()
+	if err != nil {
+		panic(err)
+	}
+	s.authclient = NewAuthServiceClient(s.nc)
+}
+
 func (s *AuthRpcClient) AuthToken(ctx context.Context, tokenStr string) (string, error) {
 	if v, err := s.cache.Get(ctx, "AuthNrpc:AuthToken:"+tokenStr); err == nil && !v.IsEmpty() {
 		return v.String(), nil

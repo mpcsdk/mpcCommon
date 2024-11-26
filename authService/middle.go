@@ -5,22 +5,9 @@ import (
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
-	"github.com/mpcsdk/mpcCommon/authService/authServiceApi"
 	"github.com/mpcsdk/mpcCommon/authService/authServiceModel"
 	"github.com/mpcsdk/mpcCommon/mpccode"
 )
-
-func BuildMiddlewareParseTokenApi(authapi *authServiceApi.AuthServiceApi) func(r *ghttp.Request) {
-	return func(r *ghttp.Request) {
-		tokenStr := r.Get("token").String()
-		mpcToken, err := authapi.TokenInfo(r.Context(), tokenStr)
-		if err != nil {
-			g.RequestFromCtx(r.Context()).Response.WriteStatusExit(500)
-		}
-		r.SetParam("mpcToken", mpcToken)
-		r.Middleware.Next()
-	}
-}
 
 type MiddlewareAuthTokenInfoNrpcCfg struct {
 	tokenInfoFn        func(ctx context.Context, tokenStr string) (*authServiceModel.MpcUserToken, error)

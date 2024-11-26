@@ -1,7 +1,6 @@
 package relayerServiceNrpc
 
 import (
-	"errors"
 	"time"
 
 	"github.com/gogf/gf/v2/database/gredis"
@@ -35,27 +34,3 @@ func NewRelayerRpcClient(r *gredis.Redis, natsUrl string, timeout int64) (*RiskC
 	s.cache = cache
 	return s, nil
 }
-
-// func (s *RiskCtrlRpcClient) Flush() {
-// 	err := s.nc.Flush()
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// s.cli = NewRiskCtrlServiceClient(s.nc)
-// }
-
-// ///
-var errDeadLine = errors.New("nats: timeout")
-
-// ///
-// func (s *RiskCtrlRpcClient) Alive(ctx context.Context) error {
-// 	_, err := s.cli.Alive(&emptypb.Empty{})
-// 	if err != nil {
-// 		if err.Error() == errDeadLine.Error() {
-// 			g.Log().Warning(ctx, "Alive TimeOut:")
-// 			s.Flush()
-// 			return nil
-// 		}
-// 	}
-// 	return err
-// }

@@ -76,6 +76,7 @@ func BuildMiddlewareAuthTokenInfoNrpc(opts ...MiddlewareAuthTokenInfoNrpcOption)
 		if err != nil {
 			g.Log().Error(r.Context(), "TokenMiddleware tokenInfoFn err:", err, "token:", tokenStr)
 			s.tokenInfoErrHandle(r.Context(), err)
+			return
 		}
 
 		r.SetParam("tokenInfo", tokenInfo)

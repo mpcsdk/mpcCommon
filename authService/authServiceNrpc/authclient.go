@@ -70,40 +70,46 @@ func (s *AuthRpcClient) TryFlush(err error) {
 }
 
 func (s *AuthRpcClient) AuthToken(ctx context.Context, tokenStr string) (string, error) {
-	if v, err := s.cache.Get(ctx, "AuthNrpc:AuthToken:"+tokenStr); err == nil && !v.IsEmpty() {
-		return v.String(), nil
-	}
+	// if v, err := s.cache.Get(ctx, "AuthNrpc:AuthToken:"+tokenStr); err == nil && !v.IsEmpty() {
+	// 	return v.String(), nil
+	// }
 	res, err := s.authclient.AuthToken(&AuthTokenReq{UserToken: tokenStr})
 	//todo: expire
-	s.cache.Set(ctx, "AuthNrpc:AuthToken:"+tokenStr, res, 0)
+	// s.cache.Set(ctx, "AuthNrpc:AuthToken:"+tokenStr, res, s.cacheDur)
 
 	return res.Token, err
 }
 func (s *AuthRpcClient) RefreshToken(ctx context.Context, tokenStr string) (string, error) {
-	if v, err := s.cache.Get(ctx, "AuthNrpc:RefreshToken:"+tokenStr); err == nil && !v.IsEmpty() {
-		return v.String(), nil
-	}
+	// if v, err := s.cache.Get(ctx, "AuthNrpc:RefreshToken:"+tokenStr); err == nil && !v.IsEmpty() {
+	// 	return v.String(), nil
+	// }
 	res, err := s.authclient.RefreshToken(&RefreshTokenReq{Token: tokenStr})
 	//todo: expire
-	s.cache.Set(ctx, "AuthNrpc:RefreshToken:"+tokenStr, res, 0)
+	// s.cache.Set(ctx, "AuthNrpc:RefreshToken:"+tokenStr, res, s.cacheDur)
 
 	return res.Token, err
 }
 func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*authServiceModel.MpcUserToken, error) {
-	if v, err := s.cache.Get(ctx, "AuthNrpc:TokenInfo:"+tokenStr); err == nil && !v.IsEmpty() {
-		var res *authServiceModel.MpcUserToken = nil
-		v.Struct(&res)
-		return res, nil
-	}
+	// if v, err := s.cache.Get(ctx, "AuthNrpc:TokenInfo:"+tokenStr); err == nil && !v.IsEmpty() {
+	// 	var res *authServiceModel.MpcUserToken = nil
+	// 	v.Struct(&res)
+	// 	return res, nil
+	// }
 	res, err := s.authclient.TokenInfo(&TokenInfoReq{Token: tokenStr})
 
 	if err != nil {
 		return nil, mpccode.FromNrcpErr(err)
 	}
+	tokenInfo := &authServiceModel.MpcUserToken{
+		UserInfo: authServiceModel.UserInfo{
+			AppId:  res.AppId,
+			UserId: res.UserId,
+		},
+	}
 	//todo: expire
-	s.cache.Set(ctx, "AuthNrpc:TokenInfo:"+tokenStr, res, 0)
+	// s.cache.Set(ctx, "AuthNrpc:TokenInfo:"+tokenStr, tokenInfo, s.cacheDur)
 
-	return &authServiceModel.MpcUserToken{}, err
+	return tokenInfo, err
 }
 
 // ///

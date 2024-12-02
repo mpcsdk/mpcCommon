@@ -5,7 +5,9 @@ import (
 	"context"
 	"log"
 	"time"
+	"fmt"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/protobuf/proto"
@@ -121,7 +123,9 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.Alive(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -165,7 +169,9 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.AuthToken(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -209,7 +215,9 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.RefreshToken(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -253,7 +261,9 @@ func (h *AuthServiceHandler) Handler(msg *nats.Msg) {
 			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.TokenInfo(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err

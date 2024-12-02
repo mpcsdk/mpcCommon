@@ -3,13 +3,13 @@ package riskCtrlServiceNrpc
 import (
 	"context"
 
+	"github.com/franklihub/nrpc"
 	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/mpcsdk/mpcCommon/mpccode"
 	riskctrlservicemodel "github.com/mpcsdk/mpcCommon/riskCtrlService/riskCtrlServiceModel"
 	"github.com/nats-io/nats.go"
-	"github.com/nats-rpc/nrpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -69,7 +69,7 @@ func (s *RiskCtrlRpcClient) TryFlush(err error) {
 // ///
 // ///
 func (s *RiskCtrlRpcClient) Alive(ctx context.Context) error {
-	_, err := s.cli.Alive(&emptypb.Empty{})
+	_, err := s.cli.Alive(ctx, &emptypb.Empty{})
 	if err != nil {
 		s.TryFlush(err)
 		return mpccode.FromNrcpErr(err)
@@ -77,7 +77,7 @@ func (s *RiskCtrlRpcClient) Alive(ctx context.Context) error {
 	return nil
 }
 func (s *RiskCtrlRpcClient) SendPhoneCode(ctx context.Context, req *riskctrlservicemodel.SendPhoneCodeReq) error {
-	_, err := s.cli.SendPhoneCode(&SendPhoneCodeReq{
+	_, err := s.cli.SendPhoneCode(ctx, &SendPhoneCodeReq{
 		RiskSerial: req.RiskSerial,
 		UserId:     req.UserId,
 		Phone:      req.Phone,
@@ -90,7 +90,7 @@ func (s *RiskCtrlRpcClient) SendPhoneCode(ctx context.Context, req *riskctrlserv
 	return err
 }
 func (s *RiskCtrlRpcClient) SendMailCode(ctx context.Context, req *riskctrlservicemodel.SendMailCodeReq) error {
-	_, err := s.cli.SendMailCode(&SendMailCodeReq{
+	_, err := s.cli.SendMailCode(ctx, &SendMailCodeReq{
 		RiskSerial: req.RiskSerial,
 		UserId:     req.UserId,
 		Mail:       req.Mail,
@@ -103,7 +103,7 @@ func (s *RiskCtrlRpcClient) SendMailCode(ctx context.Context, req *riskctrlservi
 	return err
 }
 func (s *RiskCtrlRpcClient) VerifyCode(ctx context.Context, req *riskctrlservicemodel.VerifyCodeReq) error {
-	_, err := s.cli.VerifyCode(&VerifyCodeReq{
+	_, err := s.cli.VerifyCode(ctx, &VerifyCodeReq{
 		RiskSerial: req.RiskSerial,
 		UserId:     req.UserId,
 		PhoneCode:  req.PhoneCode,
@@ -117,7 +117,7 @@ func (s *RiskCtrlRpcClient) VerifyCode(ctx context.Context, req *riskctrlservice
 	return err
 }
 func (s *RiskCtrlRpcClient) RiskTxs(ctx context.Context, req *riskctrlservicemodel.RiskTxsReq) (*riskctrlservicemodel.RiskTxsRes, error) {
-	rst, err := s.cli.TxsRequest(&TxRequestReq{
+	rst, err := s.cli.TxsRequest(ctx, &TxRequestReq{
 		UserId:     req.UserId,
 		SignTxData: req.SignData,
 	})

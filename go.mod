@@ -1,10 +1,13 @@
 module github.com/mpcsdk/mpcCommon
 
-go 1.20
+go 1.22
+
+toolchain go1.22.9
 
 require (
 	github.com/dchest/captcha v1.0.0
 	github.com/ethereum/go-ethereum v1.13.14
+	github.com/franklihub/nrpc v0.0.0
 	github.com/go-resty/resty/v2 v2.11.0
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.4
 	github.com/gogf/gf/contrib/drivers/pgsql/v2 v2.7.4
@@ -13,14 +16,14 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/golang/protobuf v1.5.3
 	github.com/nats-io/nats.go v1.33.1
-	github.com/nats-rpc/nrpc v0.0.0-20240925085410-8f47f6a864d1
 	github.com/satori/go.uuid v1.2.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.763
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/ses v1.0.763
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.763
 	github.com/yitter/idgenerator-go v1.3.3
-	go.opentelemetry.io/otel/trace v1.14.0
+	go.opentelemetry.io/otel v1.32.0
+	go.opentelemetry.io/otel/trace v1.32.0
 	google.golang.org/protobuf v1.33.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
@@ -43,7 +46,7 @@ require (
 	github.com/ethereum/c-kzg-4844 v0.4.0 // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/go-logr/logr v1.2.4 // indirect
+	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
@@ -66,7 +69,7 @@ require (
 	github.com/supranational/blst v0.3.11 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
-	go.opentelemetry.io/otel v1.14.0 // indirect
+	go.opentelemetry.io/otel/metric v1.32.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.14.0 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect

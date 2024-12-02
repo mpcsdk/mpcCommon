@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 
+	"github.com/franklihub/nrpc"
 	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/gogf/gf/v2/errors/gcode"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/nats-io/nats.go"
-	"github.com/nats-rpc/nrpc"
 )
 
 type errCode struct {

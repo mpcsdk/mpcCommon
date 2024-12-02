@@ -5,11 +5,15 @@ import (
 	"context"
 	"log"
 	"time"
-
+	"fmt"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/protobuf/proto"
 	"github.com/nats-io/nats.go"
 	github_com_golang_protobuf_ptypes_empty "github.com/golang/protobuf/ptypes/empty"
-	"github.com/nats-rpc/nrpc"
+	"github.com/franklihub/nrpc"
 )
 
 // RiskCtrlServiceServer is the interface that providers of the service
@@ -98,9 +102,33 @@ func (h *RiskCtrlServiceHandler) Handler(msg *nats.Msg) {
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
+
+			ctx := context.Background()
+			ctx = context.WithValue(ctx, "tracingMiddlewareHandled", 1)
+			var (
+				span trace.Span
+				tr   = otel.GetTracerProvider().Tracer(
+					"nrpc-trace",
+					trace.WithInstrumentationVersion("v0.0.1"),
+				)
+			)
+			ctx, span = tr.Start(
+				otel.GetTextMapPropagator().Extract(
+					ctx,
+					propagation.HeaderCarrier(msg.Header),
+				),
+				msg.Subject,
+				trace.WithSpanKind(trace.SpanKindServer),
+			)
+			span.SetAttributes(nrpc.CommonLabels()...)
+			// Inject tracing context.
+			request.Context = ctx
+			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.Alive(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -120,9 +148,33 @@ func (h *RiskCtrlServiceHandler) Handler(msg *nats.Msg) {
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
+
+			ctx := context.Background()
+			ctx = context.WithValue(ctx, "tracingMiddlewareHandled", 1)
+			var (
+				span trace.Span
+				tr   = otel.GetTracerProvider().Tracer(
+					"nrpc-trace",
+					trace.WithInstrumentationVersion("v0.0.1"),
+				)
+			)
+			ctx, span = tr.Start(
+				otel.GetTextMapPropagator().Extract(
+					ctx,
+					propagation.HeaderCarrier(msg.Header),
+				),
+				msg.Subject,
+				trace.WithSpanKind(trace.SpanKindServer),
+			)
+			span.SetAttributes(nrpc.CommonLabels()...)
+			// Inject tracing context.
+			request.Context = ctx
+			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.TxsRequest(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -142,9 +194,33 @@ func (h *RiskCtrlServiceHandler) Handler(msg *nats.Msg) {
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
+
+			ctx := context.Background()
+			ctx = context.WithValue(ctx, "tracingMiddlewareHandled", 1)
+			var (
+				span trace.Span
+				tr   = otel.GetTracerProvider().Tracer(
+					"nrpc-trace",
+					trace.WithInstrumentationVersion("v0.0.1"),
+				)
+			)
+			ctx, span = tr.Start(
+				otel.GetTextMapPropagator().Extract(
+					ctx,
+					propagation.HeaderCarrier(msg.Header),
+				),
+				msg.Subject,
+				trace.WithSpanKind(trace.SpanKindServer),
+			)
+			span.SetAttributes(nrpc.CommonLabels()...)
+			// Inject tracing context.
+			request.Context = ctx
+			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.TfaRequest(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -164,9 +240,33 @@ func (h *RiskCtrlServiceHandler) Handler(msg *nats.Msg) {
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
+
+			ctx := context.Background()
+			ctx = context.WithValue(ctx, "tracingMiddlewareHandled", 1)
+			var (
+				span trace.Span
+				tr   = otel.GetTracerProvider().Tracer(
+					"nrpc-trace",
+					trace.WithInstrumentationVersion("v0.0.1"),
+				)
+			)
+			ctx, span = tr.Start(
+				otel.GetTextMapPropagator().Extract(
+					ctx,
+					propagation.HeaderCarrier(msg.Header),
+				),
+				msg.Subject,
+				trace.WithSpanKind(trace.SpanKindServer),
+			)
+			span.SetAttributes(nrpc.CommonLabels()...)
+			// Inject tracing context.
+			request.Context = ctx
+			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.TfaInfo(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -186,9 +286,33 @@ func (h *RiskCtrlServiceHandler) Handler(msg *nats.Msg) {
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
+
+			ctx := context.Background()
+			ctx = context.WithValue(ctx, "tracingMiddlewareHandled", 1)
+			var (
+				span trace.Span
+				tr   = otel.GetTracerProvider().Tracer(
+					"nrpc-trace",
+					trace.WithInstrumentationVersion("v0.0.1"),
+				)
+			)
+			ctx, span = tr.Start(
+				otel.GetTextMapPropagator().Extract(
+					ctx,
+					propagation.HeaderCarrier(msg.Header),
+				),
+				msg.Subject,
+				trace.WithSpanKind(trace.SpanKindServer),
+			)
+			span.SetAttributes(nrpc.CommonLabels()...)
+			// Inject tracing context.
+			request.Context = ctx
+			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.SendPhoneCode(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -208,9 +332,33 @@ func (h *RiskCtrlServiceHandler) Handler(msg *nats.Msg) {
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
+
+			ctx := context.Background()
+			ctx = context.WithValue(ctx, "tracingMiddlewareHandled", 1)
+			var (
+				span trace.Span
+				tr   = otel.GetTracerProvider().Tracer(
+					"nrpc-trace",
+					trace.WithInstrumentationVersion("v0.0.1"),
+				)
+			)
+			ctx, span = tr.Start(
+				otel.GetTextMapPropagator().Extract(
+					ctx,
+					propagation.HeaderCarrier(msg.Header),
+				),
+				msg.Subject,
+				trace.WithSpanKind(trace.SpanKindServer),
+			)
+			span.SetAttributes(nrpc.CommonLabels()...)
+			// Inject tracing context.
+			request.Context = ctx
+			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.SendMailCode(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -230,9 +378,33 @@ func (h *RiskCtrlServiceHandler) Handler(msg *nats.Msg) {
 				Message: "bad request received: " + err.Error(),
 			}
 		} else {
+
+			ctx := context.Background()
+			ctx = context.WithValue(ctx, "tracingMiddlewareHandled", 1)
+			var (
+				span trace.Span
+				tr   = otel.GetTracerProvider().Tracer(
+					"nrpc-trace",
+					trace.WithInstrumentationVersion("v0.0.1"),
+				)
+			)
+			ctx, span = tr.Start(
+				otel.GetTextMapPropagator().Extract(
+					ctx,
+					propagation.HeaderCarrier(msg.Header),
+				),
+				msg.Subject,
+				trace.WithSpanKind(trace.SpanKindServer),
+			)
+			span.SetAttributes(nrpc.CommonLabels()...)
+			// Inject tracing context.
+			request.Context = ctx
+			/////
 			request.Handler = func(ctx context.Context)(proto.Message, error){
 				innerResp, err := h.server.VerifyCode(ctx, &req)
+				defer span.End()
 				if err != nil {
+					span.SetStatus(codes.Error, fmt.Sprintf("%+v", err))
 					return nil, err
 				}
 				return innerResp, err
@@ -281,91 +453,210 @@ func NewRiskCtrlServiceClient(nc nrpc.NatsConn) *RiskCtrlServiceClient {
 	}
 }
 
-func (c *RiskCtrlServiceClient) Alive(req *github_com_golang_protobuf_ptypes_empty.Empty) (*github_com_golang_protobuf_ptypes_empty.Empty, error) {
+func (c *RiskCtrlServiceClient) Alive(
+	ctx context.Context,req *github_com_golang_protobuf_ptypes_empty.Empty) (*github_com_golang_protobuf_ptypes_empty.Empty, error) {
 
 	subject := c.Subject + "." + "Alive"
-
+	////
+	// otel trace
+	tr := otel.GetTracerProvider().Tracer(
+		"nrpc-trace",
+		trace.WithInstrumentationVersion("v0.0.1"),
+	)
+	ctx, span := tr.Start(ctx, subject, trace.WithSpanKind(trace.SpanKindClient))
+	defer span.End()
+	span.SetAttributes(nrpc.CommonLabels()...)
+	// call msg
+	rawRequest, _ := nrpc.Marshal(c.Encoding, req)
+	reqMsg := nats.NewMsg(subject)
+	reqMsg.Data = rawRequest
+	// Inject tracing content into  header.
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(reqMsg.Header))
+	////
 	// call
 	var resp = github_com_golang_protobuf_ptypes_empty.Empty{}
-	if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	// if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	if err := nrpc.CallMsg(ctx, reqMsg, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
 		return nil, err
 	}
 
 	return &resp, nil
 }
 
-func (c *RiskCtrlServiceClient) TxsRequest(req *TxRequestReq) (*TxRequestRes, error) {
+func (c *RiskCtrlServiceClient) TxsRequest(
+	ctx context.Context,req *TxRequestReq) (*TxRequestRes, error) {
 
 	subject := c.Subject + "." + "TxsRequest"
-
+	////
+	// otel trace
+	tr := otel.GetTracerProvider().Tracer(
+		"nrpc-trace",
+		trace.WithInstrumentationVersion("v0.0.1"),
+	)
+	ctx, span := tr.Start(ctx, subject, trace.WithSpanKind(trace.SpanKindClient))
+	defer span.End()
+	span.SetAttributes(nrpc.CommonLabels()...)
+	// call msg
+	rawRequest, _ := nrpc.Marshal(c.Encoding, req)
+	reqMsg := nats.NewMsg(subject)
+	reqMsg.Data = rawRequest
+	// Inject tracing content into  header.
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(reqMsg.Header))
+	////
 	// call
 	var resp = TxRequestRes{}
-	if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	// if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	if err := nrpc.CallMsg(ctx, reqMsg, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
 		return nil, err
 	}
 
 	return &resp, nil
 }
 
-func (c *RiskCtrlServiceClient) TfaRequest(req *TfaRequestReq) (*TfaRequestRes, error) {
+func (c *RiskCtrlServiceClient) TfaRequest(
+	ctx context.Context,req *TfaRequestReq) (*TfaRequestRes, error) {
 
 	subject := c.Subject + "." + "TfaRequest"
-
+	////
+	// otel trace
+	tr := otel.GetTracerProvider().Tracer(
+		"nrpc-trace",
+		trace.WithInstrumentationVersion("v0.0.1"),
+	)
+	ctx, span := tr.Start(ctx, subject, trace.WithSpanKind(trace.SpanKindClient))
+	defer span.End()
+	span.SetAttributes(nrpc.CommonLabels()...)
+	// call msg
+	rawRequest, _ := nrpc.Marshal(c.Encoding, req)
+	reqMsg := nats.NewMsg(subject)
+	reqMsg.Data = rawRequest
+	// Inject tracing content into  header.
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(reqMsg.Header))
+	////
 	// call
 	var resp = TfaRequestRes{}
-	if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	// if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	if err := nrpc.CallMsg(ctx, reqMsg, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
 		return nil, err
 	}
 
 	return &resp, nil
 }
 
-func (c *RiskCtrlServiceClient) TfaInfo(req *TfaInfoReq) (*TfaInfoRes, error) {
+func (c *RiskCtrlServiceClient) TfaInfo(
+	ctx context.Context,req *TfaInfoReq) (*TfaInfoRes, error) {
 
 	subject := c.Subject + "." + "TfaInfo"
-
+	////
+	// otel trace
+	tr := otel.GetTracerProvider().Tracer(
+		"nrpc-trace",
+		trace.WithInstrumentationVersion("v0.0.1"),
+	)
+	ctx, span := tr.Start(ctx, subject, trace.WithSpanKind(trace.SpanKindClient))
+	defer span.End()
+	span.SetAttributes(nrpc.CommonLabels()...)
+	// call msg
+	rawRequest, _ := nrpc.Marshal(c.Encoding, req)
+	reqMsg := nats.NewMsg(subject)
+	reqMsg.Data = rawRequest
+	// Inject tracing content into  header.
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(reqMsg.Header))
+	////
 	// call
 	var resp = TfaInfoRes{}
-	if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	// if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	if err := nrpc.CallMsg(ctx, reqMsg, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
 		return nil, err
 	}
 
 	return &resp, nil
 }
 
-func (c *RiskCtrlServiceClient) SendPhoneCode(req *SendPhoneCodeReq) (*SendPhoneCodeRes, error) {
+func (c *RiskCtrlServiceClient) SendPhoneCode(
+	ctx context.Context,req *SendPhoneCodeReq) (*SendPhoneCodeRes, error) {
 
 	subject := c.Subject + "." + "SendPhoneCode"
-
+	////
+	// otel trace
+	tr := otel.GetTracerProvider().Tracer(
+		"nrpc-trace",
+		trace.WithInstrumentationVersion("v0.0.1"),
+	)
+	ctx, span := tr.Start(ctx, subject, trace.WithSpanKind(trace.SpanKindClient))
+	defer span.End()
+	span.SetAttributes(nrpc.CommonLabels()...)
+	// call msg
+	rawRequest, _ := nrpc.Marshal(c.Encoding, req)
+	reqMsg := nats.NewMsg(subject)
+	reqMsg.Data = rawRequest
+	// Inject tracing content into  header.
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(reqMsg.Header))
+	////
 	// call
 	var resp = SendPhoneCodeRes{}
-	if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	// if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	if err := nrpc.CallMsg(ctx, reqMsg, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
 		return nil, err
 	}
 
 	return &resp, nil
 }
 
-func (c *RiskCtrlServiceClient) SendMailCode(req *SendMailCodeReq) (*SendMailCodeRes, error) {
+func (c *RiskCtrlServiceClient) SendMailCode(
+	ctx context.Context,req *SendMailCodeReq) (*SendMailCodeRes, error) {
 
 	subject := c.Subject + "." + "SendMailCode"
-
+	////
+	// otel trace
+	tr := otel.GetTracerProvider().Tracer(
+		"nrpc-trace",
+		trace.WithInstrumentationVersion("v0.0.1"),
+	)
+	ctx, span := tr.Start(ctx, subject, trace.WithSpanKind(trace.SpanKindClient))
+	defer span.End()
+	span.SetAttributes(nrpc.CommonLabels()...)
+	// call msg
+	rawRequest, _ := nrpc.Marshal(c.Encoding, req)
+	reqMsg := nats.NewMsg(subject)
+	reqMsg.Data = rawRequest
+	// Inject tracing content into  header.
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(reqMsg.Header))
+	////
 	// call
 	var resp = SendMailCodeRes{}
-	if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	// if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	if err := nrpc.CallMsg(ctx, reqMsg, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
 		return nil, err
 	}
 
 	return &resp, nil
 }
 
-func (c *RiskCtrlServiceClient) VerifyCode(req *VerifyCodeReq) (*VerifyCodeRes, error) {
+func (c *RiskCtrlServiceClient) VerifyCode(
+	ctx context.Context,req *VerifyCodeReq) (*VerifyCodeRes, error) {
 
 	subject := c.Subject + "." + "VerifyCode"
-
+	////
+	// otel trace
+	tr := otel.GetTracerProvider().Tracer(
+		"nrpc-trace",
+		trace.WithInstrumentationVersion("v0.0.1"),
+	)
+	ctx, span := tr.Start(ctx, subject, trace.WithSpanKind(trace.SpanKindClient))
+	defer span.End()
+	span.SetAttributes(nrpc.CommonLabels()...)
+	// call msg
+	rawRequest, _ := nrpc.Marshal(c.Encoding, req)
+	reqMsg := nats.NewMsg(subject)
+	reqMsg.Data = rawRequest
+	// Inject tracing content into  header.
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(reqMsg.Header))
+	////
 	// call
 	var resp = VerifyCodeRes{}
-	if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	// if err := nrpc.Call(req, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
+	if err := nrpc.CallMsg(ctx, reqMsg, &resp, c.nc, subject, c.Encoding, c.Timeout); err != nil {
 		return nil, err
 	}
 

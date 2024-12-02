@@ -4,13 +4,13 @@ import (
 	"context"
 	"time"
 
+	"github.com/franklihub/nrpc"
 	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/mpcsdk/mpcCommon/authService/authServiceModel"
 	"github.com/mpcsdk/mpcCommon/mpccode"
 	"github.com/nats-io/nats.go"
-	"github.com/nats-rpc/nrpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -71,7 +71,7 @@ func (s *AuthRpcClient) AuthToken(ctx context.Context, tokenStr string) (string,
 	// if v, err := s.cache.Get(ctx, "AuthNrpc:AuthToken:"+tokenStr); err == nil && !v.IsEmpty() {
 	// 	return v.String(), nil
 	// }
-	res, err := s.authclient.AuthToken(&AuthTokenReq{UserToken: tokenStr})
+	res, err := s.authclient.AuthToken(ctx, &AuthTokenReq{UserToken: tokenStr})
 	if err != nil {
 		s.TryFlush(err)
 		return "", mpccode.FromNrcpErr(err)
@@ -85,7 +85,7 @@ func (s *AuthRpcClient) RefreshToken(ctx context.Context, tokenStr string) (stri
 	// if v, err := s.cache.Get(ctx, "AuthNrpc:RefreshToken:"+tokenStr); err == nil && !v.IsEmpty() {
 	// 	return v.String(), nil
 	// }
-	res, err := s.authclient.RefreshToken(&RefreshTokenReq{Token: tokenStr})
+	res, err := s.authclient.RefreshToken(ctx, &RefreshTokenReq{Token: tokenStr})
 	if err != nil {
 		s.TryFlush(err)
 		return "", mpccode.FromNrcpErr(err)
@@ -101,7 +101,7 @@ func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*authSe
 	// 	v.Struct(&res)
 	// 	return res, nil
 	// }
-	res, err := s.authclient.TokenInfo(&TokenInfoReq{Token: tokenStr})
+	res, err := s.authclient.TokenInfo(ctx, &TokenInfoReq{Token: tokenStr})
 
 	if err != nil {
 		s.TryFlush(err)
@@ -122,7 +122,7 @@ func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*authSe
 // ///
 // ///
 func (s *AuthRpcClient) Alive(ctx context.Context) error {
-	_, err := s.authclient.Alive(&emptypb.Empty{})
+	_, err := s.authclient.Alive(ctx, &emptypb.Empty{})
 	if err != nil {
 		s.TryFlush(err)
 		return mpccode.FromNrcpErr(err)

@@ -86,7 +86,7 @@ var (
 	CodeTxContractAbiInvalid = (&errCode{302, "Tx Contract Abi Invalid", nil}).instance
 
 	///
-	CodeErr = (&errCode{65535, "CodeErr", nil}).instance
+	CodeExternalErr = (&errCode{65535, "", nil}).instance_msg
 )
 
 //////

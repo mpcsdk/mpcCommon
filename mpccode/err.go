@@ -25,7 +25,7 @@ func FromNrcpErr(err error) error {
 		if err == nats.ErrTimeout {
 			return CodeTimeOut()
 		}
-		return CodeTokenInvalid(err.Error())
+		return CodeExternalErr(err.Error())
 	}
 }
 func (e *errCode) Equal(err error) bool {
@@ -63,7 +63,16 @@ func (e *errCode) instance(detail ...interface{}) error {
 	return gerror.NewCode(errcode, errcode.Text())
 
 }
+func (e *errCode) instance_msg(msg string, detail ...interface{}) error {
+	errcode := &errCode{}
+	if len(detail) == 0 {
+		errcode = &errCode{e.ErrCode, msg, nil}
+	} else {
+		errcode = &errCode{e.ErrCode, msg, detail}
+	}
+	return gerror.NewCode(errcode, errcode.Text())
 
+}
 func (e *errCode) instance_json(val interface{}) error {
 	if val == nil {
 		return nil

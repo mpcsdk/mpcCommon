@@ -26,7 +26,7 @@ type RelayerRpcService struct {
 // /nrpc opts
 type RelayerRpcServiceCfg struct {
 	Url     string
-	TimeOut int64
+	TimeOut int
 
 	consumeRelayerFeeFn     func(ctx context.Context, data *mq.RelayerFeeMsg) error
 	consumeRelayerChannelFn func(ctx context.Context, data *mq.RelayerChannelMsg) error
@@ -59,7 +59,7 @@ func (s *RelayerRpcServiceCfg) WithUrl(url string) *RelayerRpcServiceCfg {
 	s.Url = url
 	return s
 }
-func (s *RelayerRpcServiceCfg) WithTimeOut(TimeOut int64) *RelayerRpcServiceCfg {
+func (s *RelayerRpcServiceCfg) WithTimeOut(TimeOut int) *RelayerRpcServiceCfg {
 	s.TimeOut = TimeOut
 	return s
 }

@@ -10,7 +10,7 @@ const Sub_RelayerChannelNotify = "RelayerChannelNotify"
 type RelayerChannelMsg struct {
 	//up/del/verify
 	Msg
-	Data *entity.RelayerdminRelayerChannel `json:"data"`
+	Data *entity.AdminRelayerFee `json:"data"`
 }
 
 func (s *RelayerChannelMsg) IsValid() bool {
@@ -23,5 +23,5 @@ func (s *RelayerChannelMsg) IsValid() bool {
 type RelayerFeeMsg struct {
 	//up/del/verify
 	Msg
-	Data *entity.RelayerdminRelayerFee `json:"data"`
+	Data *entity.AdminRelayerFee `json:"data"`
 }

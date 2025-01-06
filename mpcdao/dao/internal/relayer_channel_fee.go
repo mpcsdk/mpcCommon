@@ -20,17 +20,10 @@ type RelayerChannelFeeDao struct {
 
 // RelayerChannelFeeColumns defines and stores column names for table channel_fee.
 type RelayerChannelFeeColumns struct {
-	AppId     string //
-	Fee       string //
-	Updatedat string //
 }
 
 // relayerChannelFeeColumns holds the columns for table channel_fee.
-var relayerChannelFeeColumns = RelayerChannelFeeColumns{
-	AppId:     "app_id",
-	Fee:       "fee",
-	Updatedat: "updatedat",
-}
+var relayerChannelFeeColumns = RelayerChannelFeeColumns{}
 
 // NewRelayerChannelFeeDao creates and returns a new DAO object for table data access.
 func NewRelayerChannelFeeDao() *RelayerChannelFeeDao {

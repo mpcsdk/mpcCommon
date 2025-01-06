@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// RelayerChannelFee is the golang structure for table relayer_channel_fee.
-type RelayerChannelFee struct {
+// RelayerAppFee is the golang structure for table relayer_app_fee.
+type RelayerAppFee struct {
 	AppId     string      `json:"appId"     orm:"app_id"    ` //
 	Fee       float64     `json:"fee"       orm:"fee"       ` //
 	Updatedat *gtime.Time `json:"updatedat" orm:"updatedat" ` //

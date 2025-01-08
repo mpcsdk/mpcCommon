@@ -8,15 +8,14 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// RiskcontrolRule is the golang structure for table riskcontrol_rule.
-type RiskcontrolRule struct {
+// RiskadminChaincfg is the golang structure for table riskadmin_chaincfg.
+type RiskadminChaincfg struct {
 	Id         int         `json:"id"         orm:"id"         ` // ID
 	CreateTime *gtime.Time `json:"createTime" orm:"createTime" ` // 创建时间
 	UpdateTime *gtime.Time `json:"updateTime" orm:"updateTime" ` // 更新时间
-	SceneNo    string      `json:"sceneNo"    orm:"sceneNo"    ` // 场景号
-	RuleName   string      `json:"ruleName"   orm:"ruleName"   ` // 风控名
-	RuleStr    string      `json:"ruleStr"    orm:"ruleStr"    ` // 脚本
-	Salience   int         `json:"salience"   orm:"salience"   ` // 优先级
-	Desc       string      `json:"desc"       orm:"desc"       ` // 描述
+	Coin       string      `json:"coin"       orm:"coin"       ` // 币种
+	Rpc        string      `json:"rpc"        orm:"rpc"        ` // RPC地址
 	IsEnable   int         `json:"isEnable"   orm:"isEnable"   ` // 启用
+	ChainId    int64       `json:"chainId"    orm:"chainId"    ` // 链id
+	Heigh      int64       `json:"heigh"      orm:"heigh"      ` // 高度
 }

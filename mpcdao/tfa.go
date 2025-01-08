@@ -7,7 +7,6 @@ import (
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/database/gredis"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/mpcsdk/mpcCommon/mpccode"
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao"
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/do"
@@ -20,7 +19,6 @@ type RiskTfa struct {
 }
 
 func NewRiskTfa(redis *gredis.Redis, dur int) *RiskTfa {
-	g.DB(dao.RiskcontrolRule.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
 
 	return &RiskTfa{
 		redis: redis,

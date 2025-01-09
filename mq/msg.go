@@ -19,7 +19,9 @@ const (
 )
 
 type Msg struct {
-	Sub  string      `json:"sub"`
-	Opt  MsgOpt      `json:"opt"`
-	Data interface{} `json:"data"`
+	Sub       string      `json:"sub"`
+	Opt       MsgOpt      `json:"opt"`
+	Version   int         `json:"version"`
+	Data      interface{} `json:"data"`
+	JsonPatch string      `json:"jsonPatch"`
 }

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 	"github.com/mpcsdk/mpcCommon/mq"
 )
 
@@ -18,11 +17,11 @@ func TestSend_chain(t *testing.T) {
 			Sub: mq.Sub_ChainCfg,
 			Opt: mq.OptAdd,
 		},
-		Data: &entity.RiskadminChaincfg{
-			Id:       2,
-			ChainId:  95271,
-			IsEnable: 1,
-		},
+		// Data: &entity.RiskadminChaincfg{
+		// 	Id:       2,
+		// 	ChainId:  95271,
+		// 	IsEnable: 1,
+		// },
 	}
 	data, _ := json.Marshal(msg)
 	cli.TestSendMsg(mq.Sub_ChainCfg, data)

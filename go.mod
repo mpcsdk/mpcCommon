@@ -7,6 +7,7 @@ toolchain go1.22.9
 require (
 	github.com/dchest/captcha v1.0.0
 	github.com/ethereum/go-ethereum v1.13.14
+	github.com/evanphx/json-patch v0.5.2
 	github.com/franklihub/nrpc v0.0.0
 	github.com/go-resty/resty/v2 v2.11.0
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.4
@@ -64,6 +65,7 @@ require (
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/redis/go-redis/v9 v9.2.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect

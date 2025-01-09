@@ -236,8 +236,8 @@ func (s *RiskAdminDB) GetChainCfg(ctx context.Context, chainId int64) (*entity.R
 	return data, err
 
 }
-func (s *RiskAdminDB) GetChainCfgById(ctx context.Context, id int) (*entity.RiskadminChaincfg, error) {
 
+func (s *RiskAdminDB) GetChainCfgById(ctx context.Context, id int) (*entity.RiskadminChaincfg, error) {
 	rst, err := dao.RiskadminChaincfg.Ctx(ctx).Where(dao.RiskadminChaincfg.Columns().Id, id).One()
 	if err != nil {
 		return nil, err

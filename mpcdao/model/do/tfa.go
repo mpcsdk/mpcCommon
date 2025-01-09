@@ -20,4 +20,5 @@ type Tfa struct {
 	PhoneUpdatedAt *gtime.Time //
 	MailUpdatedAt  *gtime.Time //
 	TokenData      interface{} //
+	TxNeedVerify   interface{} //
 }

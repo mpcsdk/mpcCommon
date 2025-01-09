@@ -25,4 +25,9 @@ type ChainTx struct {
 	Gas       interface{} //
 	GasPrice  interface{} //
 	Nonce     interface{} //
+	Kind      interface{} //
+	TokenId   interface{} //
+	Removed   interface{} //
+	Status    interface{} //
+	TraceTag  interface{} //
 }

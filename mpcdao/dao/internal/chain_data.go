@@ -34,6 +34,8 @@ type ChainDataColumns struct {
 	Gas       string //
 	GasPrice  string //
 	Nonce     string //
+	Kind      string //
+	TokenId   string //
 }
 
 // chainDataColumns holds the columns for table chain_data.
@@ -52,6 +54,8 @@ var chainDataColumns = ChainDataColumns{
 	Gas:       "gas",
 	GasPrice:  "gas_price",
 	Nonce:     "nonce",
+	Kind:      "kind",
+	TokenId:   "token_id",
 }
 
 // NewChainDataDao creates and returns a new DAO object for table data access.

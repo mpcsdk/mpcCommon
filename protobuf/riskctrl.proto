@@ -1,0 +1,186 @@
+
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "nrpc.proto";
+
+package riskCtrlServiceNrpc;
+
+option go_package = "/riskCtrlServiceNrpc";
+
+service RiskCtrlService{
+    rpc Alive(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+
+    //
+    rpc TxsRequest (TxRequestReq) returns (TxRequestRes) {}
+    rpc TfaRequest(TfaRequestReq) returns (TfaRequestRes) {}
+    ///
+    ////
+    rpc TfaInfo(TfaInfoReq) returns (TfaInfoRes) {}
+    rpc SendPhoneCode (SendPhoneCodeReq) returns (SendPhoneCodeRes) {}
+    rpc SendMailCode (SendMailCodeReq) returns (SendMailCodeRes) {}
+    rpc VerifyCode (VerifyCodeReq) returns (VerifyCodeRes) {}
+}
+///
+message TfaRequestReq {
+	//  "in:bindPhone,bindMail,updatePhone,updateMail"
+    string Token = 1; // v: required
+    string CodeType = 2; // v: required
+}
+message TfaRequestRes {
+    string RiskSerial = 1;
+    repeated string VList = 2;
+}
+////
+message TfaInfoReq {
+    string UserId = 1; // v: required
+    // string Token = 2; // v: required
+}
+message TfaInfoRes{
+    string Phone = 1;
+    string UpPhoneTime = 2;
+    string Mail = 3;
+    string UpMailTime = 4;
+    string UserId = 5;
+}
+//
+message SendPhoneCodeReq {
+    string RiskSerial = 1; // v: required
+    // string Token = 2; // v: required
+    string UserId = 2; // v: required
+    string Phone= 3;
+}
+message SendPhoneCodeRes {
+    int32 Ok = 1;
+    string Msg = 2;
+}
+
+///
+message SendMailCodeReq {
+    string RiskSerial = 1; // v: required
+    // string Token= 2; // v: required
+    string UserId = 2; // v: required
+    string Mail = 3;
+}
+message SendMailCodeRes {
+    int32 Ok = 1;
+    string Msg = 2;
+}
+/////
+message VerifyCodeReq {
+    string RiskSerial = 1; // v: required
+    // string Token = 2; // v: required
+    string UserId = 2; // v: required
+    string PhoneCode = 3; // v: required
+    string MailCode = 4; // v: required
+}
+
+message VerifyCodeRes {
+    int32 Ok = 1;
+    string Msg = 2;
+}
+/////
+///
+message ContractRuleBriefsReq {
+    string ChainId = 1;
+    string Kind = 2;
+    string Address = 3;
+}
+message ContractRuleBriefsRes {
+    map<string, ContractRuleBriefs> Briefs = 1;
+}
+message ContractRuleBriefs {
+    string ChainId  = 1;
+    string Address = 2;
+    string Name = 3;
+    string Kind = 4;
+}
+message ContractRuleReq{
+    string ChainId = 1;
+    string Kind = 2;
+    string Address = 3;
+}
+message ContractRuleRes {
+    string contract = 1;
+    string name = 2;
+    string kind = 3;
+ 
+    string methodName = 4;
+    string methodSig = 5;
+    string methodFromField = 6;
+    string methodToField = 7;
+    string methodValueField = 8;
+ 
+    string eventName = 9;
+    string eventSig = 10;
+    string eventTopic =11;
+    string eventFromField = 12;
+    string eventToField = 13;
+    string eventValueField = 14;
+ 
+    repeated string WhiteAddrList = 15;
+    bytes threshold_bigint_bytes = 16;
+}
+
+//
+///
+//
+message ContractAbiBriefsReq{
+    string ChainId = 1;
+    string Kind = 2;
+    string Address = 3;
+}
+message ContractAbiBrief {
+    string ChainId = 1;
+    string Address = 2;
+    string Name = 3;
+    string Kind = 4;
+}
+message ContractAbiBriefsRes{
+    map<string, ContractAbiBrief> Briefs = 1;
+}
+message ContractAbiReq{
+    string ChainId = 1;
+    string Kind = 2;
+    string Address = 3;
+}
+
+message ContractAbiRes{
+    int64 Id   = 1;
+	string ContractName  = 2;
+	string ContractAddress  =3;
+	string ChainId      = 4; 
+	string AbiContent     = 5;
+	string ContractKind    = 6; 
+}
+////
+///
+message RiskTx {
+    string Contract =1; // v: required
+    string TxData = 2;  // v: required
+}
+message TxRequestReq {
+    string UserId = 1;// v: required
+    string Address = 2; // v: required
+    ////
+    string SignTxData = 3; // v: required
+    string ChainId = 4; // v: required
+}
+message TxRequestRes {
+    int32 Ok = 1;
+    string Msg = 2;
+    string RiskSerial = 3; 
+    repeated string RiskKind = 4;
+}
+////
+message TFARiskReq {
+    string UserId = 1; // v: required
+	string Type = 2; // v: required
+	string Mail = 3;
+	string Phone = 4;
+}
+message TFARiskRes {
+    int32 Ok = 1;
+    string Msg = 2;
+    string RiskSerial = 3; 
+}
+///

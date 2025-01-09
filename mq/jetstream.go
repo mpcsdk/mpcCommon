@@ -4,19 +4,17 @@ import (
 	"github.com/nats-io/nats.go/jetstream"
 )
 
-const JetSub_ChainTx = "chainData.tx"
-const JetStream_ChainTx = "chainData_stream"
+const JetSub_SyncChain = "syncChain.>"
+const JetSub_SyncChainTransfer = "syncChain.transfer"
+const JetSub_SyncChainTransfer_Latest = "syncChain.transfer.latest"
+const JetSub_SyncChainMint = "syncChain.mint"
 
-func (s *NatsServer) JetStream() (jetstream.JetStream, error) {
+const JetStream_SyncChain = "syncChain_stream"
 
-	jets, err := jetstream.New(s.nc)
-	if err != nil {
-		return nil, err
-	}
-	//
-	return jets, nil
+func (s *NatsServer) JetStream() jetstream.JetStream {
+	return s.jets
 }
-func (s *NatsServer) GetUpChainTxStream(args ...int64) (jetstream.Stream, error) {
+func (s *NatsServer) CreateOrUpdateStream(name string, subs []string, args ...int64) (jetstream.Stream, error) {
 	jets, err := jetstream.New(s.nc)
 	if err != nil {
 		return nil, err
@@ -27,9 +25,9 @@ func (s *NatsServer) GetUpChainTxStream(args ...int64) (jetstream.Stream, error)
 		msgSize = args[0]
 	}
 	stream, err := jets.CreateOrUpdateStream(s.ctx, jetstream.StreamConfig{
-		Name:        JetStream_ChainTx,
-		Description: JetStream_ChainTx,
-		Subjects:    []string{"chainData", JetSub_ChainTx},
+		Name:        name,
+		Description: name,
+		Subjects:    subs,
 		Retention:   jetstream.LimitsPolicy,
 		Compression: jetstream.S2Compression,
 		MaxMsgs:     msgSize,
@@ -38,25 +36,44 @@ func (s *NatsServer) GetUpChainTxStream(args ...int64) (jetstream.Stream, error)
 	return stream, err
 }
 
-func (s *NatsServer) GetChainTxStream() (jetstream.Stream, error) {
-	///
-	jets, err := jetstream.New(s.nc)
-	if err != nil {
-		return nil, err
-	}
-	//
-	stream, err := jets.Stream(s.ctx, JetStream_ChainTx)
-	////
-	return stream, err
-}
+// func (s *NatsServer) CreateOrUpdateMintStream(args ...int64) (jetstream.Stream, error) {
+// 	jets, err := jetstream.New(s.nc)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	///
+// 	msgSize := int64(0)
+// 	if len(args) > 0 {
+// 		msgSize = args[0]
+// 	}
+// 	stream, err := jets.CreateOrUpdateStream(s.ctx, jetstream.StreamConfig{
+// 		Name:        JetStream_SyncChain,
+// 		Description: JetStream_SyncChain,
+// 		Subjects:    []string{JetSub_ChainMint},
+// 		Retention:   jetstream.LimitsPolicy,
+// 		Compression: jetstream.S2Compression,
+// 		MaxMsgs:     msgSize,
+// 	})
+// 	////
+// 	return stream, err
+// }
 
-func (s *NatsServer) GetChainTxConsumer(name, sub string) (jetstream.Consumer, error) {
-	stream, err := s.GetChainTxStream()
-	if err != nil {
-		return nil, err
-	}
-	//
-	cons, err := stream.CreateOrUpdateConsumer(s.ctx, jetstream.ConsumerConfig{
+//	func (s *NatsServer) GetChainTransferStream() (jetstream.Stream, error) {
+//		///
+//		jets, err := jetstream.New(s.nc)
+//		if err != nil {
+//			return nil, err
+//		}
+//		//
+//		stream, err := jets.Stream(s.ctx, JetStream_SyncChain)
+//		////
+//		return stream, err
+//	}
+//
+// //consumer
+func (s *NatsServer) GetConsumer(name, stream string, sub string) (jetstream.Consumer, error) {
+
+	cons, err := s.jets.CreateOrUpdateConsumer(s.ctx, stream, jetstream.ConsumerConfig{
 		Durable:       name,
 		FilterSubject: sub,
 		DeliverPolicy: jetstream.DeliverAllPolicy,
@@ -68,3 +85,17 @@ func (s *NatsServer) GetChainTxConsumer(name, sub string) (jetstream.Consumer, e
 	//
 	return cons, err
 }
+
+// func (s *NatsServer) GetChainMintConsumer(name, sub string) (jetstream.Consumer, error) {
+// 	cons, err := s.jets.CreateOrUpdateConsumer(s.ctx, JetStream_ChainMint, jetstream.ConsumerConfig{
+// 		Durable:       name,
+// 		FilterSubject: sub,
+// 		DeliverPolicy: jetstream.DeliverAllPolicy,
+// 		AckPolicy:     jetstream.AckExplicitPolicy,
+// 	})
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	//
+// 	return cons, err
+// }

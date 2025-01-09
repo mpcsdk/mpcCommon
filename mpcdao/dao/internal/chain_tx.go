@@ -34,6 +34,11 @@ type ChainTxColumns struct {
 	Gas       string //
 	GasPrice  string //
 	Nonce     string //
+	Kind      string //
+	TokenId   string //
+	Removed   string //
+	Status    string //
+	TraceTag  string //
 }
 
 // chainTxColumns holds the columns for table chain_tx.
@@ -52,6 +57,11 @@ var chainTxColumns = ChainTxColumns{
 	Gas:       "gas",
 	GasPrice:  "gas_price",
 	Nonce:     "nonce",
+	Kind:      "kind",
+	TokenId:   "token_id",
+	Removed:   "removed",
+	Status:    "status",
+	TraceTag:  "traceTag",
 }
 
 // NewChainTxDao creates and returns a new DAO object for table data access.

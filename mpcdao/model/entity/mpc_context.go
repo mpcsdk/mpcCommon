@@ -10,13 +10,13 @@ import (
 
 // MpcContext is the golang structure for table mpc_context.
 type MpcContext struct {
-	UserId    string      `json:"userId"    ` //
-	Context   string      `json:"context"   ` //
-	UpdatedAt *gtime.Time `json:"updatedAt" ` //
-	Request   string      `json:"request"   ` //
-	Token     string      `json:"token"     ` //
-	CreatedAt *gtime.Time `json:"createdAt" ` //
-	DeletedAt *gtime.Time `json:"deletedAt" ` //
-	PubKey    string      `json:"pubKey"    ` //
-	TokenData string      `json:"tokenData" ` //
+	UserId    string      `json:"userId"    orm:"user_id"    ` //
+	Context   string      `json:"context"   orm:"context"    ` //
+	UpdatedAt *gtime.Time `json:"updatedAt" orm:"updated_at" ` //
+	Request   string      `json:"request"   orm:"request"    ` //
+	Token     string      `json:"token"     orm:"token"      ` //
+	CreatedAt *gtime.Time `json:"createdAt" orm:"created_at" ` //
+	DeletedAt *gtime.Time `json:"deletedAt" orm:"deleted_at" ` //
+	PubKey    string      `json:"pubKey"    orm:"pub_key"    ` //
+	TokenData string      `json:"tokenData" orm:"token_data" ` //
 }

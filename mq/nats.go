@@ -8,12 +8,14 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/nats-io/nats.go"
+	"github.com/nats-io/nats.go/jetstream"
 )
 
 type NatsServer struct {
 	ctx context.Context
 	nc  *nats.Conn
 	///
+	jets jetstream.JetStream
 }
 
 // /
@@ -31,7 +33,12 @@ func New(urls string) *NatsServer {
 	s.nc = nc
 	s.ctx = gctx.GetInitCtx()
 	///
-	s.ctx = gctx.GetInitCtx()
+	jets, err := jetstream.New(s.nc)
+	if err != nil {
+		panic(err)
+	}
+	//
+	s.jets = jets
 	///
 	return s
 }
@@ -61,15 +68,15 @@ func (s *NatsServer) queueSubscribe(sub *nats.Subscription, ch chan *nats.Msg, f
 	for {
 		select {
 		case natsmsg := <-ch:
-			switch natsmsg.Subject {
-			case Sub_RiskRuleReply:
-				b, err := fn(natsmsg.Data)
-				if err != nil {
-					g.Log().Error(s.ctx, err)
-					continue
-				} ///
-				natsmsg.Respond(b)
-			}
+			// switch natsmsg.Subject {
+			// case Sub_RiskRuleReply:
+			b, err := fn(natsmsg.Data)
+			if err != nil {
+				g.Log().Error(s.ctx, err)
+				continue
+			} ///
+			natsmsg.Respond(b)
+			// }
 
 		case <-s.ctx.Done():
 			sub.Unsubscribe()

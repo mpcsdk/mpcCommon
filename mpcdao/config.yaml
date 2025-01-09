@@ -1,30 +1,49 @@
 gfcli:
   gen:
     dao:
-    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/sync_chain"
-      group: sync_chain
-      tables:   "chain_data"
-      jsonCase: "CamelLower"
-    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/enhanced_riskctrl"
-      group: "enhanced_riskctrl"
-      tables:   "chain_tx"
-      jsonCase: "CamelLower"
-    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/mpc"
-      group: "mpc"
-      tables:   "mpc_context"
-      jsonCase: "CamelLower"
-    - link:     "mysql:ssh:123456@tcp(127.0.0.1:3305)/riskcontrol"
-      group: "riskcontrol"
-      tables:   "contractrule,contractabi,riskcontrol_rule,chaincfg"
-      jsonCase: "CamelLower"
-      typeMapping:
-        decimal:
-          type:   decimal.Decimal
-          import: github.com/shopspring/decimal
-        numeric:
-          type:   decimal.Decimal
-          import: github.com/shopspring/decimal
-    - link:     "pgsql:postgres:123456@tcp(127.0.0.1:10100)/tfa"
-      group: "tfa"
-      tables:   "tfa"
-      jsonCase: "CamelLower"
+      - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/sync_nft_holding"
+        group: sync_nft_holding
+        tables: "nft_holding,nft_holding_stat"
+        jsonCase: "CamelLower"
+      - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/fcm"
+        group: fcm
+        tables: "fcm_token,push_err,fcm_offline_msg"
+        jsonCase: "CamelLower"
+      - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/sync_chain"
+        group: sync_chain
+        tables: "chain_transfer"
+        jsonCase: "CamelLower"
+      - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/enhanced_riskctrl"
+        group: "enhanced_riskctrl"
+        tables: "chain_tx"
+        jsonCase: "CamelLower"
+      - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/mpc"
+        group: "mpc"
+        tables: "mpc_context,wallet_addr"
+        jsonCase: "CamelLower"
+      - link: "mysql:riskcontrol:123456@tcp(127.0.0.1:3306)/riskcontrol"
+        group: "riskctrl"
+        prefix: "riskadmin_"
+        tables: "contractabi,riskcontrol_rule,chaincfg"
+        jsonCase: "CamelLower"
+        typeMapping:
+          decimal:
+            type: decimal.Decimal
+            import: github.com/shopspring/decimal
+          numeric:
+            type: decimal.Decimal
+            import: github.com/shopspring/decimal
+      - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/tfa"
+        group: "tfa"
+        tables: "tfa"
+        jsonCase: "CamelLower"
+      - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/relayer"
+        group: relayer
+        prefix: "relayer_"
+        tables: "transactions, receipt, app_fee"
+        jsonCase: "CamelLower"
+      - link: "mysql:riskcontrol:123456@tcp(127.0.0.1:3306)/relayeradmin"
+        group: relayeradmin
+        prefix: "admin_"
+        tables: "relayer_app, relayer_fee"
+        jsonCase: "CamelLower"

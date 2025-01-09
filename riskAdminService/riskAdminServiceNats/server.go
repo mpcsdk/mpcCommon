@@ -34,8 +34,8 @@ func NewRiskAdminNatsService(ctx context.Context, opt *RiskAdminServiceOpt) (*Ri
 	///
 	go s.runConsumeChainFn()
 	go s.runConsumeContractFn()
-	go s.runConsumeRiskCtrlRuleCheckRespFn()
 	go s.runConsumeRiskCtrlRuleFn()
+	// go s.runConsumeRiskCtrlRuleCheckRespFn()
 	return s, nil
 }
 

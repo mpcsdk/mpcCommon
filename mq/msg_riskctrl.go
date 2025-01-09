@@ -22,10 +22,15 @@ type RiskAdminRiskRuleMsg struct {
 	Msg
 	Data *entity.RiskadminRiskcontrolRule `json:"data"`
 }
+
+// //
+// //
 type RiskAdminRiskRuleCheckMsg struct {
 	//up/del/verify
 	Msg
-	Data *entity.RiskadminRiskcontrolRule `json:"data"`
+	ChainId  string `json:"chainId"`
+	RuleName string `json:"ruleName"`
+	RuleStr  string `json:"ruleStr"`
 }
 
 type RiskAdminRiskRuleCheckResp struct {

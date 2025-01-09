@@ -1,6 +1,6 @@
 import { AnyRecord } from 'dns';
 
-const Sub_ChainCfg = 'ChainCgf';
+const Sub_ChainCfg = 'ChainCfg';
 const Sub_ContractAbi = 'ContractCfg';
 const Sub_ContractRule = 'ContractRule';
 const Sub_RiskRule = 'RiskRule';
@@ -27,16 +27,37 @@ export {
 export interface Msg {
   sub: string;
   opt: string;
+  version: number;
   data: any;
+  jsonPatch: string;
 }
-export function buildChainCfg(type: string, data: any): Msg {
-  let msg: Msg = {
-    sub: Sub_ChainCfg,
+function buildMsg(sub:string, type:string, version :  number, data: any) : Msg {
+  return {
+    sub: sub,
     opt: type,
+    version: version,
     data: data,
+    jsonPatch: JSON.stringify(data),
   };
+}
+let chainCfgVersion = 0
+
+export function buildChainCfg(type: string, data: any): Msg {
+  // let msg: Msg = {
+  //   sub: Sub_ChainCfg,
+  //   opt: type,
+  //   version: chainCfgVersion,
+  //   data: data,
+  //   jsonPatch: JSON.stringify(data),
+  // };
+  let msg = buildMsg(Sub_ChainCfg, type, chainCfgVersion, data)
+  chainCfgVersion = chainCfgVersion + 1;
+  if (chainCfgVersion > 100000000) {
+    chainCfgVersion = 0;
+  }
   return msg;
 }
+
 // ContractAbi
 // export interface ContractAbiReq {
 //   sub: string;
@@ -45,15 +66,21 @@ export function buildChainCfg(type: string, data: any): Msg {
 //   contractAddress: string;
 //   chainId: string;
 // }
+let contractAbiVersion = 0;
 export function buildContractAbi(type: string, data: any): Msg {
-  let msg: Msg = {
-    sub: Sub_ContractAbi,
-    opt: type,
-    data: data,
-    // id: id,
-    // contractAddress: contractAddress,
-    // chainId: chainId,
-  };
+  // let msg: Msg = {
+  //   sub: Sub_ContractAbi,
+  //   opt: type,
+  //   data: data,
+  //   // id: id,
+  //   // contractAddress: contractAddress,
+  //   // chainId: chainId,
+  // };
+  let msg = buildMsg(Sub_ContractAbi, type, contractAbiVersion, data)
+  contractAbiVersion = contractAbiVersion + 1;
+  if (contractAbiVersion > 100000000) {
+    contractAbiVersion = 0;
+  }
   return msg;
 }
 // export function isValidContractAbiReq(s: Msg): boolean {
@@ -78,23 +105,28 @@ export function buildContractAbi(type: string, data: any): Msg {
 //   chainId: string;
 // }
 
-export function buildContractRule(
-  type: string,
-  data: any
-  // id: number,
-  // chainId: string,
-  // contractAddress: string
-): Msg {
-  let msg: Msg = {
-    sub: Sub_ContractRule,
-    opt: type,
-    data: data,
-    // chainId: chainId,
-    // contractAddress: contractAddress,
-    // id: id,
-  };
-  return msg;
-}
+// export function buildContractRule(
+//   type: string,
+//   data: any
+//   // id: number,
+//   // chainId: string,
+//   // contractAddress: string
+// ): Msg {
+//   // let msg: Msg = {
+//   //   sub: Sub_ContractRule,
+//   //   opt: type,
+//   //   data: data,
+//   //   // chainId: chainId,
+//   //   // contractAddress: contractAddress,
+//   //   // id: id,
+//   // };
+//   let msg = buildMsg(Sub_ContractAbi, type, data, contractAbiVersion)
+//   contractAbiVersion = contractAbiVersion + 1;
+//   if (contractAbiVersion > 100000000) {
+//     contractAbiVersion = 0;
+//   }
+//   return msg;
+// }
 // export function isValidContractRuleReq(s: ContractRuleReq): boolean {
 //   if (
 //     s.opt === '' ||
@@ -115,19 +147,16 @@ export function buildContractRule(
 //   id: number;
 //   isEnable: boolean;
 // }
+let riskCtrlRuleVersion = 0;
 export function buildRiskCtrlRule(
   type: string,
   data: any
-  // id: number,
-  // isEnable: boolean
 ): Msg {
-  let msg: Msg = {
-    sub: Sub_RiskRule,
-    opt: type,
-    data: data,
-    // id: id,
-    // isEnable: isEnable,
-  };
+  let msg = buildMsg(Sub_RiskRule, type, riskCtrlRuleVersion, data)
+  riskCtrlRuleVersion = riskCtrlRuleVersion + 1;
+  if (riskCtrlRuleVersion > 100000000) {
+    riskCtrlRuleVersion = 0;
+  }
   return msg;
 }
 // export function isValidRiskCtrlRuleReq(s: RiskCtrlRuleReq): boolean {

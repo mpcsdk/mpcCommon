@@ -12,6 +12,7 @@ import (
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/mpcsdk/mpcCommon/mpcdao"
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
+	mpcdaoutil "github.com/mpcsdk/mpcCommon/mpcdao/util"
 	"github.com/mpcsdk/mpcCommon/mq"
 )
 
@@ -156,12 +157,12 @@ func (s *RiskAdminCfg) GetChain(id int) *entity.RiskadminChaincfg {
 	}
 	return chain.Data
 }
-func (s *RiskAdminCfg) AllChain() []*entity.RiskadminChaincfg {
+func (s *RiskAdminCfg) AllChain() map[int64]*entity.RiskadminChaincfg {
 	s.chainsRWLock.RLock()
 	defer s.chainsRWLock.RUnlock()
-	rst := []*entity.RiskadminChaincfg{}
+	rst := map[int64]*entity.RiskadminChaincfg{}
 	for _, chain := range s.chains {
-		rst = append(rst, chain.Data)
+		rst[chain.Data.ChainId] = chain.Data
 	}
 	return rst
 }
@@ -225,12 +226,12 @@ func (s *RiskAdminCfg) SetContract(id int, data *mq.RiskAdminContractMsg) {
 	case mq.OptCheck:
 	}
 }
-func (s *RiskAdminCfg) AllContract() []*entity.RiskadminContractabi {
+func (s *RiskAdminCfg) AllContract() map[string]*entity.RiskadminContractabi {
 	s.contractsRWLock.RLock()
 	defer s.contractsRWLock.RUnlock()
-	rst := []*entity.RiskadminContractabi{}
+	rst := map[string]*entity.RiskadminContractabi{}
 	for _, contract := range s.contracts {
-		rst = append(rst, contract.Data)
+		rst[mpcdaoutil.RiskadminContractabiKey(contract.Data.ChainId, contract.Data.ContractAddress)] = contract.Data
 	}
 	return rst
 }

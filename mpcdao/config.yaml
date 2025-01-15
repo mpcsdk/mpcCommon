@@ -22,8 +22,9 @@ gfcli:
         tables: "mpc_context,wallet_addr"
         jsonCase: "CamelLower"
       - link: "mysql:riskcontrol:123456@tcp(127.0.0.1:3306)/riskcontrol"
-        group: "riskcontrol"
-        tables: "contractrule,contractabi,riskcontrol_rule,chaincfg"
+        group: "riskctrl"
+        prefix: "riskadmin_"
+        tables: "contractabi,riskcontrol_rule,chaincfg"
         jsonCase: "CamelLower"
         typeMapping:
           decimal:
@@ -39,10 +40,10 @@ gfcli:
       - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/relayer"
         group: relayer
         prefix: "relayer_"
-        tables: "transactions, receipt, channel_fee"
+        tables: "transactions, receipt, app_fee"
         jsonCase: "CamelLower"
       - link: "mysql:riskcontrol:123456@tcp(127.0.0.1:3306)/relayeradmin"
         group: relayeradmin
-        prefix: "relayerdmin_"
-        tables: "relayer_channel, relayer_fee"
+        prefix: "relayeradmin_"
+        tables: "appCfg, assignFee, specifiedGas"
         jsonCase: "CamelLower"

@@ -25,36 +25,29 @@ type RiskCtrlRpcService struct {
 
 // /nrpc opts
 type RiskCtrlRpcServiceCfg struct {
-	Url     string
-	TimeOut int
-
-	checkRiskRulelFn   func(*mq.RiskRuleReplyMsg) (*mq.RiskRuleReply, error)
-	consumerRiskCtrlFn func(ctx context.Context, data *mq.RiskCtrlRuleMsg) error
+	Url              string
+	TimeOut          int
+	checkRiskRulelFn func(*mq.RiskAdminRiskRuleCheckMsg) (*mq.RiskAdminRiskRuleCheckResp, error)
 }
 
 func RiskCtrlRpcServiceCfgBuilder() *RiskCtrlRpcServiceCfg {
 	return &RiskCtrlRpcServiceCfg{}
 }
+func (s *RiskCtrlRpcServiceCfg) WithCheckRiskRule(checkRiskRulelFn func(*mq.RiskAdminRiskRuleCheckMsg) (*mq.RiskAdminRiskRuleCheckResp, error)) *RiskCtrlRpcServiceCfg {
+	s.checkRiskRulelFn = checkRiskRulelFn
+	return s
+}
+
 func (s *RiskCtrlRpcServiceCfg) check() error {
 	if s.checkRiskRulelFn == nil {
 		return errors.New("RiskCtrlRpcServiceCfg checkRiskRulelFn is nil")
-	}
-	if s.consumerRiskCtrlFn == nil {
-		return errors.New("RiskCtrlRpcServiceCfg consumerRiskCtrlFn is nil")
 	}
 	if s.Url == "" {
 		return errors.New("RiskCtrlRpcServiceCfg Url is empty")
 	}
 	return nil
 }
-func (s *RiskCtrlRpcServiceCfg) WithConsumeRiskRule(consumerRiskCtrlFn func(ctx context.Context, data *mq.RiskCtrlRuleMsg) error) *RiskCtrlRpcServiceCfg {
-	s.consumerRiskCtrlFn = consumerRiskCtrlFn
-	return s
-}
-func (s *RiskCtrlRpcServiceCfg) WithCheckRiskRule(checkRiskRulelFn func(data *mq.RiskRuleReplyMsg) (*mq.RiskRuleReply, error)) *RiskCtrlRpcServiceCfg {
-	s.checkRiskRulelFn = checkRiskRulelFn
-	return s
-}
+
 func (s *RiskCtrlRpcServiceCfg) WithUrl(url string) *RiskCtrlRpcServiceCfg {
 	s.Url = url
 	return s
@@ -99,10 +92,10 @@ func NewRiskCtrlRpcService(ctx context.Context, cfg *RiskCtrlRpcServiceCfg, serv
 		for {
 			select {
 			case msg := <-chReplySub:
-				var data mq.RiskRuleReplyMsg
+				var data mq.RiskAdminRiskRuleCheckMsg
 				if err := json.Unmarshal(msg.Data, &data); err != nil {
 					g.Log().Error(s.ctx, "SubReply_RiskCtrlRule Unmarshal:", msg.Data, ",err:", err)
-					b, _ := json.Marshal(&mq.RiskRuleReply{
+					b, _ := json.Marshal(&mq.RiskAdminRiskRuleCheckResp{
 						Code: 1,
 						Msg:  err.Error(),
 					})
@@ -112,7 +105,7 @@ func NewRiskCtrlRpcService(ctx context.Context, cfg *RiskCtrlRpcServiceCfg, serv
 				rst, err := cfg.checkRiskRulelFn(&data)
 				if err != nil {
 					g.Log().Error(s.ctx, "SubReply_RiskCtrlRule fn:", err)
-					b, _ := json.Marshal(&mq.RiskRuleReply{
+					b, _ := json.Marshal(&mq.RiskAdminRiskRuleCheckResp{
 						Code: 1,
 						Msg:  err.Error(),
 					})
@@ -128,34 +121,7 @@ func NewRiskCtrlRpcService(ctx context.Context, cfg *RiskCtrlRpcServiceCfg, serv
 			}
 		}
 	}()
-	////
-	chConsumeSub := make(chan *nats.Msg, 64)
-	consumerSub, err := nc.ChanQueueSubscribe(mq.Sub_RiskRuleReply, mq.Sub_RiskRuleReply, chConsumeSub)
-	if err != nil {
-		panic(err)
-	}
-	s.consumerSub = consumerSub
-	////
-	go func() {
-		for {
-			select {
-			case msg := <-chConsumeSub:
-				data := mq.RiskCtrlRuleMsg{}
-				var err error
-				if err = json.Unmarshal(msg.Data, &data); err == nil {
-					err = s.cfg.consumerRiskCtrlFn(s.ctx, &data)
-				}
-				if err != nil {
-					g.Log().Error(s.ctx, "Sub_RiskCtrlRule Unmarshal:", msg.Data, ",err:", err)
-				}
-				msg.Ack()
-			case <-s.ctx.Done():
-				sub.Unsubscribe()
-				close(chConsumeSub)
-				sub.Drain()
-			}
-		}
-	}()
+
 	return s, nil
 }
 

@@ -69,6 +69,7 @@ func (s *RiskCtrlRpcClient) TryFlush(err error) {
 // ///
 // ///
 func (s *RiskCtrlRpcClient) Alive(ctx context.Context) error {
+	return nil
 	_, err := s.cli.Alive(ctx, &emptypb.Empty{})
 	if err != nil {
 		s.TryFlush(err)

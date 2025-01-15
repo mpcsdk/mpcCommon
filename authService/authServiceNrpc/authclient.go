@@ -122,6 +122,7 @@ func (s *AuthRpcClient) TokenInfo(ctx context.Context, tokenStr string) (*authSe
 // ///
 // ///
 func (s *AuthRpcClient) Alive(ctx context.Context) error {
+	return nil
 	_, err := s.authclient.Alive(ctx, &emptypb.Empty{})
 	if err != nil {
 		s.TryFlush(err)

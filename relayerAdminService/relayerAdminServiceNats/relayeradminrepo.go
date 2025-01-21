@@ -35,10 +35,6 @@ type RelayerAdminRepo struct {
 func NewRelayerAdminRepo(redis *gredis.Redis, cacheDur int) *RelayerAdminRepo {
 	////
 	ctx := gctx.GetInitCtx()
-	_, err := redis.Conn(context.Background())
-	if err != nil {
-		panic(err)
-	}
 	////
 	s := &RelayerAdminRepo{
 		ctx:                ctx,
@@ -103,10 +99,10 @@ func (s *RelayerAdminRepo) SetApp(id int, data *mq.RelayerAdminAppCfgMsg) {
 		defer s.appsRWLock.Unlock()
 		////
 		needReload := false
-		if chain, ok := s.apps[data.Data.Id]; !ok {
+		if appcfg, ok := s.apps[data.Data.Id]; !ok {
 			needReload = true
 		} else {
-			if chain.Version != data.Version {
+			if appcfg.Version != data.Version {
 				needReload = true
 			}
 		}

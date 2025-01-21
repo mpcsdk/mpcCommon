@@ -11,7 +11,7 @@ import (
 // ////////////
 func (s *RelayerAdminNatsService) runConsumeAppCfgFn() {
 	ch := make(chan *nats.Msg, 64)
-	sub, err := s.nc.ChanSubscribe(mq.Sub_ChainCfg, ch)
+	sub, err := s.nc.ChanSubscribe(mq.Sub_RelayerFeeNotify, ch)
 	if err != nil {
 		panic(err)
 	}
@@ -44,7 +44,7 @@ func (s *RelayerAdminNatsService) runConsumeAppCfgFn() {
 // //
 func (s *RelayerAdminNatsService) runConsumeAssignFeeFen() {
 	ch := make(chan *nats.Msg, 64)
-	sub, err := s.nc.ChanSubscribe(mq.Sub_ContractAbi, ch)
+	sub, err := s.nc.ChanSubscribe(mq.Sub_RelayerAssignFeeNotify, ch)
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +75,7 @@ func (s *RelayerAdminNatsService) runConsumeAssignFeeFen() {
 // //
 func (s *RelayerAdminNatsService) runConsumeSpecifiedGasFn() {
 	ch := make(chan *nats.Msg, 64)
-	sub, err := s.nc.ChanSubscribe(mq.Sub_RiskRule, ch)
+	sub, err := s.nc.ChanSubscribe(mq.Sub_RelayerSpecifiedGasNotify, ch)
 	if err != nil {
 		panic(err)
 	}

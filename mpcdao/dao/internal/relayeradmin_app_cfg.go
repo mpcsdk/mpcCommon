@@ -11,68 +11,64 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-// AdminRelayerFeeDao is the data access object for table relayer_fee.
-type AdminRelayerFeeDao struct {
-	table   string                 // table is the underlying table name of the DAO.
-	group   string                 // group is the database configuration group name of current DAO.
-	columns AdminRelayerFeeColumns // columns contains all the column names of Table for convenient usage.
+// RelayeradminAppCfgDao is the data access object for table appCfg.
+type RelayeradminAppCfgDao struct {
+	table   string                    // table is the underlying table name of the DAO.
+	group   string                    // group is the database configuration group name of current DAO.
+	columns RelayeradminAppCfgColumns // columns contains all the column names of Table for convenient usage.
 }
 
-// AdminRelayerFeeColumns defines and stores column names for table relayer_fee.
-type AdminRelayerFeeColumns struct {
+// RelayeradminAppCfgColumns defines and stores column names for table appCfg.
+type RelayeradminAppCfgColumns struct {
 	Id         string // ID
 	CreateTime string // 创建时间
 	UpdateTime string // 更新时间
-	ChainId    string //
 	AppId      string // 渠道号
 	AppName    string // 渠道名
-	Fee        string // fee
 	IsEnable   string // 启用
 }
 
-// adminRelayerFeeColumns holds the columns for table relayer_fee.
-var adminRelayerFeeColumns = AdminRelayerFeeColumns{
+// relayeradminAppCfgColumns holds the columns for table appCfg.
+var relayeradminAppCfgColumns = RelayeradminAppCfgColumns{
 	Id:         "id",
 	CreateTime: "createTime",
 	UpdateTime: "updateTime",
-	ChainId:    "chainId",
 	AppId:      "appId",
 	AppName:    "appName",
-	Fee:        "fee",
 	IsEnable:   "isEnable",
 }
 
-// NewAdminRelayerFeeDao creates and returns a new DAO object for table data access.
-func NewAdminRelayerFeeDao() *AdminRelayerFeeDao {
-	return &AdminRelayerFeeDao{
+// NewRelayeradminAppCfgDao creates and returns a new DAO object for table data access.
+func NewRelayeradminAppCfgDao() *RelayeradminAppCfgDao {
+	return &RelayeradminAppCfgDao{
 		group:   "relayeradmin",
-		table:   "relayer_fee",
-		columns: adminRelayerFeeColumns,
+		table:   "appCfg",
+		columns: relayeradminAppCfgColumns,
 	}
 }
 
 // DB retrieves and returns the underlying raw database management object of current DAO.
-func (dao *AdminRelayerFeeDao) DB() gdb.DB {
+func (dao *RelayeradminAppCfgDao) DB() gdb.DB {
 	return g.DB(dao.group)
 }
 
 // Table returns the table name of current dao.
-func (dao *AdminRelayerFeeDao) Table() string {
+func (dao *RelayeradminAppCfgDao) Table() string {
 	return dao.table
 }
 
 // Columns returns all column names of current dao.
-func (dao *AdminRelayerFeeDao) Columns() AdminRelayerFeeColumns {
+func (dao *RelayeradminAppCfgDao) Columns() RelayeradminAppCfgColumns {
 	return dao.columns
 }
 
 // Group returns the configuration group name of database of current dao.
-func (dao *AdminRelayerFeeDao) Group() string {
+func (dao *RelayeradminAppCfgDao) Group() string {
 	return dao.group
 }
 
 // Ctx creates and returns the Model for current DAO, It automatically sets the context for current operation.
-func (dao *AdminRelayerFeeDao) Ctx(ctx context.Context) *gdb.Model {
+func (dao *RelayeradminAppCfgDao) Ctx(ctx context.Context) *gdb.Model {
 	return dao.DB().Model(dao.table).Safe().Ctx(ctx)
 }
 
@@ -82,6 +78,6 @@ func (dao *AdminRelayerFeeDao) Ctx(ctx context.Context) *gdb.Model {
 //
 // Note that, you should not Commit or Rollback the transaction in function f
 // as it is automatically handled by this function.
-func (dao *AdminRelayerFeeDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
+func (dao *RelayeradminAppCfgDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
 	return dao.Ctx(ctx).Transaction(ctx, f)
 }

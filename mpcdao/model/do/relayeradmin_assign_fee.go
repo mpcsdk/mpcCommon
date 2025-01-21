@@ -9,9 +9,9 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// AdminRelayerFee is the golang structure of table relayer_fee for DAO operations like Where/Data.
-type AdminRelayerFee struct {
-	g.Meta     `orm:"table:relayer_fee, do:true"`
+// RelayeradminAssignFee is the golang structure of table assignFee for DAO operations like Where/Data.
+type RelayeradminAssignFee struct {
+	g.Meta     `orm:"table:assignFee, do:true"`
 	Id         interface{} // ID
 	CreateTime *gtime.Time // 创建时间
 	UpdateTime *gtime.Time // 更新时间

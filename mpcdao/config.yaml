@@ -44,6 +44,6 @@ gfcli:
         jsonCase: "CamelLower"
       - link: "mysql:riskcontrol:123456@tcp(127.0.0.1:3306)/relayeradmin"
         group: relayeradmin
-        prefix: "admin_"
-        tables: "relayer_app, relayer_fee"
+        prefix: "relayeradmin_"
+        tables: "appCfg, assignFee, specifiedGas"
         jsonCase: "CamelLower"

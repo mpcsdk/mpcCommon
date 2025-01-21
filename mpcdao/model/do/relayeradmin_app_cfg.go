@@ -9,9 +9,9 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// AdminRelayerApp is the golang structure of table relayer_app for DAO operations like Where/Data.
-type AdminRelayerApp struct {
-	g.Meta     `orm:"table:relayer_app, do:true"`
+// RelayeradminAppCfg is the golang structure of table appCfg for DAO operations like Where/Data.
+type RelayeradminAppCfg struct {
+	g.Meta     `orm:"table:appCfg, do:true"`
 	Id         interface{} // ID
 	CreateTime *gtime.Time // 创建时间
 	UpdateTime *gtime.Time // 更新时间

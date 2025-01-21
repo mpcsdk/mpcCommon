@@ -11,7 +11,7 @@ import (
 // ////////////
 func (s *RelayerAdminNatsService) runConsumeAppCfgFn() {
 	ch := make(chan *nats.Msg, 64)
-	sub, err := s.nc.ChanSubscribe(mq.Sub_RelayerFeeNotify, ch)
+	sub, err := s.nc.ChanSubscribe(mq.Sub_RelayerAppIdNotify, ch)
 	if err != nil {
 		panic(err)
 	}

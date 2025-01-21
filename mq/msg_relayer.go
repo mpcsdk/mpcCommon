@@ -4,7 +4,7 @@ import (
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
 
-const Sub_RelayerFeeNotify = "RelayerFeeNotify"
+const Sub_RelayerAppIdNotify = "RelayerAppIdNotify"
 const Sub_RelayerSpecifiedGasNotify = "RelayerSpecifiedGasNotify"
 const Sub_RelayerAssignFeeNotify = "RelayerAssignFee"
 

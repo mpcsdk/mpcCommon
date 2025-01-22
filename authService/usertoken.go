@@ -15,7 +15,7 @@ type UserInfo struct {
 	AppId  string `json:"appId"`
 
 	TimeStamp int64 `json:"timestamp"`
-	Nonce     int64 `json:"nonce"`
+	Nonce     string `json:"nonce"`
 	Iat       int64 `json:"iat"`
 	Exp       int64 `json:"exp"`
 }
@@ -36,7 +36,9 @@ func GetUserTokenInfo(ctx context.Context, url string, tokenStr string) (authSer
 	}
 	/////
 	////
-	resp, err := g.Client().Post(ctx, url, g.Map{
+	resp, err := g.Client().Header(map[string]string{
+		"Content-Type": "application/json",
+	}).Post(ctx, url, g.Map{
 		"token": tokenStr,
 	})
 	if err != nil {

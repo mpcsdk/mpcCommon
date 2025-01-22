@@ -232,8 +232,17 @@ func (s *RelayerAdminRepo) AllAssignFee() map[string]*entity.RelayeradminAssignF
 	}
 	return rst
 }
-
-func (s *RelayerAdminRepo) GetAssignFee(id int) *entity.RelayeradminAssignFee {
+func (s *RelayerAdminRepo) GetAssignFee(appId string, chainId int64) *entity.RelayeradminAssignFee {
+	s.assignFeesRWLock.RLock()
+	defer s.assignFeesRWLock.RUnlock()
+	for _, fee := range s.assignFees {
+		if fee.Data.ChainId == int(chainId) && fee.Data.AppId == appId {
+			return fee.Data
+		}
+	}
+	return nil
+}
+func (s *RelayerAdminRepo) GetAssignFeeById(id int) *entity.RelayeradminAssignFee {
 	s.assignFeesRWLock.RLock()
 	defer s.assignFeesRWLock.RUnlock()
 	assignFee := s.assignFees[id]

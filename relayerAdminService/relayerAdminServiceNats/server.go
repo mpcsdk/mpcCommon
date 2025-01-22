@@ -41,6 +41,9 @@ func NewRiskAdminNatsService(ctx context.Context, opt *RelayerAdminServiceOpt) (
 
 // //
 
-func (s *RelayerAdminNatsService) RiskAdminDB() *mpcdao.RelayerAdminDB {
+func (s *RelayerAdminNatsService) RelayerAdminDB() *mpcdao.RelayerAdminDB {
 	return s.relayerRepo.RelayerAdminDB()
+}
+func (s *RelayerAdminNatsService) RelayerRepo() *RelayerAdminRepo {
+	return s.relayerRepo
 }

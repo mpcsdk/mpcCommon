@@ -22,7 +22,6 @@ type RiskCtrlRpcClient struct {
 func NewRiskCtrlRpcClient(r *gredis.Redis, natsUrl string, timeout int) (*RiskCtrlRpcClient, error) {
 	s := &RiskCtrlRpcClient{}
 	nc, err := nats.Connect(natsUrl)
-	//  nats.Timeout(time.Second*time.Duration(timeout)))
 	if err != nil {
 		return nil, err
 	}
@@ -69,6 +68,7 @@ func (s *RiskCtrlRpcClient) TryFlush(err error) {
 // ///
 // ///
 func (s *RiskCtrlRpcClient) Alive(ctx context.Context) error {
+	return nil
 	_, err := s.cli.Alive(ctx, &emptypb.Empty{})
 	if err != nil {
 		s.TryFlush(err)

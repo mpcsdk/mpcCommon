@@ -1,6 +1,6 @@
 package mq
 
-const Sub_ChainCfg = "ChainCgf"
+const Sub_ChainCfg = "ChainCfg"
 const Sub_ContractAbi = "ContractCfg"
 const Sub_ContractRule = "ContractRule"
 const Sub_RiskRule = "RiskRule"
@@ -9,15 +9,19 @@ const Sub_RiskRuleReply = "RiskRuleReply"
 
 // //
 // //
+type MsgOpt string
+
 const (
-	OptAdd    = "add"
-	OptUpdate = "update"
-	OptDelete = "delete"
-	OptCheck  = "check"
+	OptAdd    MsgOpt = "add"
+	OptUpdate        = "update"
+	OptDelete        = "delete"
+	OptCheck         = "check"
 )
 
 type Msg struct {
-	Sub  string      `json:"sub"`
-	Opt  string      `json:"opt"`
-	Data interface{} `json:"data"`
+	Sub       string      `json:"sub"`
+	Opt       MsgOpt      `json:"opt"`
+	Version   int         `json:"version"`
+	Data      interface{} `json:"data"`
+	JsonPatch string      `json:"jsonPatch"`
 }

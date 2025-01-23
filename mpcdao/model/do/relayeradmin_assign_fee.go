@@ -15,9 +15,9 @@ type RelayeradminAssignFee struct {
 	Id         interface{} // ID
 	CreateTime *gtime.Time // 创建时间
 	UpdateTime *gtime.Time // 更新时间
-	ChainId    interface{} //
 	AppId      interface{} // 渠道号
 	AppName    interface{} // 渠道名
 	Fee        interface{} // fee
 	IsEnable   interface{} // 启用
+	ChainId    interface{} // gas
 }

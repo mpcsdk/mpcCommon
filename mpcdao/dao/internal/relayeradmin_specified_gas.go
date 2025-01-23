@@ -23,11 +23,11 @@ type RelayeradminSpecifiedGasColumns struct {
 	Id           string // ID
 	CreateTime   string // 创建时间
 	UpdateTime   string // 更新时间
-	ChainId      string //
 	ContractAddr string // 合约地址
 	MethodSig    string // 方法签名
-	GasUsed      string // gas
 	IsEnable     string // 启用
+	GasUsed      string // gas
+	ChainId      string // gas
 }
 
 // relayeradminSpecifiedGasColumns holds the columns for table specifiedGas.
@@ -35,11 +35,11 @@ var relayeradminSpecifiedGasColumns = RelayeradminSpecifiedGasColumns{
 	Id:           "id",
 	CreateTime:   "createTime",
 	UpdateTime:   "updateTime",
-	ChainId:      "chainId",
 	ContractAddr: "contractAddr",
 	MethodSig:    "methodSig",
-	GasUsed:      "gasUsed",
 	IsEnable:     "isEnable",
+	GasUsed:      "gasUsed",
+	ChainId:      "chainId",
 }
 
 // NewRelayeradminSpecifiedGasDao creates and returns a new DAO object for table data access.

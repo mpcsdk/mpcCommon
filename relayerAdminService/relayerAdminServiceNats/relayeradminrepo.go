@@ -236,7 +236,7 @@ func (s *RelayerAdminRepo) GetAssignFee(appId string, chainId int64) *entity.Rel
 	s.assignFeesRWLock.RLock()
 	defer s.assignFeesRWLock.RUnlock()
 	for _, fee := range s.assignFees {
-		if fee.Data.ChainId == int(chainId) && fee.Data.AppId == appId {
+		if fee.Data.ChainId == (chainId) && fee.Data.AppId == appId {
 			return fee.Data
 		}
 	}
@@ -256,8 +256,7 @@ func (s *RelayerAdminRepo) GetAssignFeeById(id int) *entity.RelayeradminAssignFe
 func (s *RelayerAdminRepo) SetSpecifiedGas(id int, data *mq.RelayerAdminSpecifiedGas) {
 
 	switch data.Opt {
-	case mq.OptAdd:
-	case mq.OptUpdate:
+	case mq.OptAdd, mq.OptUpdate:
 		///
 		s.specifiedGasRWLock.Lock()
 		defer s.specifiedGasRWLock.Unlock()
@@ -305,11 +304,27 @@ func (s *RelayerAdminRepo) SetSpecifiedGas(id int, data *mq.RelayerAdminSpecifie
 		gasused.Data = mergedData
 		gasused.Version += 1
 	case mq.OptDelete:
+		s.specifiedGasRWLock.Lock()
+		defer s.specifiedGasRWLock.Unlock()
+		if _, ok := s.specifiedGas[data.Data.Id]; ok {
+			delete(s.specifiedGas, data.Data.Id)
+		}
 	case mq.OptCheck:
 	}
 
 }
-func (s *RelayerAdminRepo) GetSpecifiedGas(id int) *entity.RelayeradminSpecifiedGas {
+func (s *RelayerAdminRepo) GetSpecifiedGas(chainId int64, contractAddr string, methodSig string) *entity.RelayeradminSpecifiedGas {
+
+	s.specifiedGasRWLock.RLock()
+	defer s.specifiedGasRWLock.RUnlock()
+	for _, gas := range s.specifiedGas {
+		if gas.Data.ChainId == (chainId) && gas.Data.ContractAddr == contractAddr && gas.Data.MethodSig == methodSig {
+			return gas.Data
+		}
+	}
+	return nil
+}
+func (s *RelayerAdminRepo) GetSpecifiedGasById(id int) *entity.RelayeradminSpecifiedGas {
 	s.specifiedGasRWLock.RLock()
 	defer s.specifiedGasRWLock.RUnlock()
 	gasused := s.specifiedGas[id]

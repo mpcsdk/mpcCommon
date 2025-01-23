@@ -23,11 +23,11 @@ type RelayeradminAssignFeeColumns struct {
 	Id         string // ID
 	CreateTime string // 创建时间
 	UpdateTime string // 更新时间
-	ChainId    string //
 	AppId      string // 渠道号
 	AppName    string // 渠道名
 	Fee        string // fee
 	IsEnable   string // 启用
+	ChainId    string // gas
 }
 
 // relayeradminAssignFeeColumns holds the columns for table assignFee.
@@ -35,11 +35,11 @@ var relayeradminAssignFeeColumns = RelayeradminAssignFeeColumns{
 	Id:         "id",
 	CreateTime: "createTime",
 	UpdateTime: "updateTime",
-	ChainId:    "chainId",
 	AppId:      "appId",
 	AppName:    "appName",
 	Fee:        "fee",
 	IsEnable:   "isEnable",
+	ChainId:    "chainId",
 }
 
 // NewRelayeradminAssignFeeDao creates and returns a new DAO object for table data access.

@@ -15,9 +15,9 @@ type RelayeradminSpecifiedGas struct {
 	Id           interface{} // ID
 	CreateTime   *gtime.Time // 创建时间
 	UpdateTime   *gtime.Time // 更新时间
-	ChainId      interface{} //
 	ContractAddr interface{} // 合约地址
 	MethodSig    interface{} // 方法签名
-	GasUsed      interface{} // gas
 	IsEnable     interface{} // 启用
+	GasUsed      interface{} // gas
+	ChainId      interface{} // gas
 }

@@ -39,6 +39,7 @@ type RelayerTransactionsColumns struct {
 	ErrorReason     string // 交易失败
 	Createdat       string //
 	Updatedat       string //
+	RelayerFee      string // relayerfee
 }
 
 // relayerTransactionsColumns holds the columns for table transactions.
@@ -62,6 +63,7 @@ var relayerTransactionsColumns = RelayerTransactionsColumns{
 	ErrorReason:     "error_reason",
 	Createdat:       "createdat",
 	Updatedat:       "updatedat",
+	RelayerFee:      "relayer_fee",
 }
 
 // NewRelayerTransactionsDao creates and returns a new DAO object for table data access.

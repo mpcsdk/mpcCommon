@@ -150,7 +150,17 @@ func (s *RiskAdminCfg) SetChain(id int, data *mq.RiskAdminChainMsg) {
 	}
 
 }
-func (s *RiskAdminCfg) GetChain(id int) *entity.RiskadminChaincfg {
+func (s *RiskAdminCfg) GetChain(chainId int64) *entity.RiskadminChaincfg {
+	s.chainsRWLock.RLock()
+	defer s.chainsRWLock.RUnlock()
+	for _, chain := range s.chains {
+		if chain.Data.ChainId == chainId {
+			return chain.Data
+		}
+	}
+	return nil
+}
+func (s *RiskAdminCfg) GetChainById(id int) *entity.RiskadminChaincfg {
 	s.chainsRWLock.RLock()
 	defer s.chainsRWLock.RUnlock()
 	chain := s.chains[id]
@@ -237,8 +247,26 @@ func (s *RiskAdminCfg) AllContract() map[string]*entity.RiskadminContractabi {
 	}
 	return rst
 }
-
-func (s *RiskAdminCfg) GetContract(id int) *entity.RiskadminContractabi {
+func (s *RiskAdminCfg) GetContract(chainId int64, contractAddr string) *entity.RiskadminContractabi {
+	s.contractsRWLock.RLock()
+	defer s.contractsRWLock.RUnlock()
+	// rst := map[string]*entity.RiskadminContractabi{}
+	if chainId > 0 {
+		for _, contract := range s.contracts {
+			if contract.Data.ContractAddress == contractAddr && contract.Data.ChainId == chainId {
+				return contract.Data
+			}
+		}
+	} else {
+		for _, contract := range s.contracts {
+			if contract.Data.ContractAddress == contractAddr {
+				return contract.Data
+			}
+		}
+	}
+	return nil
+}
+func (s *RiskAdminCfg) GetContractById(id int) *entity.RiskadminContractabi {
 	s.contractsRWLock.RLock()
 	defer s.contractsRWLock.RUnlock()
 	contract := s.contracts[id]

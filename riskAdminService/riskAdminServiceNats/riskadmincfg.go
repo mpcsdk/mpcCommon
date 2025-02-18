@@ -34,9 +34,11 @@ type RiskAdminCfg struct {
 func NewRiskAdminCfg(redis *gredis.Redis, cacheDur int) *RiskAdminCfg {
 	////
 	ctx := gctx.GetInitCtx()
-	_, err := redis.Conn(context.Background())
-	if err != nil {
-		panic(err)
+	if redis != nil {
+		_, err := redis.Conn(context.Background())
+		if err != nil {
+			panic(err)
+		}
 	}
 	////
 	s := &RiskAdminCfg{

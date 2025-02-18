@@ -247,6 +247,20 @@ func (s *RiskAdminCfg) AllContract() map[string]*entity.RiskadminContractabi {
 	}
 	return rst
 }
+func (s *RiskAdminCfg) GetContractByChainId(chainId int64) []*entity.RiskadminContractabi {
+	s.contractsRWLock.RLock()
+	defer s.contractsRWLock.RUnlock()
+	rst := []*entity.RiskadminContractabi{}
+	if chainId > 0 {
+		for _, contract := range s.contracts {
+			if contract.Data.ChainId == chainId {
+				rst = append(rst, contract.Data)
+			}
+		}
+		return rst
+	}
+	return nil
+}
 func (s *RiskAdminCfg) GetContract(chainId int64, contractAddr string) *entity.RiskadminContractabi {
 	s.contractsRWLock.RLock()
 	defer s.contractsRWLock.RUnlock()

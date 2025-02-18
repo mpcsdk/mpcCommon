@@ -28,6 +28,7 @@ type RelayeradminSpecifiedGasColumns struct {
 	IsEnable     string // 启用
 	GasUsed      string // gas
 	ChainId      string // gas
+	Desc         string // 描述
 }
 
 // relayeradminSpecifiedGasColumns holds the columns for table specifiedGas.
@@ -40,6 +41,7 @@ var relayeradminSpecifiedGasColumns = RelayeradminSpecifiedGasColumns{
 	IsEnable:     "isEnable",
 	GasUsed:      "gasUsed",
 	ChainId:      "chainId",
+	Desc:         "desc",
 }
 
 // NewRelayeradminSpecifiedGasDao creates and returns a new DAO object for table data access.

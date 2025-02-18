@@ -4,8 +4,8 @@
 
 package entity
 
-// ChainTransfer is the golang structure for table chain_transfer.
-type ChainTransfer struct {
+// SyncchainChainTransfer is the golang structure for table syncchain_chain_transfer.
+type SyncchainChainTransfer struct {
 	ChainId   int64  `json:"chainId"   orm:"chain_id"   ` //
 	Height    int64  `json:"height"    orm:"height"     ` //
 	BlockHash string `json:"blockHash" orm:"block_hash" ` //

@@ -31,4 +31,5 @@ type RelayerTransactions struct {
 	ErrorReason     interface{} // 交易失败
 	Createdat       *gtime.Time //
 	Updatedat       *gtime.Time //
+	RelayerFee      interface{} // relayerfee
 }

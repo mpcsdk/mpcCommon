@@ -151,7 +151,7 @@ func NewChainTransfer(chainId int64, redis *gredis.Redis, dur int) *ChainTransfe
 	dbname := "sync_chain_" + gconv.String(chainId)
 
 	dbmod := dao.SyncchainChainTransfer.DB().Schema(dbname).Model(dao.SyncchainChainTransfer.Table()).Safe()
-	statemod := dao.SyncchainChainTransfer.DB().Schema(dbname).Model(dao.SyncchainChainTransfer.Table()).Safe()
+	statemod := dao.SyncchainChainTransfer.DB().Schema(dbname).Model(dao.SyncchainState.Table()).Safe()
 	if redis != nil {
 		g.DB(dao.SyncchainState.Group()).GetCache().SetAdapter(gcache.NewAdapterRedis(redis))
 

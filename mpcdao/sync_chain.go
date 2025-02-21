@@ -186,12 +186,13 @@ func (s *ChainTransfer) InsertBatch(ctx context.Context, data []*entity.Syncchai
 }
 func (s *ChainTransfer) Insert_Transaction(ctx context.Context, data []*entity.SyncchainChainTransfer) error {
 	err := s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
-		for i, transfer := range data {
-			tx.SavePoint(gconv.String(i))
-			_, err := tx.Insert("transfer", transfer)
+		for _, transfer := range data {
+			// tx.SavePoint(gconv.String(i))
+			_, err := tx.Insert(dao.SyncchainChainTransfer.Table(), transfer)
 			if err != nil {
 				g.Log().Warning(ctx, "Insert_Transaction:", err)
-				tx.RollbackTo(gconv.String(i))
+				return err
+				// tx.RollbackTo(gconv.String(i))
 			}
 		}
 		return nil
@@ -247,8 +248,8 @@ func (s *ChainTransfer) UpdateState(ctx context.Context, chainId int64, currentB
 		Data(g.Map{
 			dao.SyncchainState.Columns().CurrentBlock: currentBlock,
 		}).
-		OnConflict(dao.SyncchainState.Columns().ChainId).
-		Save()
+		// OnConflict(dao.SyncchainState.Columns().ChainId).
+		Update()
 	return err
 }
 func (s *ChainTransfer) GetState(ctx context.Context, chainId int64) (*entity.SyncchainState, error) {

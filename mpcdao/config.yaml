@@ -11,7 +11,8 @@ gfcli:
         jsonCase: "CamelLower"
       - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/sync_chain"
         group: sync_chain
-        tables: "chain_transfer"
+        prefix: "syncchain_"
+        tables: "chain_transfer, state"
         jsonCase: "CamelLower"
       - link: "pgsql:postgres:123456@tcp(127.0.0.1:5432)/enhanced_riskctrl"
         group: "enhanced_riskctrl"

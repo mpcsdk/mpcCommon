@@ -18,4 +18,5 @@ type RelayeradminSpecifiedGas struct {
 	IsEnable     int         `json:"isEnable"     orm:"isEnable"     ` // 启用
 	GasUsed      int64       `json:"gasUsed"      orm:"gasUsed"      ` // gas
 	ChainId      int64       `json:"chainId"      orm:"chainId"      ` // gas
+	Desc         string      `json:"desc"         orm:"desc"         ` // 描述
 }

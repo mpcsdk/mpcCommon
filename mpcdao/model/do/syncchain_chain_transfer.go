@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-// ChainTransfer is the golang structure of table chain_transfer for DAO operations like Where/Data.
-type ChainTransfer struct {
+// SyncchainChainTransfer is the golang structure of table chain_transfer for DAO operations like Where/Data.
+type SyncchainChainTransfer struct {
 	g.Meta    `orm:"table:chain_transfer, do:true"`
 	ChainId   interface{} //
 	Height    interface{} //

@@ -8,19 +8,19 @@ import (
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao/internal"
 )
 
-// internalChainTransferDao is internal type for wrapping internal DAO implements.
-type internalChainTransferDao = *internal.ChainTransferDao
+// internalSyncchainStateDao is internal type for wrapping internal DAO implements.
+type internalSyncchainStateDao = *internal.SyncchainStateDao
 
-// chainTransferDao is the data access object for table chain_transfer.
+// syncchainStateDao is the data access object for table state.
 // You can define custom methods on it to extend its functionality as you wish.
-type chainTransferDao struct {
-	internalChainTransferDao
+type syncchainStateDao struct {
+	internalSyncchainStateDao
 }
 
 var (
-	// ChainTransfer is globally public accessible object for table chain_transfer operations.
-	ChainTransfer = chainTransferDao{
-		internal.NewChainTransferDao(),
+	// SyncchainState is globally public accessible object for table state operations.
+	SyncchainState = syncchainStateDao{
+		internal.NewSyncchainStateDao(),
 	}
 )
 

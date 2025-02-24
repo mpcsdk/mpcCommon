@@ -20,4 +20,5 @@ type RelayeradminSpecifiedGas struct {
 	IsEnable     interface{} // 启用
 	GasUsed      interface{} // gas
 	ChainId      interface{} // gas
+	Desc         interface{} // 描述
 }

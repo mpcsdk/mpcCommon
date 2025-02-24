@@ -29,5 +29,5 @@ type RelayerTransactions struct {
 	ErrorReason     string      `json:"errorReason"     orm:"error_reason"     ` // 交易失败
 	Createdat       *gtime.Time `json:"createdat"       orm:"createdat"        ` //
 	Updatedat       *gtime.Time `json:"updatedat"       orm:"updatedat"        ` //
-	RealyerFee string `json:"realyerFee"       orm:"realyer_fee"        `
+	RelayerFee      string      `json:"relayerFee"      orm:"relayer_fee"      ` // relayerfee
 }

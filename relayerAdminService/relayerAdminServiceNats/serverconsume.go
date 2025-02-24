@@ -19,6 +19,7 @@ func (s *RelayerAdminNatsService) runConsumeAppCfgFn() {
 	for {
 		select {
 		case msg := <-ch:
+			g.Log().Debug(s.ctx, "runConsumeAppCfgFn:", msg.Data)
 			var data mq.RelayerAdminAppCfgMsg
 			var err error
 			if err = json.Unmarshal(msg.Data, &data); err == nil {

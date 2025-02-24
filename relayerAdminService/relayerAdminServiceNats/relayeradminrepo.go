@@ -141,11 +141,25 @@ func (s *RelayerAdminRepo) SetApp(id int, data *mq.RelayerAdminAppCfgMsg) {
 		app.Data = mergedData
 		app.Version += 1
 	case mq.OptDelete:
+		s.appsRWLock.Lock()
+		defer s.appsRWLock.Unlock()
+		delete(s.apps, data.Data.Id)
 	case mq.OptCheck:
 	}
 
 }
-func (s *RelayerAdminRepo) GetApp(id int) *entity.RelayeradminAppCfg {
+func (s *RelayerAdminRepo) GetApp(appId string) *entity.RelayeradminAppCfg {
+
+	s.appsRWLock.RLock()
+	defer s.appsRWLock.RUnlock()
+	for _, v := range s.apps {
+		if v.Data.AppId == appId {
+			return v.Data
+		}
+	}
+	return nil
+}
+func (s *RelayerAdminRepo) GetAppById(id int) *entity.RelayeradminAppCfg {
 	s.appsRWLock.RLock()
 	defer s.appsRWLock.RUnlock()
 	app := s.apps[id]
@@ -220,6 +234,9 @@ func (s *RelayerAdminRepo) SetAssignFee(id int, data *mq.RelayerAdminAssignFeeMs
 		assignFee.Data = mergedData
 		assignFee.Version += 1
 	case mq.OptDelete:
+		s.assignFeesRWLock.Lock()
+		defer s.assignFeesRWLock.Unlock()
+		delete(s.assignFees, data.Data.Id)
 	case mq.OptCheck:
 	}
 }
@@ -306,9 +323,7 @@ func (s *RelayerAdminRepo) SetSpecifiedGas(id int, data *mq.RelayerAdminSpecifie
 	case mq.OptDelete:
 		s.specifiedGasRWLock.Lock()
 		defer s.specifiedGasRWLock.Unlock()
-		if _, ok := s.specifiedGas[data.Data.Id]; ok {
-			delete(s.specifiedGas, data.Data.Id)
-		}
+		delete(s.specifiedGas, data.Data.Id)
 	case mq.OptCheck:
 	}
 

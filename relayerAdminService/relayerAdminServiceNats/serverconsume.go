@@ -27,6 +27,8 @@ func (s *RelayerAdminNatsService) runConsumeAppCfgFn() {
 				///call consumer
 				if s.opt.consumeAppCfgFn != nil {
 					err = s.opt.consumeAppCfgFn(s.ctx, &data)
+				} else {
+					g.Log().Warning(s.ctx, "runConsumeAppCfgFn is nil")
 				}
 			}
 			if err != nil {
@@ -52,6 +54,7 @@ func (s *RelayerAdminNatsService) runConsumeAssignFeeFen() {
 	for {
 		select {
 		case msg := <-ch:
+			g.Log().Debug(s.ctx, "runConsumeAppCfgFn:", msg.Data)
 			var data mq.RelayerAdminAssignFeeMsg
 			var err error
 			if err = json.Unmarshal(msg.Data, &data); err == nil {

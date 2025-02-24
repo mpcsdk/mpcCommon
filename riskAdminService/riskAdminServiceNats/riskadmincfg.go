@@ -144,6 +144,9 @@ func (s *RiskAdminCfg) SetChain(id int, data *mq.RiskAdminChainMsg) {
 		chain.Data = mergedData
 		chain.Version += 1
 	case mq.OptDelete:
+		s.chainsRWLock.Lock()
+		defer s.chainsRWLock.Unlock()
+		delete(s.chains, data.Data.Id)
 	case mq.OptCheck:
 	}
 
@@ -223,6 +226,9 @@ func (s *RiskAdminCfg) SetContract(id int, data *mq.RiskAdminContractMsg) {
 		contract.Data = mergedData
 		contract.Version += 1
 	case mq.OptDelete:
+		s.contractsRWLock.Lock()
+		defer s.contractsRWLock.Unlock()
+		delete(s.contracts, data.Data.Id)
 	case mq.OptCheck:
 	}
 }
@@ -299,6 +305,9 @@ func (s *RiskAdminCfg) SetRiskRule(id int, data *mq.RiskAdminRiskRuleMsg) {
 		rule.Data = mergedData
 		rule.Version += 1
 	case mq.OptDelete:
+		s.riskRulesRWLock.Lock()
+		defer s.riskRulesRWLock.Unlock()
+		delete(s.riskRules, data.Data.Id)
 	case mq.OptCheck:
 	}
 

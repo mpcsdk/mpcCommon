@@ -84,7 +84,8 @@ var (
 	//tx
 	CodeTxsInvalid           = (&errCode{302, "Txs Invalid", nil}).instance
 	CodeTxContractAbiInvalid = (&errCode{302, "Tx Contract Abi Invalid", nil}).instance
-
+	///relayer
+	CodeRelayerSend = (&errCode{302, "tx send", nil}).instance
 	///
 	CodeExternalErr = (&errCode{65535, "", nil}).instance_msg
 )

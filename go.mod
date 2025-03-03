@@ -16,6 +16,7 @@ require (
 	github.com/gogf/gf/v2 v2.7.4
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/golang/protobuf v1.5.3
+	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.138
 	github.com/nats-io/nats.go v1.33.1
 	github.com/satori/go.uuid v1.2.0
 	github.com/shopspring/decimal v1.3.1
@@ -55,6 +56,7 @@ require (
 	github.com/gorilla/websocket v1.5.1 // indirect
 	github.com/grokify/html-strip-tags-go v0.1.0 // indirect
 	github.com/holiman/uint256 v1.2.4 // indirect
+	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.2 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
@@ -62,6 +64,8 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mmcloughlin/addchain v0.4.0 // indirect
+	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
+	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
@@ -70,8 +74,10 @@ require (
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect
 	github.com/supranational/blst v0.3.11 // indirect
+	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
+	go.mongodb.org/mongo-driver v1.13.1 // indirect
 	go.opentelemetry.io/otel/metric v1.32.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.32.0 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
@@ -83,6 +89,7 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.15.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )

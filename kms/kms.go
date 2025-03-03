@@ -139,7 +139,12 @@ type KMShuawei struct {
 	cli  *csms.CsmsClient
 }
 
-func NewKMS(procjectId string, region string, ak string, sk string, debug bool) (*KMShuawei, error) {
+func NewKMS(
+	procjectId string,
+	region string,
+	ak string,
+	sk string,
+	debug bool) (*KMShuawei, error) {
 	s := &KMShuawei{
 		projectId: procjectId,
 		region:    region,
@@ -258,6 +263,18 @@ func (s *KMShuawei) DelKey(key string) (*model.DeleteSecretResponse, error) {
 	}
 	///
 	response, err := s.cli.DeleteSecret(request)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+func (s *KMShuawei) GetKey(key string) (*model.ShowSecretVersionResponse, error) {
+	request := &model.ShowSecretVersionRequest{
+		SecretName: key,
+		VersionId:  "latest",
+	}
+	///
+	response, err := s.cli.ShowSecretVersion(request)
 	if err != nil {
 		return nil, err
 	}

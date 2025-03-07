@@ -1,0 +1,66 @@
+package mpcconsts
+
+type ChainId int64
+
+const (
+	Mainnet                  = 1
+	Morden                   = 2
+	Ropsten                  = 3
+	Rinkeby                  = 4
+	Goerli                   = 5
+	Kovan                    = 42
+	XDai                     = 100
+	Chiado                   = 10200
+	Polygon                  = 137
+	Fantom                   = 250
+	Dev                      = 1337
+	AnvilHardhat             = 31337
+	FantomTestnet            = 4002
+	PolygonMumbai            = 80001
+	Avalanche                = 43114
+	AvalancheFuji            = 43113
+	Sepolia                  = 11155111
+	Moonbeam                 = 1284
+	Moonbase                 = 1287
+	MoonbeamDev              = 1281
+	Moonriver                = 1285
+	Optimism                 = 10
+	OptimismGoerli           = 420
+	OptimismKovan            = 69
+	Arbitrum                 = 42161
+	ArbitrumTestnet          = 421611
+	ArbitrumGoerli           = 421613
+	Cronos                   = 25
+	CronosTestnet            = 338
+	BinanceSmartChain        = 56
+	BinanceSmartChainTestnet = 97
+	Poa                      = 99
+	Sokol                    = 77
+	Rsk                      = 30
+	Oasis                    = 26863
+	Emerald                  = 42262
+	EmeraldTestnet           = 42261
+	Evmos                    = 9001
+	EvmosTestnet             = 9000
+	Aurora                   = 1313161554
+	AuroraTestnet            = 1313161555
+	Rangers                  = 2025
+	RangersTestnet           = 9527
+	ScrollAlphaTestnet       = 534353
+	ScrollPreAlphaTestnet    = 534354
+	KCC                      = 321
+	KCCTestnet               = 322
+	OKXChainMainnet          = 66
+	OKExChainTestnet         = 65
+	PlatONMainnet            = 210425
+	PlatONDevTestnet2        = 2206132
+	LineaMainnet             = 59144
+	LineaTestnet             = 59140
+	Mantle                   = 5000
+	MantleTestnet            = 5001
+	MantleSepoliaTestnet     = 5003
+	Base                     = 8453
+	BaseSepolia              = 84532
+	Tron                     = 728126428
+	TronShasta               = 2494104990
+)

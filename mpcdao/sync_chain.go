@@ -43,7 +43,7 @@ func InitSyncChainDB(ctx context.Context, chainId int64) error {
 	///
 	db := g.DB("sync_chain").Schema(dbname)
 	///
-	_, err := db.Exec(ctx, "select 1 from chain_transfer limit 1")
+	_, err := db.Exec(ctx, "select height from chain_transfer limit 1")
 	if err != nil {
 		err = initTransferTable(ctx, dbname)
 		if err != nil {
@@ -183,6 +183,35 @@ func (s *ChainTransfer) DelChainBlockNumber(ctx context.Context, chainId int64, 
 func (s *ChainTransfer) InsertBatch(ctx context.Context, data []*entity.SyncchainChainTransfer) error {
 	_, err := s.dbmod.Ctx(ctx).Insert(data)
 	return err
+}
+
+// /
+func (s *ChainTransfer) UpTransaction(ctx context.Context, data []*entity.SyncchainChainTransfer) error {
+	if len(data) == 0 {
+		return nil
+	}
+	latest := data[0].Height
+	for _, d := range data {
+		if d.Height > latest {
+			latest = d.Height
+		}
+	}
+	////
+	return s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
+		_, err := tx.Insert(dao.SyncchainChainTransfer.Table(), data)
+		if err != nil {
+			return err
+		}
+		///
+		_, err = tx.Ctx(ctx).Model(dao.SyncchainState.Table()).
+			Where(dao.SyncchainState.Columns().ChainId, s.chainId).
+			Data(g.Map{
+				dao.SyncchainState.Columns().CurrentBlock: latest,
+			}).
+			Update()
+
+		return err
+	})
 }
 func (s *ChainTransfer) Insert_Transaction(ctx context.Context, data []*entity.SyncchainChainTransfer) error {
 	err := s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {

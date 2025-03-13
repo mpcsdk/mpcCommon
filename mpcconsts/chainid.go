@@ -63,4 +63,5 @@ const (
 	BaseSepolia              = 84532
 	Tron                     = 728126428
 	TronShasta               = 2494104990
+	Tronnile                 = 3448148188
 )

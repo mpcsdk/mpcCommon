@@ -85,7 +85,7 @@ func initStateTable(ctx context.Context, dbname string) error {
 	return err
 }
 func initTransferTable(ctx context.Context, dbname string) error {
-	_, err := dao.SyncchainChainTransfer.DB().Schema(dbname).Exec(ctx, `CREATE TABLE "public"."transfer" (
+	_, err := dao.SyncchainChainTransfer.DB().Schema(dbname).Exec(ctx, `CREATE TABLE "public"."chain_transfer" (
 		"chain_id" int8 NOT NULL,
 		"height" int8 NOT NULL,
 		"block_hash" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
@@ -111,7 +111,7 @@ func initTransferTable(ctx context.Context, dbname string) error {
 	  ALTER TABLE "public"."chain_transfer" 
 		OWNER TO "postgres";
 	  
-	  CREATE INDEX "chain_transfer_contract_ts" ON "public"."transfer" USING btree (
+	  CREATE INDEX "chain_transfer_contract_ts" ON "public"."chain_transfer" USING btree (
 		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
 	  );

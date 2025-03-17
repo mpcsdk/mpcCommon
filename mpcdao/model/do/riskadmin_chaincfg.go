@@ -20,4 +20,5 @@ type RiskadminChaincfg struct {
 	IsEnable   interface{} // 启用
 	ChainId    interface{} // 链id
 	Heigh      interface{} // 高度
+	Decimal    interface{} // decimal
 }

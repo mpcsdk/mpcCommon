@@ -18,4 +18,5 @@ type RiskadminChaincfg struct {
 	IsEnable   int         `json:"isEnable"   orm:"isEnable"   ` // 启用
 	ChainId    int64       `json:"chainId"    orm:"chainId"    ` // 链id
 	Heigh      int64       `json:"heigh"      orm:"heigh"      ` // 高度
+	Decimal    int         `json:"decimal"    orm:"decimal"    ` // decimal
 }

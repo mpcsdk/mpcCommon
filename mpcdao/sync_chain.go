@@ -194,6 +194,36 @@ func (s *ChainTransfer) InsertBatch(ctx context.Context, data []*entity.Syncchai
 	return err
 }
 
+func (s *ChainTransfer) UpTransactionMap(ctx context.Context, data map[int64][]*entity.SyncchainChainTransfer) error {
+	if len(data) == 0 {
+		return nil
+	}
+	latest := int64(0)
+	for nr, _ := range data {
+		if nr > latest {
+			latest = nr
+		}
+	}
+	////
+	return s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
+		for _, txs := range data {
+			_, err := tx.Insert(dao.SyncchainChainTransfer.Table(), txs)
+			if err != nil {
+				return err
+			}
+		}
+		///
+		_, err := tx.Ctx(ctx).Model(dao.SyncchainState.Table()).
+			Where(dao.SyncchainState.Columns().ChainId, s.chainId).
+			Data(g.Map{
+				dao.SyncchainState.Columns().CurrentBlock: latest,
+			}).
+			Update()
+
+		return err
+	})
+}
+
 // /
 func (s *ChainTransfer) UpTransaction(ctx context.Context, data []*entity.SyncchainChainTransfer) error {
 	if len(data) == 0 {

@@ -181,6 +181,13 @@ func (s *ChainTransfer) Insert(ctx context.Context, data *entity.SyncchainChainT
 	_, err := s.dbmod.Ctx(ctx).Insert(data)
 	return err
 }
+func (s *ChainTransfer) TruncateTransfer(ctx context.Context, chainId int64, number int64) error {
+	_, err := s.dbmod.Ctx(ctx).
+		Where(dao.SyncchainChainTransfer.Columns().ChainId, chainId).
+		WhereLT(dao.SyncchainChainTransfer.Columns().Height, number).
+		Delete()
+	return err
+}
 func (s *ChainTransfer) DelChainBlockNumber(ctx context.Context, chainId int64, number int64) error {
 	_, err := s.dbmod.Ctx(ctx).
 		Where(dao.SyncchainChainTransfer.Columns().ChainId, chainId).

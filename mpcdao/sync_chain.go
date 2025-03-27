@@ -214,6 +214,9 @@ func (s *ChainTransfer) UpTransactionMap(ctx context.Context, data map[int64][]*
 	////
 	return s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
 		for _, txs := range data {
+			if len(txs) == 0 {
+				continue
+			}
 			_, err := tx.Insert(dao.SyncchainChainTransfer.Table(), txs)
 			if err != nil {
 				return err

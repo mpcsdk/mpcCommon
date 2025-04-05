@@ -217,9 +217,20 @@ func (s *ChainTransfer) UpTransactionMap(ctx context.Context, data map[int64][]*
 			if len(txs) == 0 {
 				continue
 			}
-			_, err := tx.Insert(dao.SyncchainChainTransfer.Table(), txs)
-			if err != nil {
-				return err
+			batch := 200
+			for i := 0; ; {
+				end := i + batch
+				if end > len(txs) {
+					end = len(txs)
+				}
+				_, err := tx.Insert(dao.SyncchainChainTransfer.Table(), txs[i:end])
+				if err != nil {
+					return err
+				}
+				i += batch
+				if end == len(txs) {
+					break
+				}
 			}
 		}
 		///

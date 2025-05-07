@@ -13,7 +13,7 @@ type RiskAdminNatsService struct {
 	sub *nats.Subscription
 	nc  *nats.Conn
 	////
-	riskadminCfg *RiskAdminCfg
+	riskadminRepo *RiskAdminRepo
 	////
 	opt *RiskAdminServiceOpt
 }
@@ -25,9 +25,9 @@ func NewRiskAdminNatsService(ctx context.Context, opt *RiskAdminServiceOpt) (*Ri
 		return nil, err
 	}
 	s := &RiskAdminNatsService{
-		ctx:          ctx,
-		opt:          opt,
-		riskadminCfg: NewRiskAdminCfg(opt.redis, opt.cacheDur),
+		ctx:           ctx,
+		opt:           opt,
+		riskadminRepo: NewRiskAdminRepo(opt.redis, opt.cacheDur),
 	}
 	///
 	s.nc = nc
@@ -41,6 +41,6 @@ func NewRiskAdminNatsService(ctx context.Context, opt *RiskAdminServiceOpt) (*Ri
 
 // //
 
-func (s *RiskAdminNatsService) RiskAdminCfg() *RiskAdminCfg {
-	return s.riskadminCfg
+func (s *RiskAdminNatsService) RiskAdminRepo() *RiskAdminRepo {
+	return s.riskadminRepo
 }

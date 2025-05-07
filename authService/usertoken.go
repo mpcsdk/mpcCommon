@@ -50,10 +50,12 @@ func GetUserTokenInfo(ctx context.Context, url string, tokenStr string) (authSer
 	var userInfo *respUserInfo = nil
 	err = v.Struct(&userInfo)
 	if err != nil {
+		g.Log().Error(ctx, "GetUserTokenInfo unmarshal err:", err, resp.ReadAllString())
 		return authServiceModel.UserInfo{}, err
 	}
 	////
 	if userInfo.ErrCode != 0 {
+		g.Log().Error(ctx, "GetUserTokenInfo userInfo stat err:", err, resp.ReadAllString())
 		return authServiceModel.UserInfo{}, errors.New(userInfo.Msg)
 	}
 

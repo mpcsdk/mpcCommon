@@ -6,9 +6,11 @@ import (
 
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/database/gredis"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/lib/pq"
 	"github.com/mpcsdk/mpcCommon/mpcdao/dao"
 	"github.com/mpcsdk/mpcCommon/mpcdao/model/entity"
 )
@@ -38,34 +40,41 @@ type QueryData struct {
 // ///
 func InitSyncChainDB(ctx context.Context, chainId int64) error {
 	dbname := "sync_chain_" + gconv.String(chainId)
-	//create db
-	dao.SyncchainChainTransfer.DB().Exec(ctx, "CREATE DATABASE "+dbname)
 	///
 	db := g.DB("sync_chain").Schema(dbname)
-	///
-	_, err := db.Exec(ctx, "select 1 from chain_transfer limit 1")
+	_, err := db.Exec(ctx, "select height from state limit 1")
 	if err != nil {
-		err = initTransferTable(ctx, dbname)
-		if err != nil {
-			return err
+		gerr := err.(*gerror.Error)
+		if pgerr, ok := gerr.Cause().(*pq.Error); ok {
+			if pgerr.Code == "3D000" {
+				_, err = dao.SyncchainChainTransfer.DB().Exec(ctx, "CREATE DATABASE "+dbname)
+				if err != nil {
+					return err
+				}
+			}
+			if pgerr.Code == "42P01" || pgerr.Code == "3D000" {
+				err = initStateTable(ctx, dbname)
+				if err != nil {
+					return err
+				}
+				err = initTransferTable(ctx, dbname)
+				if err != nil {
+					return err
+				}
+				_, err = db.Insert(ctx, dao.SyncchainState.Table(), entity.SyncchainState{
+					ChainId:      chainId,
+					CurrentBlock: 0,
+				})
+				if err != nil {
+					return err
+				}
+			}
 		}
-	}
-	///
-	_, err = db.Exec(ctx, "select 1 from state limit 1")
-	if err != nil {
-		err = initStateTable(ctx, dbname)
-		if err != nil {
-			return err
-		}
-		_, err = db.Insert(ctx, dao.SyncchainState.Table(), entity.SyncchainState{
-			ChainId:      chainId,
-			CurrentBlock: 0,
-		})
-		if err != nil {
-			return err
-		}
+	} else {
+		return err
 	}
 	return nil
+	///
 }
 
 // ///
@@ -85,7 +94,7 @@ func initStateTable(ctx context.Context, dbname string) error {
 	return err
 }
 func initTransferTable(ctx context.Context, dbname string) error {
-	_, err := dao.SyncchainChainTransfer.DB().Schema(dbname).Exec(ctx, `CREATE TABLE "public"."transfer" (
+	_, err := dao.SyncchainChainTransfer.DB().Schema(dbname).Exec(ctx, `CREATE TABLE "public"."chain_transfer" (
 		"chain_id" int8 NOT NULL,
 		"height" int8 NOT NULL,
 		"block_hash" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
@@ -111,7 +120,7 @@ func initTransferTable(ctx context.Context, dbname string) error {
 	  ALTER TABLE "public"."chain_transfer" 
 		OWNER TO "postgres";
 	  
-	  CREATE INDEX "chain_transfer_contract_ts" ON "public"."transfer" USING btree (
+	  CREATE INDEX "chain_transfer_contract_ts" ON "public"."chain_transfer" USING btree (
 		"contract" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
 		"ts" "pg_catalog"."int8_ops" DESC NULLS LAST
 	  );
@@ -172,6 +181,13 @@ func (s *ChainTransfer) Insert(ctx context.Context, data *entity.SyncchainChainT
 	_, err := s.dbmod.Ctx(ctx).Insert(data)
 	return err
 }
+func (s *ChainTransfer) TruncateTransfer(ctx context.Context, chainId int64, number int64) error {
+	_, err := s.dbmod.Ctx(ctx).
+		Where(dao.SyncchainChainTransfer.Columns().ChainId, chainId).
+		WhereLT(dao.SyncchainChainTransfer.Columns().Height, number).
+		Delete()
+	return err
+}
 func (s *ChainTransfer) DelChainBlockNumber(ctx context.Context, chainId int64, number int64) error {
 	_, err := s.dbmod.Ctx(ctx).
 		Where(dao.SyncchainChainTransfer.Columns().ChainId, chainId).
@@ -183,6 +199,79 @@ func (s *ChainTransfer) DelChainBlockNumber(ctx context.Context, chainId int64, 
 func (s *ChainTransfer) InsertBatch(ctx context.Context, data []*entity.SyncchainChainTransfer) error {
 	_, err := s.dbmod.Ctx(ctx).Insert(data)
 	return err
+}
+
+func (s *ChainTransfer) UpTransactionMap(ctx context.Context, data map[int64][]*entity.SyncchainChainTransfer) error {
+	if len(data) == 0 {
+		return nil
+	}
+	latest := int64(0)
+	for nr, _ := range data {
+		if nr > latest {
+			latest = nr
+		}
+	}
+	////
+	return s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
+		for _, txs := range data {
+			if len(txs) == 0 {
+				continue
+			}
+			batch := 200
+			for i := 0; ; {
+				end := i + batch
+				if end > len(txs) {
+					end = len(txs)
+				}
+				_, err := tx.Insert(dao.SyncchainChainTransfer.Table(), txs[i:end])
+				if err != nil {
+					return err
+				}
+				i += batch
+				if end == len(txs) {
+					break
+				}
+			}
+		}
+		///
+		_, err := tx.Ctx(ctx).Model(dao.SyncchainState.Table()).
+			Where(dao.SyncchainState.Columns().ChainId, s.chainId).
+			Data(g.Map{
+				dao.SyncchainState.Columns().CurrentBlock: latest,
+			}).
+			Update()
+
+		return err
+	})
+}
+
+// /
+func (s *ChainTransfer) UpTransaction(ctx context.Context, data []*entity.SyncchainChainTransfer) error {
+	if len(data) == 0 {
+		return nil
+	}
+	latest := data[0].Height
+	for _, d := range data {
+		if d.Height > latest {
+			latest = d.Height
+		}
+	}
+	////
+	return s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
+		_, err := tx.Insert(dao.SyncchainChainTransfer.Table(), data)
+		if err != nil {
+			return err
+		}
+		///
+		_, err = tx.Ctx(ctx).Model(dao.SyncchainState.Table()).
+			Where(dao.SyncchainState.Columns().ChainId, s.chainId).
+			Data(g.Map{
+				dao.SyncchainState.Columns().CurrentBlock: latest,
+			}).
+			Update()
+
+		return err
+	})
 }
 func (s *ChainTransfer) Insert_Transaction(ctx context.Context, data []*entity.SyncchainChainTransfer) error {
 	err := s.dbmod.Ctx(ctx).Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {

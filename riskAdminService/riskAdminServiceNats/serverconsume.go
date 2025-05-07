@@ -23,7 +23,7 @@ func (s *RiskAdminNatsService) runConsumeChainFn() {
 			var err error
 			if err = json.Unmarshal(msg.Data, &data); err == nil {
 				////set cfg
-				s.riskadminCfg.SetChain(data.Data.Id, &data)
+				s.riskadminRepo.SetChain(data.Data.Id, &data)
 				///call consumer
 				if s.opt.consumeChainFn != nil {
 					err = s.opt.consumeChainFn(s.ctx, &data)
@@ -55,7 +55,7 @@ func (s *RiskAdminNatsService) runConsumeContractFn() {
 			var data mq.RiskAdminContractMsg
 			var err error
 			if err = json.Unmarshal(msg.Data, &data); err == nil {
-				s.riskadminCfg.SetContract(data.Data.Id, &data)
+				s.riskadminRepo.SetContract(data.Data.Id, &data)
 				if s.opt.consumeContractFn != nil {
 					err = s.opt.consumeContractFn(s.ctx, &data)
 				}
@@ -86,7 +86,7 @@ func (s *RiskAdminNatsService) runConsumeRiskCtrlRuleFn() {
 			var data mq.RiskAdminRiskRuleMsg
 			var err error
 			if err = json.Unmarshal(msg.Data, &data); err == nil {
-				s.riskadminCfg.SetRiskRule(data.Data.Id, &data)
+				s.riskadminRepo.SetRiskRule(data.Data.Id, &data)
 				if s.opt.consumeRiskRuleFn != nil {
 					err = s.opt.consumeRiskRuleFn(s.ctx, &data)
 				}

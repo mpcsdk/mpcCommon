@@ -28,6 +28,7 @@ type RiskadminChaincfgColumns struct {
 	IsEnable   string // 启用
 	ChainId    string // 链id
 	Heigh      string // 高度
+	Decimal    string // decimal
 }
 
 // riskadminChaincfgColumns holds the columns for table chaincfg.
@@ -40,6 +41,7 @@ var riskadminChaincfgColumns = RiskadminChaincfgColumns{
 	IsEnable:   "isEnable",
 	ChainId:    "chainId",
 	Heigh:      "heigh",
+	Decimal:    "decimal",
 }
 
 // NewRiskadminChaincfgDao creates and returns a new DAO object for table data access.

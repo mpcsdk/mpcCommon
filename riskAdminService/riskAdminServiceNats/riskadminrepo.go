@@ -17,7 +17,7 @@ import (
 )
 
 // /
-type RiskAdminCfg struct {
+type RiskAdminRepo struct {
 	ctx             context.Context
 	riskadminDB     *mpcdao.RiskAdminDB
 	chains          map[int]*mq.RiskAdminChainMsg
@@ -31,7 +31,7 @@ type RiskAdminCfg struct {
 }
 
 // //
-func NewRiskAdminCfg(redis *gredis.Redis, cacheDur int) *RiskAdminCfg {
+func NewRiskAdminRepo(redis *gredis.Redis, cacheDur int) *RiskAdminRepo {
 	////
 	ctx := gctx.GetInitCtx()
 	if redis != nil {
@@ -41,7 +41,7 @@ func NewRiskAdminCfg(redis *gredis.Redis, cacheDur int) *RiskAdminCfg {
 		}
 	}
 	////
-	s := &RiskAdminCfg{
+	s := &RiskAdminRepo{
 		ctx:             ctx,
 		chains:          make(map[int]*mq.RiskAdminChainMsg),
 		contracts:       make(map[int]*mq.RiskAdminContractMsg),
@@ -88,10 +88,10 @@ func NewRiskAdminCfg(redis *gredis.Redis, cacheDur int) *RiskAdminCfg {
 	}
 	return s
 }
-func (s *RiskAdminCfg) Dump() string {
+func (s *RiskAdminRepo) Dump() string {
 	return fmt.Sprintf("chains: %v\ncontracts: %v\nriskRules: %v\n", s.chains, s.contracts, s.riskRules)
 }
-func (s *RiskAdminCfg) SetChain(id int, data *mq.RiskAdminChainMsg) {
+func (s *RiskAdminRepo) SetChain(id int, data *mq.RiskAdminChainMsg) {
 	///
 	switch data.Opt {
 	case mq.OptAdd:
@@ -153,7 +153,7 @@ func (s *RiskAdminCfg) SetChain(id int, data *mq.RiskAdminChainMsg) {
 	}
 
 }
-func (s *RiskAdminCfg) GetChain(chainId int64) *entity.RiskadminChaincfg {
+func (s *RiskAdminRepo) GetChain(chainId int64) *entity.RiskadminChaincfg {
 	s.chainsRWLock.RLock()
 	defer s.chainsRWLock.RUnlock()
 	for _, chain := range s.chains {
@@ -163,7 +163,7 @@ func (s *RiskAdminCfg) GetChain(chainId int64) *entity.RiskadminChaincfg {
 	}
 	return nil
 }
-func (s *RiskAdminCfg) GetChainById(id int) *entity.RiskadminChaincfg {
+func (s *RiskAdminRepo) GetChainById(id int) *entity.RiskadminChaincfg {
 	s.chainsRWLock.RLock()
 	defer s.chainsRWLock.RUnlock()
 	chain := s.chains[id]
@@ -172,7 +172,7 @@ func (s *RiskAdminCfg) GetChainById(id int) *entity.RiskadminChaincfg {
 	}
 	return chain.Data
 }
-func (s *RiskAdminCfg) AllChain() map[int64]*entity.RiskadminChaincfg {
+func (s *RiskAdminRepo) AllChain() map[int64]*entity.RiskadminChaincfg {
 	s.chainsRWLock.RLock()
 	defer s.chainsRWLock.RUnlock()
 	rst := map[int64]*entity.RiskadminChaincfg{}
@@ -183,7 +183,7 @@ func (s *RiskAdminCfg) AllChain() map[int64]*entity.RiskadminChaincfg {
 }
 
 // //
-func (s *RiskAdminCfg) SetContract(id int, data *mq.RiskAdminContractMsg) {
+func (s *RiskAdminRepo) SetContract(id int, data *mq.RiskAdminContractMsg) {
 
 	switch data.Opt {
 	case mq.OptAdd:
@@ -244,7 +244,7 @@ func (s *RiskAdminCfg) SetContract(id int, data *mq.RiskAdminContractMsg) {
 	case mq.OptCheck:
 	}
 }
-func (s *RiskAdminCfg) AllContract() map[string]*entity.RiskadminContractabi {
+func (s *RiskAdminRepo) AllContract() map[string]*entity.RiskadminContractabi {
 	s.contractsRWLock.RLock()
 	defer s.contractsRWLock.RUnlock()
 	rst := map[string]*entity.RiskadminContractabi{}
@@ -253,7 +253,7 @@ func (s *RiskAdminCfg) AllContract() map[string]*entity.RiskadminContractabi {
 	}
 	return rst
 }
-func (s *RiskAdminCfg) GetContractByChainId(chainId int64) []*entity.RiskadminContractabi {
+func (s *RiskAdminRepo) GetContractByChainId(chainId int64) []*entity.RiskadminContractabi {
 	s.contractsRWLock.RLock()
 	defer s.contractsRWLock.RUnlock()
 	rst := []*entity.RiskadminContractabi{}
@@ -267,7 +267,7 @@ func (s *RiskAdminCfg) GetContractByChainId(chainId int64) []*entity.RiskadminCo
 	}
 	return nil
 }
-func (s *RiskAdminCfg) GetContract(chainId int64, contractAddr string) *entity.RiskadminContractabi {
+func (s *RiskAdminRepo) GetContract(chainId int64, contractAddr string) *entity.RiskadminContractabi {
 	s.contractsRWLock.RLock()
 	defer s.contractsRWLock.RUnlock()
 	// rst := map[string]*entity.RiskadminContractabi{}
@@ -286,7 +286,7 @@ func (s *RiskAdminCfg) GetContract(chainId int64, contractAddr string) *entity.R
 	}
 	return nil
 }
-func (s *RiskAdminCfg) GetContractById(id int) *entity.RiskadminContractabi {
+func (s *RiskAdminRepo) GetContractById(id int) *entity.RiskadminContractabi {
 	s.contractsRWLock.RLock()
 	defer s.contractsRWLock.RUnlock()
 	contract := s.contracts[id]
@@ -297,7 +297,7 @@ func (s *RiskAdminCfg) GetContractById(id int) *entity.RiskadminContractabi {
 }
 
 // /
-func (s *RiskAdminCfg) SetRiskRule(id int, data *mq.RiskAdminRiskRuleMsg) {
+func (s *RiskAdminRepo) SetRiskRule(id int, data *mq.RiskAdminRiskRuleMsg) {
 
 	switch data.Opt {
 	case mq.OptAdd:
@@ -356,7 +356,7 @@ func (s *RiskAdminCfg) SetRiskRule(id int, data *mq.RiskAdminRiskRuleMsg) {
 	}
 
 }
-func (s *RiskAdminCfg) GetRiskRule(id int) *entity.RiskadminRiskcontrolRule {
+func (s *RiskAdminRepo) GetRiskRule(id int) *entity.RiskadminRiskcontrolRule {
 	s.riskRulesRWLock.RLock()
 	defer s.riskRulesRWLock.RUnlock()
 	rule := s.riskRules[id]
@@ -365,7 +365,7 @@ func (s *RiskAdminCfg) GetRiskRule(id int) *entity.RiskadminRiskcontrolRule {
 	}
 	return rule.Data
 }
-func (s *RiskAdminCfg) AllRiskRule() []*entity.RiskadminRiskcontrolRule {
+func (s *RiskAdminRepo) AllRiskRule() []*entity.RiskadminRiskcontrolRule {
 	s.riskRulesRWLock.RLock()
 	defer s.riskRulesRWLock.RUnlock()
 
@@ -377,6 +377,6 @@ func (s *RiskAdminCfg) AllRiskRule() []*entity.RiskadminRiskcontrolRule {
 }
 
 // /
-func (s *RiskAdminCfg) RiskadminDB() *mpcdao.RiskAdminDB {
+func (s *RiskAdminRepo) RiskadminDB() *mpcdao.RiskAdminDB {
 	return s.riskadminDB
 }

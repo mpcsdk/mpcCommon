@@ -1,7 +1,6 @@
 package keyutile
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/ethereum/go-ethereum/accounts/keystore"
@@ -35,12 +34,12 @@ func (s *KeyStore) Key() *keystore.Key {
 	return s.key
 }
 
-func (s *KeyStore) Seed() ([]byte, error) {
-	seed, err := generateSeedFromPrivateKey(s.key.PrivateKey)
-	if err != nil {
-		fmt.Println("err:", err)
-		return nil, err
-	}
+// func (s *KeyStore) Seed() ([]byte, error) {
+// 	seed, err := generateSeedFromPrivateKey(s.key.PrivateKey)
+// 	if err != nil {
+// 		fmt.Println("err:", err)
+// 		return nil, err
+// 	}
 
-	return seed, nil
-}
+// 	return seed, nil
+// }

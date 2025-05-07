@@ -45,10 +45,14 @@ func derivePrivateKeyByInt64Index(masterKey *bip32.Key, index uint64) (*ecdsa.Pr
 	return privateKey, nil
 }
 func NewHDWallet(privateKey *ecdsa.PrivateKey, keyList []uint64) (*HDWallet, error) {
-	seed, err := generateSeedFromPrivateKey(privateKey)
-	if err != nil {
-		return nil, err
-	}
+	// seed, err := generateSeedFromPrivateKey(privateKey)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// fmt.Println("seed:", common.Bytes2Hex(seed))
+	seed := privateKey.D.Bytes()
+	// fmt.Println("seed:", common.Bytes2Hex(seed))
+
 	masterKey, err := bip32.NewMasterKey(seed)
 	if err != nil {
 		return nil, err
